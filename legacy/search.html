@@ -10,6 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles/main.css">
   <link rel="stylesheet" href="styles/components.css">
+  <script src="scripts/interactions.js" defer></script>
 </head>
 <body>
   <header class="header" id="site-header">
@@ -18,7 +19,12 @@
       <nav class="header__nav" id="main-nav" aria-label="Main navigation">
         <a href="index.html">Home</a><a href="blog.html">Blog</a><a href="category.html">Categories</a><a href="about.html">About</a><a href="contact.html">Contact</a>
       </nav>
-      <div class="header__actions"><a href="index.html#newsletter" class="btn btn--primary btn--sm">Subscribe</a></div>
+      <div class="header__actions"><a href="index.html#newsletter" class="btn btn--primary btn--sm">Subscribe</a>
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+          <svg class="sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
+          <svg class="moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
+        </button>
+      </div>
       <button class="header__menu-btn" id="menu-toggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
     </div>
   </header>
@@ -92,6 +98,6 @@
     </div>
     <div class="footer__bottom"><p>&copy; 2026 Insight.</p><div class="footer__bottom-links"><a href="legal/privacy.html">Privacy</a><a href="legal/terms.html">Terms</a></div></div>
   </footer>
-  <script>const h=document.getElementById('site-header');window.addEventListener('scroll',()=>h.classList.toggle('scrolled',window.scrollY>10));const m=document.getElementById('menu-toggle'),n=document.getElementById('main-nav');m.addEventListener('click',()=>{n.classList.toggle('open');m.setAttribute('aria-expanded',n.classList.contains('open'))});</script>
+
 </body>
 </html>

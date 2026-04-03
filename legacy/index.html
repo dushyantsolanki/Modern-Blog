@@ -10,6 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles/main.css">
   <link rel="stylesheet" href="styles/components.css">
+  <script src="scripts/interactions.js" defer></script>
 </head>
 <body>
 
@@ -32,6 +33,11 @@
           <input type="search" name="q" placeholder="Search articles..." aria-label="Search articles">
         </form>
         <a href="#newsletter" class="btn btn--primary btn--sm">Subscribe</a>
+      
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+          <svg class="sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
+          <svg class="moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
+        </button>
       </div>
 
       <button class="header__menu-btn" id="menu-toggle" aria-label="Toggle menu" aria-expanded="false">
@@ -80,7 +86,7 @@
         <p class="section-subtitle" style="margin-inline:auto;">Hand-picked stories we think you'll love</p>
       </div>
 
-      <div class="grid grid-3">
+      <div class="grid grid-3" data-animate>
         <!-- Featured Large Card -->
         <article class="card card--featured">
           <div class="card__image">
@@ -143,7 +149,7 @@
         <p class="section-subtitle" style="margin-inline:auto;">Dive into the topics that matter most to you</p>
       </div>
 
-      <div class="grid grid-4">
+      <div class="grid grid-4" data-animate>
         <a href="category.html" class="category-card">
           <div class="category-card__icon" style="background: rgba(37,99,235,.08); color: var(--clr-primary);">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0V12a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 12V5.25"/></svg>
@@ -187,7 +193,7 @@
         <a href="blog.html" class="btn btn--outline btn--sm">View All <span>&rarr;</span></a>
       </div>
 
-      <div class="grid grid-3">
+      <div class="grid grid-3" data-animate>
         <article class="card">
           <div class="card__image gradient-3">
             <span class="card__badge" style="background:var(--clr-success);">Sustainability</span>
@@ -296,7 +302,7 @@
         <h2 class="section-title">What Readers Say</h2>
         <p class="section-subtitle" style="margin-inline:auto;">Feedback from our wonderful community</p>
       </div>
-      <div class="testimonials__grid">
+      <div class="testimonials__grid" data-animate>
         <div class="testimonial-card">
           <p class="testimonial-card__text">"Insight has become my go-to morning read. The articles are beautifully written and always leave me thinking differently about my work."</p>
           <div class="testimonial-card__author">
@@ -393,21 +399,6 @@
     </div>
   </footer>
 
-  <script>
-    // Sticky header shadow
-    const header = document.getElementById('site-header');
-    window.addEventListener('scroll', () => {
-      header.classList.toggle('scrolled', window.scrollY > 10);
-    });
-
-    // Mobile menu toggle
-    const menuBtn = document.getElementById('menu-toggle');
-    const mainNav = document.getElementById('main-nav');
-    menuBtn.addEventListener('click', () => {
-      mainNav.classList.toggle('open');
-      const isOpen = mainNav.classList.contains('open');
-      menuBtn.setAttribute('aria-expanded', isOpen);
-    });
-  </script>
+  <script src="scripts/interactions.js" defer></script>
 </body>
 </html>

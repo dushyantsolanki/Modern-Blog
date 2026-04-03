@@ -22,12 +22,56 @@
   --clr-text-muted: #94A3B8;
   --clr-border:     #E2E8F0;
   --clr-border-light:#F1F5F9;
+  --clr-header-bg:  rgba(255, 255, 255, 0.85);
+
   --clr-dark:       #0F172A;
   --clr-dark-surface:#1E293B;
   --clr-success:    #10B981;
   --clr-error:      #EF4444;
 
-  /* Typography */
+  /* Theme Transitions */
+  --theme-transition: background-color 0.3s var(--ease-out), color 0.3s var(--ease-out), border-color 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out);
+}
+
+/* ---------- DARK THEME OVERRIDES (Pure Black) ---------- */
+:root[data-theme='dark'] {
+  --clr-bg:         #000000;
+  --clr-surface:    #0A0A0A;
+  --clr-surface-alt:#111111;
+  --clr-text:       #F8FAFC;
+  --clr-text-secondary: #94A3B8;
+  --clr-text-muted: #64748B;
+  --clr-border:     #1E293B;
+  --clr-border-light:#0F172A;
+  --clr-header-bg:  rgba(0, 0, 0, 0.8);
+
+  --clr-dark:       #F8FAFC;
+  --clr-dark-surface:#111111;
+  
+  /* Primary and accent adjustments for dark theme */
+  --clr-primary:    #3B82F6;
+  --clr-primary-light: #60A5FA;
+  --clr-primary-dark:  #2563EB;
+
+  /* Keep hero/newsletter dark even in dark mode for contrast */
+  --clr-hero-bg:    linear-gradient(165deg, #000000 0%, #050505 50%, #0A0A0A 100%);
+  --clr-newsletter-bg: linear-gradient(135deg, #050505 0%, #000000 100%);
+}
+
+/* Apply theme transition to all key elements */
+body {
+  background-color: var(--clr-bg);
+  color: var(--clr-text);
+  transition: var(--theme-transition);
+}
+
+.header, .footer, .card, .btn, .tag, .category-card, .sidebar__widget, .newsletter, .testimonial-card, .comment, .comment-form, .form-group input, .form-group textarea, .form-group select {
+  transition: var(--theme-transition), transform 0.15s var(--ease-out);
+}
+
+:root {
+
+/* Typography */
   --ff-heading: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --ff-body:    'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 
@@ -83,11 +127,17 @@
   --shadow-xl:  0 20px 25px -5px rgba(15,23,42,.1), 0 8px 10px -6px rgba(15,23,42,.06);
   --shadow-glow:0 0 20px rgba(37,99,235,.15);
 
-  /* Transitions */
-  --transition-fast:   150ms ease;
-  --transition-base:   250ms ease;
-  --transition-slow:   400ms cubic-bezier(.4,0,.2,1);
-  --transition-spring: 500ms cubic-bezier(.34,1.56,.64,1);
+  /* Custom easing curves (Emil Kowalski philosophy) */
+  --ease-out:     cubic-bezier(0.23, 1, 0.32, 1);    /* strong ease-out: instant response */
+  --ease-in-out:  cubic-bezier(0.77, 0, 0.175, 1);   /* strong ease-in-out: on-screen movement */
+  --ease-drawer:  cubic-bezier(0.32, 0.72, 0, 1);    /* iOS-like drawer curve */
+  --ease-spring:  cubic-bezier(0.34, 1.56, 0.64, 1); /* playful spring */
+
+  /* Transitions — never use bare `ease`. Specify exact properties in usage. */
+  --transition-fast:   150ms var(--ease-out);
+  --transition-base:   220ms var(--ease-out);
+  --transition-slow:   350ms var(--ease-in-out);
+  --transition-spring: 500ms var(--ease-spring);
 
   /* Layout */
   --max-width:     1280px;
@@ -263,12 +313,12 @@ p {
   position: sticky;
   top: 0;
   z-index: var(--z-sticky);
-  background: rgba(255,255,255,.85);
+  background: var(--clr-header-bg);
   backdrop-filter: blur(16px) saturate(180%);
   -webkit-backdrop-filter: blur(16px) saturate(180%);
   border-bottom: 1px solid var(--clr-border-light);
   height: var(--header-height);
-  transition: box-shadow var(--transition-base);
+  transition: box-shadow 200ms var(--ease-out), background-color 0.3s var(--ease-out);
 }
 
 .header.scrolled {
@@ -323,17 +373,24 @@ p {
   height: 2px;
   background: var(--clr-primary);
   border-radius: var(--radius-full);
-  transition: width var(--transition-base);
+  transition: width 200ms var(--ease-out);
 }
 
-.header__nav a:hover,
 .header__nav a.active {
   color: var(--clr-dark);
 }
 
-.header__nav a:hover::after,
 .header__nav a.active::after {
   width: 100%;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .header__nav a:hover {
+    color: var(--clr-dark);
+  }
+  .header__nav a:hover::after {
+    width: 100%;
+  }
 }
 
 .header__actions {
@@ -398,9 +455,10 @@ p {
 
 /* ---------- FOOTER ---------- */
 .footer {
-  background: var(--clr-dark);
+  background: #000000;
   color: #CBD5E1;
   padding-top: var(--sp-20);
+  border-top: 1px solid var(--clr-border);
 }
 
 .footer__grid {
@@ -448,13 +506,15 @@ p {
   border-radius: var(--radius-lg);
   background: rgba(255,255,255,.06);
   color: #94A3B8;
-  transition: all var(--transition-fast);
+  transition: transform 150ms var(--ease-out), background-color 150ms ease, color 150ms ease;
 }
 
-.footer__social a:hover {
-  background: var(--clr-primary);
-  color: #fff;
-  transform: translateY(-2px);
+@media (hover: hover) and (pointer: fine) {
+  .footer__social a:hover {
+    background: var(--clr-primary);
+    color: #fff;
+    transform: translateY(-3px) scale(1.05);
+  }
 }
 
 .footer__col h4 {
@@ -620,6 +680,7 @@ p {
   color: var(--clr-text);
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   transition: color var(--transition-fast);
@@ -689,7 +750,7 @@ p {
 
 /* ---------- PAGE HEADER ---------- */
 .page-header {
-  background: linear-gradient(135deg, var(--clr-dark) 0%, #1a2744 100%);
+  background: var(--clr-hero-bg, linear-gradient(135deg, #0F172A 0%, #1a2744 100%));
   padding: var(--sp-20) 0 var(--sp-16);
   position: relative;
   overflow: hidden;
@@ -724,27 +785,27 @@ p {
   align-items: center;
   gap: var(--sp-2);
   font-size: var(--fs-sm);
-  color: #64748B;
+  color: var(--clr-text-muted);
   margin-bottom: var(--sp-4);
   position: relative;
 }
 
 .page-header .breadcrumb a {
-  color: #94A3B8;
+  color: var(--clr-text-secondary);
   transition: color var(--transition-fast);
 }
 
 .page-header .breadcrumb a:hover { color: var(--clr-primary-light); }
 
-/* ---------- ANIMATIONS ---------- */
+/* ---------- ANIMATIONS (Emil: ease-out, not ease-in; start scale(0.97) not scale(0)) ---------- */
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(24px);
+    transform: scale(0.97) translateY(12px);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: scale(1) translateY(0);
   }
 }
 
@@ -754,7 +815,7 @@ p {
 }
 
 @keyframes slideInRight {
-  from { opacity: 0; transform: translateX(20px); }
+  from { opacity: 0; transform: translateX(16px); }
   to   { opacity: 1; transform: translateX(0); }
 }
 
@@ -763,20 +824,69 @@ p {
   50%      { opacity: .6; }
 }
 
+/* clip-path reveal: wipe text in from left (Emil clip-path technique) */
+@keyframes revealWipe {
+  from { clip-path: inset(0 100% 0 0); }
+  to   { clip-path: inset(0 0% 0 0); }
+}
+
+/* Scroll-reveal state (applied by IntersectionObserver in interactions.js) */
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 500ms var(--ease-out), transform 500ms var(--ease-out);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger variants for grid children */
+.reveal-stagger > *:nth-child(1) { transition-delay: 0ms; }
+.reveal-stagger > *:nth-child(2) { transition-delay: 60ms; }
+.reveal-stagger > *:nth-child(3) { transition-delay: 120ms; }
+.reveal-stagger > *:nth-child(4) { transition-delay: 180ms; }
+.reveal-stagger > *:nth-child(5) { transition-delay: 240ms; }
+.reveal-stagger > *:nth-child(6) { transition-delay: 300ms; }
+
+/* Reading progress bar (post.html) */
+#reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--clr-primary), var(--clr-accent));
+  z-index: calc(var(--z-sticky) + 1);
+  transition: width 100ms linear;
+  pointer-events: none;
+}
+
 .animate-fade-in-up {
-  animation: fadeInUp .6s var(--transition-slow) both;
+  animation: fadeInUp 500ms var(--ease-out) both;
 }
 
 .animate-fade-in {
-  animation: fadeIn .5s ease both;
+  animation: fadeIn 400ms var(--ease-out) both;
 }
 
+/* prefers-reduced-motion: disable movement-based animations only.
+   Opacity/color transitions are fine — they aid comprehension. */
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
+  .hero__label, .hero__title, .hero__subtitle,
+  .hero__actions, .hero__stats {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .reveal, .reveal-stagger > * {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .card, .category-card, .footer__social a {
+    transition: none !important;
   }
 }
 
@@ -808,7 +918,7 @@ p {
   .header__search { display: none; }
   .header__menu-btn { display: flex; }
 
-  /* Mobile nav overlay */
+  /* Mobile nav overlay — uses CSS transitions for interruptibility (Emil principle) */
   .header__nav.open {
     display: flex;
     flex-direction: column;
@@ -818,7 +928,7 @@ p {
     padding: var(--sp-8);
     gap: var(--sp-6);
     z-index: var(--z-overlay);
-    animation: fadeIn .2s ease;
+    animation: fadeInUp 200ms var(--ease-out) both;
   }
 
   .header__nav.open a {

@@ -2,7 +2,12 @@
    MODERN BLOG — Reusable Components (components.css)
    ============================================================ */
 
-/* ---------- BUTTONS ---------- */
+/* ---------- BUTTONS ----------
+   Emil: specify exact transition properties, never `all`.
+   Add scale(0.97) on :active for physical press feedback.
+   Asymmetric timing: 160ms enter, 80ms exit (exit should feel instant).
+   Gate hover effects behind @media (hover: hover) for touch safety.
+   -------------------------------------------------------- */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -14,7 +19,8 @@
   font-weight: var(--fw-semibold);
   line-height: 1;
   border-radius: var(--radius-md);
-  transition: all var(--transition-base);
+  /* Specify exact properties — transition: all animates layout */
+  transition: transform 160ms var(--ease-out), box-shadow 160ms var(--ease-out), background-color 160ms ease, border-color 160ms ease, color 160ms ease;
   white-space: nowrap;
   cursor: pointer;
   text-decoration: none;
@@ -26,21 +32,24 @@
   outline-offset: 2px;
 }
 
+/* Physical press feedback — fastest transition on exit (80ms) */
+.btn:active {
+  transform: scale(0.97);
+  transition-duration: 80ms;
+}
+
 .btn--primary {
   background: var(--clr-primary);
   color: #fff;
   box-shadow: 0 1px 3px rgba(37,99,235,.3);
 }
 
-.btn--primary:hover {
-  background: var(--clr-primary-dark);
-  box-shadow: 0 4px 12px rgba(37,99,235,.35);
-  transform: translateY(-1px);
-}
-
-.btn--primary:active {
-  transform: translateY(0);
-  box-shadow: 0 1px 2px rgba(37,99,235,.3);
+@media (hover: hover) and (pointer: fine) {
+  .btn--primary:hover {
+    background: var(--clr-primary-dark);
+    box-shadow: 0 4px 12px rgba(37,99,235,.35);
+    transform: translateY(-1px);
+  }
 }
 
 .btn--accent {
@@ -49,10 +58,12 @@
   box-shadow: 0 1px 3px rgba(249,115,22,.3);
 }
 
-.btn--accent:hover {
-  background: #EA580C;
-  box-shadow: 0 4px 12px rgba(249,115,22,.35);
-  transform: translateY(-1px);
+@media (hover: hover) and (pointer: fine) {
+  .btn--accent:hover {
+    background: #EA580C;
+    box-shadow: 0 4px 12px rgba(249,115,22,.35);
+    transform: translateY(-1px);
+  }
 }
 
 .btn--outline {
@@ -61,10 +72,12 @@
   background: var(--clr-surface);
 }
 
-.btn--outline:hover {
-  border-color: var(--clr-primary);
-  color: var(--clr-primary);
-  background: rgba(37,99,235,.04);
+@media (hover: hover) and (pointer: fine) {
+  .btn--outline:hover {
+    border-color: var(--clr-primary);
+    color: var(--clr-primary);
+    background: rgba(37,99,235,.04);
+  }
 }
 
 .btn--ghost {
@@ -72,9 +85,61 @@
   padding: var(--sp-2) var(--sp-3);
 }
 
-.btn--ghost:hover {
+@media (hover: hover) and (pointer: fine) {
+  .btn--ghost:hover {
+    color: var(--clr-text);
+    background: var(--clr-surface-alt);
+  }
+}
+
+/* ---------- THEME TOGGLE ---------- */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  border: 1.5px solid var(--clr-border);
+  background: var(--clr-surface);
   color: var(--clr-text);
-  background: var(--clr-surface-alt);
+  cursor: pointer;
+  transition: var(--theme-transition), transform 0.1s var(--ease-out);
+  padding: 0;
+}
+
+.theme-toggle:active {
+  transform: scale(0.95);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .theme-toggle:hover {
+    background: var(--clr-surface-alt);
+    border-color: var(--clr-primary-light);
+    color: var(--clr-primary);
+  }
+}
+
+.theme-toggle svg {
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+  transition: transform 0.5s var(--ease-out);
+}
+
+/* Toggle icon display based on theme */
+.sun { display: none; }
+.moon { display: block; }
+
+:root[data-theme='dark'] .sun { display: block; }
+:root[data-theme='dark'] .moon { display: none; }
+
+:root[data-theme='dark'] .theme-toggle svg {
+  transform: rotate(360deg);
 }
 
 .btn--sm {
@@ -103,21 +168,28 @@
   transform: translateY(-1px);
 }
 
-/* ---------- BLOG CARD ---------- */
+/* ---------- BLOG CARD ----------
+   Emil: use CSS transition (not keyframes) for interruptibility.
+   Scale image with strong ease-out. Guard hover with pointer media query.
+   Cards will get .reveal + .reveal-stagger via IntersectionObserver.
+   -------------------------------------------------------- */
 .card {
   background: var(--clr-surface);
   border: 1px solid var(--clr-border);
   border-radius: var(--radius-xl);
   overflow: hidden;
-  transition: all var(--transition-base);
+  /* Specify exact properties, not `all` */
+  transition: transform 250ms var(--ease-out), box-shadow 250ms var(--ease-out), border-color 250ms ease;
   display: flex;
   flex-direction: column;
 }
 
-.card:hover {
-  box-shadow: var(--shadow-lg);
-  transform: translateY(-4px);
-  border-color: transparent;
+@media (hover: hover) and (pointer: fine) {
+  .card:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-3px);
+    border-color: transparent;
+  }
 }
 
 .card__image {
@@ -130,11 +202,14 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform var(--transition-slow);
+  /* Custom ease-out for image scale — feels natural */
+  transition: transform 500ms var(--ease-out);
 }
 
-.card:hover .card__image img {
-  transform: scale(1.05);
+@media (hover: hover) and (pointer: fine) {
+  .card:hover .card__image img {
+    transform: scale(1.05);
+  }
 }
 
 .card__badge {
@@ -182,9 +257,10 @@
   margin-bottom: var(--sp-3);
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  transition: color var(--transition-fast);
+  transition: color 150ms var(--ease-out);
 }
 
 .card:hover .card__title {
@@ -197,6 +273,7 @@
   line-height: var(--lh-relaxed);
   display: -webkit-box;
   -webkit-line-clamp: 3;
+  line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
   margin-bottom: var(--sp-4);
@@ -237,10 +314,12 @@
   display: flex;
   align-items: center;
   gap: var(--sp-1);
-  transition: gap var(--transition-fast);
+  transition: gap 150ms var(--ease-out);
 }
 
-.card:hover .card__read-more { gap: var(--sp-2); }
+@media (hover: hover) and (pointer: fine) {
+  .card:hover .card__read-more { gap: var(--sp-2); }
+}
 
 /* Featured card (large) */
 .card--featured {
@@ -262,10 +341,12 @@
 .card--featured .card__title {
   font-size: var(--fs-2xl);
   -webkit-line-clamp: 3;
+  line-clamp: 3;
 }
 
 .card--featured .card__excerpt {
   -webkit-line-clamp: 4;
+  line-clamp: 4;
 }
 
 /* --- Gradient placeholders for missing images --- */
@@ -300,10 +381,14 @@
   color: #fff;
 }
 
-/* ---------- HERO SECTION ---------- */
+/* ---------- HERO SECTION ----------
+   Emil stagger: each child animates in 0/80/160/240/320ms.
+   Start from scale(0.97) not scale(0) — nothing appears from nothing.
+   Use strong ease-out so response feels instant.
+   -------------------------------------------------------- */
 .hero {
   position: relative;
-  background: linear-gradient(165deg, var(--clr-dark) 0%, #162040 50%, #1a2744 100%);
+  background: var(--clr-hero-bg, linear-gradient(165deg, var(--clr-dark) 0%, #162040 50%, #1a2744 100%));
   padding: var(--sp-24) 0;
   min-height: 80vh;
   display: flex;
@@ -340,6 +425,7 @@
   max-width: 680px;
 }
 
+/* Hero stagger — each element delays 80ms after the previous */
 .hero__label {
   display: inline-flex;
   align-items: center;
@@ -352,7 +438,8 @@
   font-weight: var(--fw-medium);
   color: var(--clr-primary-light);
   margin-bottom: var(--sp-6);
-  animation: fadeInUp .6s ease both;
+  /* delay: 0ms (first element) */
+  animation: fadeInUp 500ms var(--ease-out) 0ms both;
 }
 
 .hero__title {
@@ -362,7 +449,7 @@
   line-height: 1.1;
   margin-bottom: var(--sp-6);
   letter-spacing: -0.03em;
-  animation: fadeInUp .6s ease .1s both;
+  animation: fadeInUp 500ms var(--ease-out) 80ms both;
 }
 
 .hero__title span {
@@ -378,20 +465,20 @@
   line-height: var(--lh-relaxed);
   margin-bottom: var(--sp-8);
   max-width: 52ch;
-  animation: fadeInUp .6s ease .2s both;
+  animation: fadeInUp 500ms var(--ease-out) 160ms both;
 }
 
 .hero__actions {
   display: flex;
   gap: var(--sp-4);
-  animation: fadeInUp .6s ease .3s both;
+  animation: fadeInUp 500ms var(--ease-out) 240ms both;
 }
 
 .hero__stats {
   display: flex;
   gap: var(--sp-10);
   margin-top: var(--sp-12);
-  animation: fadeInUp .6s ease .4s both;
+  animation: fadeInUp 500ms var(--ease-out) 320ms both;
 }
 
 .hero__stat {
@@ -411,7 +498,10 @@
   margin-top: var(--sp-1);
 }
 
-/* ---------- CATEGORY CARDS ---------- */
+/* ---------- CATEGORY CARDS ----------
+   Emil: scaleX from left is correct (transform-origin: left set explicitly).
+   Move hover effects inside media query guard.
+   -------------------------------------------------------- */
 .category-card {
   position: relative;
   padding: var(--sp-8);
@@ -419,7 +509,7 @@
   background: var(--clr-surface);
   border: 1px solid var(--clr-border);
   text-align: center;
-  transition: all var(--transition-base);
+  transition: transform 250ms var(--ease-out), box-shadow 250ms var(--ease-out), border-color 250ms ease;
   overflow: hidden;
 }
 
@@ -429,21 +519,22 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 4px;
+  height: 3px;
   background: var(--clr-primary);
   transform: scaleX(0);
-  transform-origin: left;
-  transition: transform var(--transition-base);
+  transform-origin: left; /* correct — scales from the left edge */
+  transition: transform 300ms var(--ease-out);
 }
 
-.category-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
-  border-color: transparent;
-}
-
-.category-card:hover::before {
-  transform: scaleX(1);
+@media (hover: hover) and (pointer: fine) {
+  .category-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: transparent;
+  }
+  .category-card:hover::before {
+    transform: scaleX(1);
+  }
 }
 
 .category-card__icon {
@@ -469,9 +560,8 @@
   color: var(--clr-text-secondary);
 }
 
-/* ---------- NEWSLETTER / CTA SECTIONS ---------- */
 .newsletter {
-  background: linear-gradient(135deg, var(--clr-dark) 0%, #1a2744 100%);
+  background: var(--clr-newsletter-bg, linear-gradient(135deg, var(--clr-dark) 0%, #1a2744 100%));
   border-radius: var(--radius-2xl);
   padding: var(--sp-16);
   text-align: center;
@@ -516,6 +606,8 @@
   border-radius: var(--radius-lg);
   color: #F8FAFC;
   font-size: var(--fs-base);
+  /* Specify exact properties for focus transition */
+  transition: background-color 150ms ease, border-color 150ms ease;
 }
 
 .newsletter__form input:focus {
@@ -525,6 +617,12 @@
 
 .newsletter__form input::placeholder {
   color: #64748B;
+}
+
+/* Morphing subscribe button — state communicated via data attribute */
+.newsletter__form button[data-state="success"] {
+  background: #10B981;
+  pointer-events: none;
 }
 
 /* ---------- ABOUT PREVIEW ---------- */
@@ -926,12 +1024,15 @@
   border-radius: var(--radius-md);
   background: var(--clr-surface-alt);
   color: var(--clr-text-secondary);
-  transition: all var(--transition-fast);
+  transition: transform 150ms var(--ease-out), background-color 150ms ease, color 150ms ease;
 }
 
-.author-bio__social a:hover {
-  background: var(--clr-primary);
-  color: #fff;
+@media (hover: hover) and (pointer: fine) {
+  .author-bio__social a:hover {
+    background: var(--clr-primary);
+    color: #fff;
+    transform: scale(1.1);
+  }
 }
 
 /* Comments section */
@@ -1050,7 +1151,8 @@
   border-radius: var(--radius-md);
   font-size: var(--fs-base);
   background: var(--clr-surface);
-  transition: all var(--transition-fast);
+  /* Specify exact properties — avoid transition: all */
+  transition: border-color 150ms var(--ease-out), box-shadow 150ms var(--ease-out);
 }
 
 .form-group input:focus,
@@ -1166,13 +1268,15 @@
   font-size: var(--fs-sm);
   font-weight: var(--fw-medium);
   border-radius: var(--radius-md);
-  transition: all var(--transition-fast);
+  transition: transform 150ms var(--ease-out), background-color 150ms ease, color 150ms ease;
   color: var(--clr-text-secondary);
 }
 
-.pagination a:hover {
-  background: var(--clr-surface-alt);
-  color: var(--clr-text);
+@media (hover: hover) and (pointer: fine) {
+  .pagination a:hover {
+    background: var(--clr-surface-alt);
+    color: var(--clr-text);
+  }
 }
 
 .pagination .active {
@@ -1240,13 +1344,15 @@
   border-radius: var(--radius-lg);
   background: var(--clr-surface-alt);
   color: var(--clr-text-secondary);
-  transition: all var(--transition-fast);
+  transition: transform 150ms var(--ease-out), background-color 150ms ease, color 150ms ease;
 }
 
-.author-profile__social a:hover {
-  background: var(--clr-primary);
-  color: #fff;
-  transform: translateY(-2px);
+@media (hover: hover) and (pointer: fine) {
+  .author-profile__social a:hover {
+    background: var(--clr-primary);
+    color: #fff;
+    transform: translateY(-2px) scale(1.05);
+  }
 }
 
 .author-profile__stats {
