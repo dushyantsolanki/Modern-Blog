@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Search Results — Insight</title>
+  <meta name="description" content="Search articles on Insight. Find content across technology, design, productivity, and more.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="styles/components.css">
+</head>
+<body>
+  <header class="header" id="site-header">
+    <div class="header__inner">
+      <a href="index.html" class="header__logo">Insight<span>.</span></a>
+      <nav class="header__nav" id="main-nav" aria-label="Main navigation">
+        <a href="index.html">Home</a><a href="blog.html">Blog</a><a href="category.html">Categories</a><a href="about.html">About</a><a href="contact.html">Contact</a>
+      </nav>
+      <div class="header__actions"><a href="index.html#newsletter" class="btn btn--primary btn--sm">Subscribe</a></div>
+      <button class="header__menu-btn" id="menu-toggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+    </div>
+  </header>
+
+  <section class="page-header">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb"><a href="index.html">Home</a><span>/</span><span>Search</span></nav>
+      <h1>Search Results</h1>
+      <p>Showing results for "<strong style="color:#F8FAFC;">design systems</strong>"</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container" style="max-width:860px;">
+      <form class="search-box" role="search" action="search.html" method="GET">
+        <input type="search" name="q" value="design systems" placeholder="Search articles, topics, authors..." aria-label="Search">
+        <button type="submit" class="btn btn--primary">Search</button>
+      </form>
+
+      <div class="filter-bar" style="margin-bottom:var(--sp-6);">
+        <span class="filter-bar__label">Filter:</span>
+        <button class="tag tag--active">All</button>
+        <button class="tag">Technology</button>
+        <button class="tag">Design</button>
+        <button class="tag">Productivity</button>
+      </div>
+
+      <p style="font-size:var(--fs-sm);color:var(--clr-text-muted);margin-bottom:var(--sp-6);">Found <strong style="color:var(--clr-text);">8 results</strong> for "design systems"</p>
+
+      <div style="background:var(--clr-surface);border:1px solid var(--clr-border);border-radius:var(--radius-xl);overflow:hidden;">
+        <div class="search-result">
+          <h3><a href="post.html">Design Systems That Scale: A Practical Guide</a></h3>
+          <p>Building <mark style="background:rgba(37,99,235,.12);color:var(--clr-text);padding:1px 3px;border-radius:3px;">design systems</mark> that grow with your team without becoming a maintenance burden. Learn patterns used by the best product teams.</p>
+          <div class="search-result__meta"><span>Design</span><span>Mar 15, 2026</span><span>6 min read</span><span>Sarah Chen</span></div>
+        </div>
+        <div class="search-result">
+          <h3><a href="post.html">The Future of AI in Creative Work</a></h3>
+          <p>How AI tools are revolutionizing <mark style="background:rgba(37,99,235,.12);color:var(--clr-text);padding:1px 3px;border-radius:3px;">design systems</mark>, prototyping, and the creative process for modern teams.</p>
+          <div class="search-result__meta"><span>Technology</span><span>Mar 28, 2026</span><span>8 min read</span><span>Sarah Chen</span></div>
+        </div>
+        <div class="search-result">
+          <h3><a href="post.html">Component Architecture: Lessons from Enterprise</a></h3>
+          <p>Enterprise-scale <mark style="background:rgba(37,99,235,.12);color:var(--clr-text);padding:1px 3px;border-radius:3px;">design systems</mark> require different thinking. Here's what we learned building for 10,000+ users.</p>
+          <div class="search-result__meta"><span>Technology</span><span>Feb 20, 2026</span><span>10 min read</span><span>David Kim</span></div>
+        </div>
+        <div class="search-result">
+          <h3><a href="post.html">Color Theory for Digital Products</a></h3>
+          <p>Creating accessible, brand-aligned color palettes for <mark style="background:rgba(37,99,235,.12);color:var(--clr-text);padding:1px 3px;border-radius:3px;">design systems</mark> that work across light and dark modes.</p>
+          <div class="search-result__meta"><span>Design</span><span>Jan 30, 2026</span><span>7 min read</span><span>Alex Rivera</span></div>
+        </div>
+        <div class="search-result">
+          <h3><a href="post.html">Typography at Scale: Choosing Fonts That Work</a></h3>
+          <p>Font selection strategies for <mark style="background:rgba(37,99,235,.12);color:var(--clr-text);padding:1px 3px;border-radius:3px;">design systems</mark> — legibility, performance, and brand expression in one framework.</p>
+          <div class="search-result__meta"><span>Design</span><span>Jan 15, 2026</span><span>5 min read</span><span>Priya Sharma</span></div>
+        </div>
+      </div>
+
+      <nav class="pagination" aria-label="Search pagination">
+        <span class="active">1</span><a href="#">2</a>
+        <a href="#" class="next">Next &rarr;</a>
+      </nav>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer__grid">
+      <div class="footer__brand"><div class="footer-logo">Insight<span>.</span></div><p>A modern blog for curious minds.</p></div>
+      <div class="footer__col"><h4>Navigation</h4><ul><li><a href="index.html">Home</a></li><li><a href="blog.html">Blog</a></li><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+      <div class="footer__col"><h4>Legal</h4><ul><li><a href="legal/privacy.html">Privacy</a></li><li><a href="legal/terms.html">Terms</a></li></ul></div>
+      <div class="footer__col"><h4>Categories</h4><ul><li><a href="category.html">Technology</a></li><li><a href="category.html">Design</a></li></ul></div>
+    </div>
+    <div class="footer__bottom"><p>&copy; 2026 Insight.</p><div class="footer__bottom-links"><a href="legal/privacy.html">Privacy</a><a href="legal/terms.html">Terms</a></div></div>
+  </footer>
+  <script>const h=document.getElementById('site-header');window.addEventListener('scroll',()=>h.classList.toggle('scrolled',window.scrollY>10));const m=document.getElementById('menu-toggle'),n=document.getElementById('main-nav');m.addEventListener('click',()=>{n.classList.toggle('open');m.setAttribute('aria-expanded',n.classList.contains('open'))});</script>
+</body>
+</html>

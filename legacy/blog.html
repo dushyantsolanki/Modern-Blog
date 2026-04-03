@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog — All Articles | Insight</title>
+  <meta name="description" content="Browse all articles on Insight. Filter by category, tags, and sort by latest or most popular.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="styles/components.css">
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header" id="site-header">
+    <div class="header__inner">
+      <a href="index.html" class="header__logo">Insight<span>.</span></a>
+      <nav class="header__nav" id="main-nav" aria-label="Main navigation">
+        <a href="index.html">Home</a>
+        <a href="blog.html" class="active">Blog</a>
+        <a href="category.html">Categories</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+      <div class="header__actions">
+        <form class="header__search" role="search" action="search.html" method="GET">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="16" height="16"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/></svg>
+          <input type="search" name="q" placeholder="Search articles..." aria-label="Search articles">
+        </form>
+        <a href="index.html#newsletter" class="btn btn--primary btn--sm">Subscribe</a>
+      </div>
+      <button class="header__menu-btn" id="menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- PAGE HEADER -->
+  <section class="page-header">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="index.html">Home</a>
+        <span>/</span>
+        <span>Blog</span>
+      </nav>
+      <h1>All Articles</h1>
+      <p>Explore our collection of 340+ articles across technology, design, productivity and more.</p>
+    </div>
+  </section>
+
+  <!-- MAIN CONTENT -->
+  <section class="section">
+    <div class="container">
+      <div class="grid grid-sidebar">
+        <!-- Content Column -->
+        <div>
+          <!-- Filter Bar -->
+          <div class="filter-bar">
+            <span class="filter-bar__label">Filter:</span>
+            <button class="tag tag--active">All</button>
+            <button class="tag">Technology</button>
+            <button class="tag">Design</button>
+            <button class="tag">Productivity</button>
+            <button class="tag">Creativity</button>
+            <button class="tag">Business</button>
+          </div>
+
+          <!-- Blog Post Grid -->
+          <div class="grid grid-2" style="gap:var(--sp-6);">
+            <article class="card">
+              <div class="card__image">
+                <img src="assets/blog-post-1.png" alt="The Future of AI in Creative Work" width="800" height="500" loading="lazy">
+                <span class="card__badge">Technology</span>
+              </div>
+              <div class="card__body">
+                <div class="card__meta">
+                  <time datetime="2026-03-28">Mar 28, 2026</time>
+                  <span class="dot"></span>
+                  <span>8 min read</span>
+                </div>
+                <h3 class="card__title">The Future of AI in Creative Work</h3>
+                <p class="card__excerpt">AI is reshaping how we approach design, writing, and art. Here's a practical look at what's changing.</p>
+                <div class="card__footer">
+                  <div class="card__author">
+                    <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#6366F1,#EC4899);"></div>
+                    <span class="card__author-name">Sarah Chen</span>
+                  </div>
+                  <a href="post.html" class="card__read-more">Read <span>&rarr;</span></a>
+                </div>
+              </div>
+            </article>
+
+            <article class="card">
+              <div class="card__image">
+                <img src="assets/blog-post-2.png" alt="10 Productivity Frameworks" width="800" height="500" loading="lazy">
+                <span class="card__badge" style="background:var(--clr-accent);">Productivity</span>
+              </div>
+              <div class="card__body">
+                <div class="card__meta">
+                  <time datetime="2026-03-25">Mar 25, 2026</time>
+                  <span class="dot"></span>
+                  <span>6 min read</span>
+                </div>
+                <h3 class="card__title">10 Productivity Frameworks That Actually Work</h3>
+                <p class="card__excerpt">Evidence-based methods that genuinely help you do meaningful work without burning out.</p>
+                <div class="card__footer">
+                  <div class="card__author">
+                    <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#10B981,#06B6D4);"></div>
+                    <span class="card__author-name">Marcus Lee</span>
+                  </div>
+                  <a href="post.html" class="card__read-more">Read <span>&rarr;</span></a>
+                </div>
+              </div>
+            </article>
+
+            <article class="card">
+              <div class="card__image gradient-3">
+                <span class="card__badge" style="background:var(--clr-success);">Sustainability</span>
+              </div>
+              <div class="card__body">
+                <div class="card__meta">
+                  <time datetime="2026-03-22">Mar 22, 2026</time>
+                  <span class="dot"></span>
+                  <span>5 min read</span>
+                </div>
+                <h3 class="card__title">Building a Sustainable Tech Stack for Startups</h3>
+                <p class="card__excerpt">Why choosing the right technologies early can reduce your carbon footprint and save millions.</p>
+                <div class="card__footer">
+                  <div class="card__author">
+                    <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#F97316,#F59E0B);"></div>
+                    <span class="card__author-name">Priya Sharma</span>
+                  </div>
+                  <a href="post.html" class="card__read-more">Read <span>&rarr;</span></a>
+                </div>
+              </div>
+            </article>
+
+            <article class="card">
+              <div class="card__image gradient-4">
+                <span class="card__badge" style="background:#EC4899;">Creativity</span>
+              </div>
+              <div class="card__body">
+                <div class="card__meta">
+                  <time datetime="2026-03-20">Mar 20, 2026</time>
+                  <span class="dot"></span>
+                  <span>7 min read</span>
+                </div>
+                <h3 class="card__title">The Art of Creative Constraints</h3>
+                <p class="card__excerpt">How embracing limitations can unlock your most innovative work.</p>
+                <div class="card__footer">
+                  <div class="card__author">
+                    <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#6366F1,#EC4899);"></div>
+                    <span class="card__author-name">Alex Rivera</span>
+                  </div>
+                  <a href="post.html" class="card__read-more">Read <span>&rarr;</span></a>
+                </div>
+              </div>
+            </article>
+
+            <article class="card">
+              <div class="card__image gradient-5">
+                <span class="card__badge">Business</span>
+              </div>
+              <div class="card__body">
+                <div class="card__meta">
+                  <time datetime="2026-03-18">Mar 18, 2026</time>
+                  <span class="dot"></span>
+                  <span>9 min read</span>
+                </div>
+                <h3 class="card__title">Remote Work 3.0: The Hybrid Revolution</h3>
+                <p class="card__excerpt">Data-driven insights on how the best companies are designing the future of work.</p>
+                <div class="card__footer">
+                  <div class="card__author">
+                    <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#1E293B,#64748B);"></div>
+                    <span class="card__author-name">David Kim</span>
+                  </div>
+                  <a href="post.html" class="card__read-more">Read <span>&rarr;</span></a>
+                </div>
+              </div>
+            </article>
+
+            <article class="card">
+              <div class="card__image gradient-6">
+                <span class="card__badge" style="background:#7C3AED;">Design</span>
+              </div>
+              <div class="card__body">
+                <div class="card__meta">
+                  <time datetime="2026-03-15">Mar 15, 2026</time>
+                  <span class="dot"></span>
+                  <span>6 min read</span>
+                </div>
+                <h3 class="card__title">Design Systems That Scale: A Practical Guide</h3>
+                <p class="card__excerpt">Building design systems that grow with your team without becoming a maintenance burden.</p>
+                <div class="card__footer">
+                  <div class="card__author">
+                    <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#7C3AED,#2563EB);"></div>
+                    <span class="card__author-name">Sarah Chen</span>
+                  </div>
+                  <a href="post.html" class="card__read-more">Read <span>&rarr;</span></a>
+                </div>
+              </div>
+            </article>
+          </div>
+
+          <!-- Pagination -->
+          <nav class="pagination" aria-label="Blog pagination">
+            <a href="#" class="prev">&larr; Prev</a>
+            <span class="active">1</span>
+            <a href="#">2</a>
+            <a href="#">3</a>
+            <a href="#">4</a>
+            <span>...</span>
+            <a href="#">12</a>
+            <a href="#" class="next">Next &rarr;</a>
+          </nav>
+        </div>
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+          <div class="sidebar__widget">
+            <h3>Categories</h3>
+            <div class="sidebar__categories">
+              <a href="category.html"><span>Technology</span><span class="count">42</span></a>
+              <a href="category.html"><span>Design</span><span class="count">38</span></a>
+              <a href="category.html"><span>Productivity</span><span class="count">29</span></a>
+              <a href="category.html"><span>Creativity</span><span class="count">24</span></a>
+              <a href="category.html"><span>Business</span><span class="count">18</span></a>
+              <a href="category.html"><span>Sustainability</span><span class="count">12</span></a>
+            </div>
+          </div>
+
+          <div class="sidebar__widget">
+            <h3>Recent Posts</h3>
+            <a href="post.html" class="sidebar__recent-post">
+              <div style="width:64px;height:64px;border-radius:var(--radius-md);background:linear-gradient(135deg,#6366F1,#8B5CF6);flex-shrink:0;"></div>
+              <div>
+                <h4>The Future of AI in Creative Work</h4>
+                <time datetime="2026-03-28" class="text-xs text-muted">Mar 28, 2026</time>
+              </div>
+            </a>
+            <a href="post.html" class="sidebar__recent-post">
+              <div style="width:64px;height:64px;border-radius:var(--radius-md);background:linear-gradient(135deg,#F97316,#F59E0B);flex-shrink:0;"></div>
+              <div>
+                <h4>10 Productivity Frameworks</h4>
+                <time datetime="2026-03-25" class="text-xs text-muted">Mar 25, 2026</time>
+              </div>
+            </a>
+            <a href="post.html" class="sidebar__recent-post">
+              <div style="width:64px;height:64px;border-radius:var(--radius-md);background:linear-gradient(135deg,#10B981,#06B6D4);flex-shrink:0;"></div>
+              <div>
+                <h4>Building a Sustainable Tech Stack</h4>
+                <time datetime="2026-03-22" class="text-xs text-muted">Mar 22, 2026</time>
+              </div>
+            </a>
+          </div>
+
+          <div class="sidebar__widget sidebar__newsletter">
+            <h3>Newsletter</h3>
+            <p>Join 12,000+ readers. Get the best articles delivered weekly.</p>
+            <form>
+              <input type="email" placeholder="Your email address" aria-label="Email for newsletter" required>
+              <button type="submit" class="btn btn--white btn--sm btn--full">Subscribe Free</button>
+            </form>
+          </div>
+
+          <div class="sidebar__widget">
+            <h3>Popular Tags</h3>
+            <div class="sidebar__tags">
+              <a href="#">AI</a>
+              <a href="#">Design Systems</a>
+              <a href="#">Remote Work</a>
+              <a href="#">Startups</a>
+              <a href="#">UX</a>
+              <a href="#">JavaScript</a>
+              <a href="#">Figma</a>
+              <a href="#">Leadership</a>
+              <a href="#">Wellness</a>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer__grid">
+      <div class="footer__brand">
+        <div class="footer-logo">Insight<span>.</span></div>
+        <p>A modern blog for curious minds.</p>
+        <div class="footer__social">
+          <a href="#" aria-label="Twitter"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+          <a href="#" aria-label="LinkedIn"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+          <a href="#" aria-label="GitHub"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
+        </div>
+      </div>
+      <div class="footer__col"><h4>Navigation</h4><ul><li><a href="index.html">Home</a></li><li><a href="blog.html">Blog</a></li><li><a href="category.html">Categories</a></li><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+      <div class="footer__col"><h4>Categories</h4><ul><li><a href="category.html">Technology</a></li><li><a href="category.html">Design</a></li><li><a href="category.html">Productivity</a></li><li><a href="category.html">Creativity</a></li></ul></div>
+      <div class="footer__col"><h4>Legal</h4><ul><li><a href="legal/privacy.html">Privacy Policy</a></li><li><a href="legal/terms.html">Terms of Service</a></li></ul></div>
+    </div>
+    <div class="footer__bottom">
+      <p>&copy; 2026 Insight. All rights reserved.</p>
+      <div class="footer__bottom-links">
+        <a href="legal/privacy.html">Privacy</a>
+        <a href="legal/terms.html">Terms</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const header = document.getElementById('site-header');
+    window.addEventListener('scroll', () => header.classList.toggle('scrolled', window.scrollY > 10));
+    const menuBtn = document.getElementById('menu-toggle');
+    const mainNav = document.getElementById('main-nav');
+    menuBtn.addEventListener('click', () => { mainNav.classList.toggle('open'); menuBtn.setAttribute('aria-expanded', mainNav.classList.contains('open')); });
+  </script>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Technology — Category | Insight</title>
+  <meta name="description" content="Explore all articles in the Technology category. Discover insights on AI, web development, software engineering, and emerging tech trends.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="styles/components.css">
+</head>
+<body>
+  <header class="header" id="site-header">
+    <div class="header__inner">
+      <a href="index.html" class="header__logo">Insight<span>.</span></a>
+      <nav class="header__nav" id="main-nav" aria-label="Main navigation">
+        <a href="index.html">Home</a><a href="blog.html">Blog</a><a href="category.html" class="active">Categories</a><a href="about.html">About</a><a href="contact.html">Contact</a>
+      </nav>
+      <div class="header__actions">
+        <form class="header__search" role="search" action="search.html"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="16" height="16"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/></svg><input type="search" name="q" placeholder="Search..." aria-label="Search"></form>
+        <a href="index.html#newsletter" class="btn btn--primary btn--sm">Subscribe</a>
+      </div>
+      <button class="header__menu-btn" id="menu-toggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+    </div>
+  </header>
+
+  <section class="page-header">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb"><a href="index.html">Home</a><span>/</span><a href="blog.html">Blog</a><span>/</span><span>Technology</span></nav>
+      <h1>Technology</h1>
+      <p>Exploring the latest in AI, software development, web technologies, and the tools that shape how we build the future. 42 articles and counting.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="grid grid-sidebar">
+        <div>
+          <div class="filter-bar">
+            <span class="filter-bar__label">Sort:</span>
+            <button class="tag tag--active">Latest</button>
+            <button class="tag">Most Popular</button>
+            <button class="tag">Oldest</button>
+          </div>
+
+          <div class="grid grid-2" style="gap:var(--sp-6);">
+            <article class="card">
+              <div class="card__image"><img src="assets/blog-post-1.png" alt="AI in Creative Work" width="800" height="500" loading="lazy"><span class="card__badge">Technology</span></div>
+              <div class="card__body">
+                <div class="card__meta"><time datetime="2026-03-28">Mar 28, 2026</time><span class="dot"></span><span>8 min</span></div>
+                <h3 class="card__title">The Future of AI in Creative Work</h3>
+                <p class="card__excerpt">AI is reshaping how we approach design, writing, and art. A practical look at what's changing.</p>
+                <div class="card__footer"><div class="card__author"><div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#6366F1,#EC4899);"></div><span class="card__author-name">Sarah Chen</span></div><a href="post.html" class="card__read-more">Read <span>&rarr;</span></a></div>
+              </div>
+            </article>
+            <article class="card">
+              <div class="card__image gradient-6"><span class="card__badge">Technology</span></div>
+              <div class="card__body">
+                <div class="card__meta"><time datetime="2026-03-15">Mar 15, 2026</time><span class="dot"></span><span>6 min</span></div>
+                <h3 class="card__title">Design Systems That Scale: A Practical Guide</h3>
+                <p class="card__excerpt">Building design systems that grow with your team without becoming a burden.</p>
+                <div class="card__footer"><div class="card__author"><div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#7C3AED,#2563EB);"></div><span class="card__author-name">Sarah Chen</span></div><a href="post.html" class="card__read-more">Read <span>&rarr;</span></a></div>
+              </div>
+            </article>
+            <article class="card">
+              <div class="card__image gradient-3"><span class="card__badge">Technology</span></div>
+              <div class="card__body">
+                <div class="card__meta"><time datetime="2026-03-10">Mar 10, 2026</time><span class="dot"></span><span>7 min</span></div>
+                <h3 class="card__title">Web Performance in 2026: What's Changed</h3>
+                <p class="card__excerpt">Core Web Vitals, edge computing, and the new standards shaping fast websites.</p>
+                <div class="card__footer"><div class="card__author"><div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#10B981,#06B6D4);"></div><span class="card__author-name">David Kim</span></div><a href="post.html" class="card__read-more">Read <span>&rarr;</span></a></div>
+              </div>
+            </article>
+            <article class="card">
+              <div class="card__image gradient-1"><span class="card__badge">Technology</span></div>
+              <div class="card__body">
+                <div class="card__meta"><time datetime="2026-03-05">Mar 5, 2026</time><span class="dot"></span><span>10 min</span></div>
+                <h3 class="card__title">The Rise of Edge-First Architecture</h3>
+                <p class="card__excerpt">Why more teams are moving compute closer to users and what it means for development.</p>
+                <div class="card__footer"><div class="card__author"><div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#1E293B,#64748B);"></div><span class="card__author-name">Marcus Lee</span></div><a href="post.html" class="card__read-more">Read <span>&rarr;</span></a></div>
+              </div>
+            </article>
+          </div>
+
+          <nav class="pagination" aria-label="Category pagination">
+            <a href="#" class="prev">&larr; Prev</a>
+            <span class="active">1</span><a href="#">2</a><a href="#">3</a>
+            <a href="#" class="next">Next &rarr;</a>
+          </nav>
+        </div>
+
+        <aside class="sidebar">
+          <div class="sidebar__widget"><h3>All Categories</h3>
+            <div class="sidebar__categories">
+              <a href="category.html" style="background:rgba(37,99,235,.06);color:var(--clr-primary);font-weight:500;"><span>Technology</span><span class="count">42</span></a>
+              <a href="category.html"><span>Design</span><span class="count">38</span></a>
+              <a href="category.html"><span>Productivity</span><span class="count">29</span></a>
+              <a href="category.html"><span>Creativity</span><span class="count">24</span></a>
+              <a href="category.html"><span>Business</span><span class="count">18</span></a>
+              <a href="category.html"><span>Sustainability</span><span class="count">12</span></a>
+            </div>
+          </div>
+          <div class="sidebar__widget sidebar__newsletter"><h3>Newsletter</h3><p>Get tech articles delivered weekly.</p><form><input type="email" placeholder="Your email" aria-label="Email" required><button type="submit" class="btn btn--white btn--sm btn--full">Subscribe</button></form></div>
+          <div class="sidebar__widget"><h3>Tags in Technology</h3>
+            <div class="sidebar__tags"><a href="#">AI</a><a href="#">JavaScript</a><a href="#">Web Dev</a><a href="#">APIs</a><a href="#">Cloud</a><a href="#">Edge Computing</a><a href="#">Open Source</a></div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer__grid">
+      <div class="footer__brand"><div class="footer-logo">Insight<span>.</span></div><p>A modern blog for curious minds.</p></div>
+      <div class="footer__col"><h4>Navigation</h4><ul><li><a href="index.html">Home</a></li><li><a href="blog.html">Blog</a></li><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+      <div class="footer__col"><h4>Categories</h4><ul><li><a href="category.html">Technology</a></li><li><a href="category.html">Design</a></li><li><a href="category.html">Productivity</a></li></ul></div>
+      <div class="footer__col"><h4>Legal</h4><ul><li><a href="legal/privacy.html">Privacy</a></li><li><a href="legal/terms.html">Terms</a></li></ul></div>
+    </div>
+    <div class="footer__bottom"><p>&copy; 2026 Insight.</p><div class="footer__bottom-links"><a href="legal/privacy.html">Privacy</a><a href="legal/terms.html">Terms</a></div></div>
+  </footer>
+  <script>const h=document.getElementById('site-header');window.addEventListener('scroll',()=>h.classList.toggle('scrolled',window.scrollY>10));const m=document.getElementById('menu-toggle'),n=document.getElementById('main-nav');m.addEventListener('click',()=>{n.classList.toggle('open');m.setAttribute('aria-expanded',n.classList.contains('open'))});</script>
+</body>
+</html>
