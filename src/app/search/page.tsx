@@ -48,7 +48,7 @@ const allPosts = [
   },
 ]
 
-export default function SearchPage() {
+function SearchContent() {
   const searchParams = useSearchParams()
   const query = searchParams.get("q") || ""
   const [isLoading, setIsLoading] = React.useState(true)
@@ -147,3 +147,16 @@ export default function SearchPage() {
     </div>
   )
 }
+
+export default function SearchPage() {
+  return (
+    <React.Suspense fallback={
+      <div className="flex flex-col min-h-screen bg-background items-center justify-center">
+        <Loader2 className="w-10 h-10 text-primary animate-spin" />
+      </div>
+    }>
+      <SearchContent />
+    </React.Suspense>
+  )
+}
+
