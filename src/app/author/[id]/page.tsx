@@ -5,120 +5,18 @@ import { PostCard } from "@/components/post-card"
 import { Newsletter } from "@/components/newsletter"
 import { X, Share2, Globe, Mail, MapPin, Calendar, BookOpen } from "lucide-react"
 
-const authors = [
-  {
-    id: "sarah-chen",
-    name: "Sarah Chen",
-    role: "Founder & Editor-in-Chief",
-    bio: "Former tech journalist at Wired. 10 years covering the intersection of technology and creativity. Passionate about AI, design systems, and the future of work.",
-    avatar: "",
-    gradient: "from-indigo-500 to-pink-500",
-    location: "San Francisco, CA",
-    joined: "June 2022",
-    posts: 42,
-    social: {
-      twitter: "#",
-      linkedin: "#",
-      github: "#",
-      website: "#",
-    }
-  },
-  {
-    id: "marcus-lee",
-    name: "Marcus Lee",
-    role: "Senior Writer",
-    bio: "Productivity expert and former startup CTO. Writes about systems, frameworks, and working smarter. Believes that the right tools can unlock human potential.",
-    avatar: "",
-    gradient: "from-emerald-500 to-cyan-500",
-    location: "London, UK",
-    joined: "August 2022",
-    posts: 35,
-    social: {
-      twitter: "#",
-      linkedin: "#",
-      github: "#",
-      website: "#",
-    }
-  },
-  {
-    id: "priya-sharma",
-    name: "Priya Sharma",
-    role: "Sustainability Editor",
-    bio: "Environmental scientist turned tech writer. Passionate about sustainable technology and green innovation. Exploring how tech can solve global challenges.",
-    avatar: "",
-    gradient: "from-orange-500 to-amber-500",
-    location: "Bangalore, India",
-    joined: "October 2022",
-    posts: 28,
-    social: {
-      twitter: "#",
-      linkedin: "#",
-      github: "#",
-      website: "#",
-    }
-  },
-  {
-    id: "alex-rivera",
-    name: "Alex Rivera",
-    role: "Design Lead",
-    bio: "Digital designer and creative strategist. Writes about visual rhythm, typography, and user experience. Obsessed with detail and craft.",
-    avatar: "",
-    gradient: "from-slate-700 to-slate-500",
-    location: "Berlin, DE",
-    joined: "December 2022",
-    posts: 22,
-    social: {
-      twitter: "#",
-      linkedin: "#",
-      github: "#",
-      website: "#",
-    }
-  }
-]
+import { posts, authors } from "@/lib/data"
 
-const allPosts = [
-  {
-    title: "The Future of AI in Creative Work: What Every Designer Should Know",
-    excerpt: "Artificial intelligence is reshaping how we approach design, writing, and art. Here's a practical look at what's changing and how to stay ahead of the curve.",
-    category: "Technology",
-    date: "Mar 28, 2026",
-    readTime: "8 min read",
-    author: { name: "Sarah Chen", avatar: "" },
-    image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1632&auto=format&fit=crop",
-  },
-  {
-    title: "10 Productivity Frameworks That Actually Work in 2026",
-    excerpt: "Forget hustle culture. These evidence-based methods genuinely help you do meaningful work without burning out.",
-    category: "Productivity",
-    date: "Mar 25, 2026",
-    readTime: "6 min read",
-    author: { name: "Marcus Lee", avatar: "" },
-    image: "https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?q=80&w=1472&auto=format&fit=crop",
-  },
-  {
-    title: "Building a Sustainable Tech Stack for Startups",
-    excerpt: "Why choosing the right technologies early can reduce your carbon footprint and save millions in infrastructure costs.",
-    category: "Sustainability",
-    date: "Mar 22, 2026",
-    readTime: "5 min read",
-    author: { name: "Priya Sharma", avatar: "" },
-    image: "https://images.unsplash.com/photo-1497215728101-856f4ea42174?q=80&w=1470&auto=format&fit=crop",
-  },
-  {
-    title: "The Art of Creative Constraints: Less is More",
-    excerpt: "How embracing limitations can unlock your most innovative work. Lessons from artists, engineers, and entrepreneurs.",
-    category: "Creativity",
-    date: "Mar 20, 2026",
-    readTime: "7 min read",
-    author: { name: "Alex Rivera", avatar: "" },
-    image: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?q=80&w=1470&auto=format&fit=crop",
-  },
-]
+export async function generateStaticParams() {
+  return authors.map((author) => ({
+    id: author.id,
+  }))
+}
 
 export default async function AuthorPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
   const author = authors.find(a => a.id === id) || authors[0]
-  const authorPosts = allPosts.filter(p => p.author.name === author.name)
+  const authorPosts = posts.filter(p => p.author.name === author.name)
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
@@ -169,7 +67,7 @@ export default async function AuthorPage({ params }: { params: Promise<{ id: str
                   </div>
                   <div className="flex items-center gap-2">
                     <BookOpen className="w-4 h-4" />
-                    {author.posts} Articles Published
+                    {author.postCount} Articles Published
                   </div>
                 </div>
 

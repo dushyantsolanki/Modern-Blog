@@ -9,56 +9,19 @@ import { Newsletter } from "@/components/newsletter"
 import { Search, Loader2 } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 
-const allPosts = [
-  {
-    title: "The Future of AI in Creative Work: What Every Designer Should Know",
-    excerpt: "Artificial intelligence is reshaping how we approach design, writing, and art. Here's a practical look at what's changing and how to stay ahead of the curve.",
-    category: "Technology",
-    date: "Mar 28, 2026",
-    readTime: "8 min read",
-    author: { name: "Sarah Chen", avatar: "" },
-    image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1632&auto=format&fit=crop",
-  },
-  {
-    title: "10 Productivity Frameworks That Actually Work in 2026",
-    excerpt: "Forget hustle culture. These evidence-based methods genuinely help you do meaningful work without burning out.",
-    category: "Productivity",
-    date: "Mar 25, 2026",
-    readTime: "6 min read",
-    author: { name: "Marcus Lee", avatar: "" },
-    image: "https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?q=80&w=1472&auto=format&fit=crop",
-  },
-  {
-    title: "Building a Sustainable Tech Stack for Startups",
-    excerpt: "Why choosing the right technologies early can reduce your carbon footprint and save millions in infrastructure costs.",
-    category: "Sustainability",
-    date: "Mar 22, 2026",
-    readTime: "5 min read",
-    author: { name: "Priya Sharma", avatar: "" },
-    image: "https://images.unsplash.com/photo-1497215728101-856f4ea42174?q=80&w=1470&auto=format&fit=crop",
-  },
-  {
-    title: "The Art of Creative Constraints: Less is More",
-    excerpt: "How embracing limitations can unlock your most innovative work. Lessons from artists, engineers, and entrepreneurs.",
-    category: "Creativity",
-    date: "Mar 20, 2026",
-    readTime: "7 min read",
-    author: { name: "Alex Rivera", avatar: "" },
-    image: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?q=80&w=1470&auto=format&fit=crop",
-  },
-]
+import { posts } from "@/lib/data"
 
 function SearchContent() {
   const searchParams = useSearchParams()
   const query = searchParams.get("q") || ""
   const [isLoading, setIsLoading] = React.useState(true)
-  const [results, setResults] = React.useState<typeof allPosts>([])
+  const [results, setResults] = React.useState<typeof posts>([])
 
   React.useEffect(() => {
     setIsLoading(true)
     // Simulate a brief API call delay
     const timer = setTimeout(() => {
-      const filtered = allPosts.filter(
+      const filtered = posts.filter(
         (post) =>
           post.title.toLowerCase().includes(query.toLowerCase()) ||
           post.excerpt.toLowerCase().includes(query.toLowerCase()) ||

@@ -5,46 +5,19 @@ import { Sidebar } from "@/components/sidebar"
 import { Footer } from "@/components/footer"
 import { Newsletter } from "@/components/newsletter"
 
-const categoryPosts = [
-  {
-    title: "The Future of AI in Creative Work",
-    excerpt: "AI is reshaping how we approach design, writing, and art. A practical look at what's changing.",
-    category: "Technology",
-    date: "Mar 28, 2026",
-    readTime: "8 min",
-    author: { name: "Sarah Chen", avatar: "" },
-    image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1632&auto=format&fit=crop",
-  },
-  {
-    title: "Design Systems That Scale: A Practical Guide",
-    excerpt: "Building design systems that grow with your team without becoming a burden.",
-    category: "Technology",
-    date: "Mar 15, 2026",
-    readTime: "6 min",
-    author: { name: "Sarah Chen", avatar: "" },
-    image: "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?q=80&w=1455&auto=format&fit=crop",
-  },
-  {
-    title: "Web Performance in 2026: What's Changed",
-    excerpt: "Core Web Vitals, edge computing, and the new standards shaping fast websites.",
-    category: "Technology",
-    date: "Mar 10, 2026",
-    readTime: "7 min",
-    author: { name: "David Kim", avatar: "" },
-    image: "https://images.unsplash.com/photo-1551033406-611cf9a28f67?q=80&w=1374&auto=format&fit=crop",
-  },
-  {
-    title: "The Rise of Edge-First Architecture",
-    excerpt: "Why more teams are moving compute closer to users and what it means for development.",
-    category: "Technology",
-    date: "Mar 5, 2026",
-    readTime: "10 min",
-    author: { name: "Marcus Lee", avatar: "" },
-    image: "https://images.unsplash.com/photo-1451187530220-cf00172bf43b?q=80&w=1471&auto=format&fit=crop",
-  },
-]
+import { posts } from "@/lib/data"
 
-export default function CategoryDetailPage() {
+export async function generateStaticParams() {
+  const categories = Array.from(new Set(posts.map((post) => post.category.toLowerCase())))
+  return categories.map((slug) => ({
+    slug,
+  }))
+}
+
+export default async function CategoryDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
+  const categoryName = slug.charAt(0).toUpperCase() + slug.slice(1)
+  const categoryPosts = posts.filter(p => p.category.toLowerCase() === slug.toLowerCase())
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
@@ -57,11 +30,11 @@ export default function CategoryDetailPage() {
               <span>/</span>
               <a href="/blog" className="hover:text-primary transition-colors">Blog</a>
               <span>/</span>
-              <span className="text-foreground font-medium">Technology</span>
+              <span className="text-foreground font-medium">{categoryName}</span>
             </nav>
-            <h1 className="text-4xl lg:text-5xl font-extrabold tracking-tight mb-4">Technology</h1>
+            <h1 className="text-4xl lg:text-5xl font-extrabold tracking-tight mb-4">{categoryName}</h1>
             <p className="text-lg text-muted-foreground max-w-2xl">
-              Exploring the latest in AI, software development, web technologies, and the tools that shape how we build the future. 42 articles and counting.
+              Exploring the latest in {categoryName}, software development, web technologies, and the tools that shape how we build the future. {categoryPosts.length} articles and counting.
             </p>
           </div>
         </section>

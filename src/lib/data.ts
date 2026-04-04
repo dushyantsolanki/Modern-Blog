@@ -1,6 +1,19 @@
 export interface Author {
+  id: string;
   name: string;
+  role: string;
+  bio: string;
   avatar: string;
+  gradient: string;
+  location: string;
+  joined: string;
+  postCount: number;
+  social: {
+    twitter: string;
+    linkedin: string;
+    github: string;
+    website: string;
+  };
 }
 
 export interface Post {
@@ -10,12 +23,83 @@ export interface Post {
   category: string;
   date: string;
   readTime: string;
-  author: Author;
+  author: { name: string; avatar: string };
   image: string;
   heroImage?: string;
   videoUrl?: string;
   content?: string;
 }
+
+export const authors: Author[] = [
+  {
+    id: "sarah-chen",
+    name: "Sarah Chen",
+    role: "Founder & Editor-in-Chief",
+    bio: "Former tech journalist at Wired. 10 years covering the intersection of technology and creativity. Passionate about AI, design systems, and the future of work.",
+    avatar: "",
+    gradient: "from-indigo-500 to-pink-500",
+    location: "San Francisco, CA",
+    joined: "June 2022",
+    postCount: 42,
+    social: {
+      twitter: "#",
+      linkedin: "#",
+      github: "#",
+      website: "#",
+    }
+  },
+  {
+    id: "marcus-lee",
+    name: "Marcus Lee",
+    role: "Senior Writer",
+    bio: "Productivity expert and former startup CTO. Writes about systems, frameworks, and working smarter. Believes that the right tools can unlock human potential.",
+    avatar: "",
+    gradient: "from-emerald-500 to-cyan-500",
+    location: "London, UK",
+    joined: "August 2022",
+    postCount: 35,
+    social: {
+      twitter: "#",
+      linkedin: "#",
+      github: "#",
+      website: "#",
+    }
+  },
+  {
+    id: "priya-sharma",
+    name: "Priya Sharma",
+    role: "Sustainability Editor",
+    bio: "Environmental scientist turned tech writer. Passionate about sustainable technology and green innovation. Exploring how tech can solve global challenges.",
+    avatar: "",
+    gradient: "from-orange-500 to-amber-500",
+    location: "Bangalore, India",
+    joined: "October 2022",
+    postCount: 28,
+    social: {
+      twitter: "#",
+      linkedin: "#",
+      github: "#",
+      website: "#",
+    }
+  },
+  {
+    id: "alex-rivera",
+    name: "Alex Rivera",
+    role: "Design Lead",
+    bio: "Digital designer and creative strategist. Writes about visual rhythm, typography, and user experience. Obsessed with detail and craft.",
+    avatar: "",
+    gradient: "from-slate-700 to-slate-500",
+    location: "Berlin, DE",
+    joined: "December 2022",
+    postCount: 22,
+    social: {
+      twitter: "#",
+      linkedin: "#",
+      github: "#",
+      website: "#",
+    }
+  }
+]
 
 export const posts: Post[] = [
   {
