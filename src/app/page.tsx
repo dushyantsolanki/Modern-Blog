@@ -1,59 +1,74 @@
 import * as React from "react"
 import Link from "next/link"
 import { Navbar } from "@/components/navbar"
-import { Hero } from "@/components/hero"
+import { HeroCarousel } from "@/components/hero-carousel"
 import { PostCard } from "@/components/post-card"
-import { CategoryCard } from "@/components/category-card"
+import { CategoryCarousel } from "@/components/category-carousel"
+
 import { Newsletter } from "@/components/newsletter"
 import { FAQ } from "@/components/faq"
 import { Footer } from "@/components/footer"
-import { Monitor, Palette, Zap, Lightbulb } from "lucide-react"
+import { posts } from "@/lib/data"
 
-const featuredPost = {
-  title: "The Future of AI in Creative Work: What Every Designer Should Know",
-  excerpt: "Artificial intelligence is reshaping how we approach design, writing, and art. Here's a practical look at what's changing and how to stay ahead of the curve.",
-  category: "Technology",
-  date: "Mar 28, 2026",
-  readTime: "8 min read",
-  author: { name: "Sarah Chen", avatar: "" },
-  image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1632&auto=format&fit=crop",
-}
+const featuredPost = posts[0]
+const latestPosts = posts.slice(1)
 
-const latestPosts = [
-  {
-    title: "10 Productivity Frameworks That Actually Work in 2026",
-    excerpt: "Forget hustle culture. These evidence-based methods genuinely help you do meaningful work without burning out.",
-    category: "Productivity",
-    date: "Mar 25, 2026",
-    readTime: "6 min read",
-    author: { name: "Marcus Lee", avatar: "" },
-    image: "https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?q=80&w=1472&auto=format&fit=crop",
-  },
-  {
-    title: "Building a Sustainable Tech Stack for Startups",
-    excerpt: "Why choosing the right technologies early can reduce your carbon footprint and save millions in infrastructure costs.",
-    category: "Sustainability",
-    date: "Mar 22, 2026",
-    readTime: "5 min read",
-    author: { name: "Priya Sharma", avatar: "" },
-    image: "https://images.unsplash.com/photo-1497215728101-856f4ea42174?q=80&w=1470&auto=format&fit=crop",
-  },
-  {
-    title: "The Art of Creative Constraints: Less is More",
-    excerpt: "How embracing limitations can unlock your most innovative work. Lessons from artists, engineers, and entrepreneurs.",
-    category: "Creativity",
-    date: "Mar 20, 2026",
-    readTime: "7 min read",
-    author: { name: "Alex Rivera", avatar: "" },
-    image: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?q=80&w=1470&auto=format&fit=crop",
-  },
-]
 
 const categories = [
-  { title: "Technology", count: 42, icon: Monitor, color: "#2563EB" },
-  { title: "Design", count: 38, icon: Palette, color: "#F97316" },
-  { title: "Productivity", count: 29, icon: Zap, color: "#10B981" },
-  { title: "Creativity", count: 24, icon: Lightbulb, color: "#EC4899" },
+  {
+    title: "Technology",
+    count: 42,
+    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=800&auto=format&fit=crop",
+    color: "#2563EB"
+  },
+  {
+    title: "Design",
+    count: 38,
+    image: "https://images.unsplash.com/photo-1558655146-d09347e92766?q=80&w=800&auto=format&fit=crop",
+    color: "#F97316"
+  },
+  {
+    title: "Productivity",
+    count: 29,
+    image: "https://images.unsplash.com/photo-1484417894907-623942c8ee29?q=80&w=800&auto=format&fit=crop",
+    color: "#10B981"
+  },
+  {
+    title: "Creativity",
+    count: 24,
+    image: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=800&auto=format&fit=crop",
+    color: "#EC4899"
+  },
+  {
+    title: "Creativity",
+    count: 24,
+    image: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=800&auto=format&fit=crop",
+    color: "#EC4899"
+  },
+  {
+    title: "Creativity",
+    count: 24,
+    image: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=800&auto=format&fit=crop",
+    color: "#EC4899"
+  },
+  {
+    title: "Creativity",
+    count: 24,
+    image: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=800&auto=format&fit=crop",
+    color: "#EC4899"
+  },
+  {
+    title: "Creativity",
+    count: 24,
+    image: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=800&auto=format&fit=crop",
+    color: "#EC4899"
+  },
+  {
+    title: "Creativity",
+    count: 24,
+    image: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=800&auto=format&fit=crop",
+    color: "#EC4899"
+  },
 ]
 
 export default function Home() {
@@ -61,7 +76,7 @@ export default function Home() {
     <div className="flex flex-col min-h-screen">
       <Navbar />
       <main>
-        <Hero />
+        <HeroCarousel posts={posts.slice(0, 4)} />
 
         {/* Featured Section */}
         <section className="py-24">
@@ -80,21 +95,18 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Categories Section */}
-        <section className="py-24 bg-surface-alt/50 border-y border-border">
+        <section className="py-24 bg-surface-alt/50 border-y border-border overflow-hidden">
           <div className="container mx-auto px-6">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl font-extrabold mb-4 tracking-tight">Explore by Category</h2>
-              <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-                Dive into the topics that matter most to you and discover fresh perspectives.
-              </p>
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-4">
+              <div className="max-w-2xl">
+                <h2 className="text-3xl font-extrabold mb-2 tracking-tight">Explore by Category</h2>
+                <p className="text-muted-foreground text-lg">
+                  Dive into the topics that matter most to you and discover fresh perspectives.
+                </p>
+              </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {categories.map((cat, i) => (
-                <CategoryCard key={i} {...cat} />
-              ))}
-            </div>
+            <CategoryCarousel categories={categories} />
           </div>
         </section>
 
@@ -120,7 +132,7 @@ export default function Home() {
         </section>
 
         <FAQ />
-        
+
         <Newsletter />
       </main>
       <Footer />

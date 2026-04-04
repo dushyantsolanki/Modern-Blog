@@ -9,6 +9,10 @@ import { TableOfContents } from "@/components/table-of-contents"
 import { Comments } from "@/components/comments"
 import { GoogleAd } from "@/components/google-ad"
 import { Calendar, Clock, ChevronRight, MessageSquare, X, Link2 } from "lucide-react"
+import { VideoPlayer } from "@/components/video-player"
+import { posts } from "@/lib/data"
+import { notFound } from "next/navigation"
+
 
 const tocItems = [
   { id: "section-1", title: "Current State of AI", level: 2 },
@@ -19,7 +23,15 @@ const tocItems = [
   { id: "section-6", title: "Future Outlook", level: 2 },
 ]
 
-export default function PostDetailPage() {
+export default async function PostDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
+  const post = posts.find((p) => p.slug === slug)
+
+  if (!post) {
+    notFound()
+  }
+
+
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
@@ -39,8 +51,9 @@ export default function PostDetailPage() {
               Technology
             </span>
             <h1 className="text-4xl lg:text-6xl font-extrabold tracking-tight mb-8 leading-tight">
-              The Future of AI in Creative Work: What Every Designer Should Know
+              {post.title}
             </h1>
+
 
             <div className="flex flex-wrap items-center gap-8 py-8 border-y border-border mb-12">
               <div className="flex items-center gap-3">
@@ -69,14 +82,20 @@ export default function PostDetailPage() {
         <div className="container mx-auto px-6 pb-24">
           <div className="flex flex-col lg:flex-row gap-16">
             <div className="lg:flex-1">
-              <div className="relative aspect-video rounded-3xl overflow-hidden mb-12 shadow-2xl">
-                <Image
-                  src="https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1632&auto=format&fit=crop"
-                  alt="AI Visualization"
-                  fill
-                  className="object-cover"
-                />
+              <div className="relative aspect-video rounded-3xl overflow-hidden mb-12 shadow-2xl bg-black flex items-center justify-center">
+                {post.videoUrl ? (
+                  <VideoPlayer src={post.videoUrl} poster={post.image} />
+                ) : (
+                  <Image
+                    src={post.image}
+                    alt={post.title}
+                    fill
+                    className="object-cover"
+                  />
+                )}
               </div>
+
+
 
               {/* Content */}
               <article className="prose prose-lg dark:prose-invert max-w-none prose-headings:font-extrabold prose-headings:text-foreground prose-p:text-muted-foreground prose-p:leading-relaxed prose-blockquote:border-primary prose-blockquote:bg-surface-alt prose-blockquote:p-8 prose-blockquote:rounded-md prose-blockquote:not-italic prose-strong:text-foreground prose-li:text-muted-foreground prose-ol:text-muted-foreground">

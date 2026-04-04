@@ -6,6 +6,7 @@ import { ArrowRight } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 interface PostCardProps {
+  slug: string
   title: string
   excerpt: string
   category: string
@@ -21,6 +22,7 @@ interface PostCardProps {
 }
 
 export function PostCard({
+  slug,
   title,
   excerpt,
   category,
@@ -31,6 +33,7 @@ export function PostCard({
   featured = false,
   className,
 }: PostCardProps) {
+
   return (
     <article
       className={cn(
@@ -75,7 +78,7 @@ export function PostCard({
         </p>
 
         <div className="flex items-center justify-between mt-auto pt-6 border-t border-border/50">
-          <Link 
+          <Link
             href={`/author/${author.name.toLowerCase().replace(/ /g, "-")}`}
             className="flex items-center gap-3 hover:opacity-80 transition-opacity"
           >
@@ -85,11 +88,12 @@ export function PostCard({
             <span className="text-sm font-medium text-foreground">{author.name}</span>
           </Link>
           <Link
-            href="/blog/post"
+            href={`/blog/${slug}`}
             className="flex items-center gap-1 text-sm font-semibold text-primary group/link hover:gap-2 transition-all"
           >
             Read More <ArrowRight className="w-4 h-4" />
           </Link>
+
         </div>
       </div>
     </article>

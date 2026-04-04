@@ -1,42 +1,106 @@
+"use client"
+
 import * as React from "react"
+import { motion } from "framer-motion"
 import { Navbar } from "@/components/navbar"
 import { CategoryCard } from "@/components/category-card"
 import { Footer } from "@/components/footer"
 import { Newsletter } from "@/components/newsletter"
-import { Monitor, Palette, Zap, Lightbulb, Heart, Globe, Briefcase, Leaf } from "lucide-react"
 
 const allCategories = [
-  { title: "Technology", count: 42, icon: Monitor, color: "#2563EB" },
-  { title: "Design", count: 38, icon: Palette, color: "#F97316" },
-  { title: "Productivity", count: 29, icon: Zap, color: "#10B981" },
-  { title: "Creativity", count: 24, icon: Lightbulb, color: "#EC4899" },
-  { title: "Wellness", count: 18, icon: Heart, color: "#F43F5E" },
-  { title: "Business", count: 15, icon: Briefcase, color: "#6366F1" },
-  { title: "Sustainability", count: 12, icon: Leaf, color: "#059669" },
-  { title: "Global", count: 9, icon: Globe, color: "#0891B2" },
+  {
+    title: "Technology",
+    count: 42,
+    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=800&auto=format&fit=crop",
+    color: "#2563EB"
+  },
+  {
+    title: "Design",
+    count: 38,
+    image: "https://images.unsplash.com/photo-1558655146-d09347e92766?q=80&w=800&auto=format&fit=crop",
+    color: "#F97316"
+  },
+  {
+    title: "Productivity",
+    count: 29,
+    image: "https://images.unsplash.com/photo-1484417894907-623942c8ee29?q=80&w=800&auto=format&fit=crop",
+    color: "#10B981"
+  },
+  {
+    title: "Creativity",
+    count: 24,
+    image: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=800&auto=format&fit=crop",
+    color: "#EC4899"
+  },
+  {
+    title: "Wellness",
+    count: 18,
+    image: "https://images.unsplash.com/photo-1506126610608-01490bd04e0e?q=80&w=800&auto=format&fit=crop",
+    color: "#F43F5E"
+  },
+  {
+    title: "Business",
+    count: 15,
+    image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=800&auto=format&fit=crop",
+    color: "#6366F1"
+  },
+  {
+    title: "Sustainability",
+    count: 12,
+    image: "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=800&auto=format&fit=crop",
+    color: "#059669"
+  },
+  {
+    title: "Global",
+    count: 9,
+    image: "https://images.unsplash.com/photo-1521295121783-8a321d551ad2?q=80&w=800&auto=format&fit=crop",
+    color: "#0891B2"
+  },
 ]
+
+const container = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1
+    }
+  }
+}
+
+const item = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0 }
+}
 
 export default function CategoriesPage() {
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
       <main className="flex-1">
-        <section className="py-20 bg-surface-alt/50 border-b border-border text-center">
+        <section className="py-24 bg-surface-alt/50 border-b border-border text-center">
           <div className="container mx-auto px-6">
-            <h1 className="text-4xl lg:text-5xl font-extrabold tracking-tight mb-4">Explore by Category</h1>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            <h1 className="text-4xl lg:text-6xl font-black tracking-tighter mb-4">Explore by Category</h1>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto font-medium">
               Browse our complete library of articles organized by topic. Find the insights that matter most to you.
             </p>
           </div>
         </section>
 
-        <section className="py-20">
-          <div className="container mx-auto px-6">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <section className="py-24">
+          <div className="container mx-auto px-6 lg:px-12">
+            <motion.div 
+              variants={container}
+              initial="hidden"
+              animate="show"
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10 lg:gap-12"
+            >
               {allCategories.map((cat, i) => (
-                <CategoryCard key={i} {...cat} />
+                <motion.div key={i} variants={item}>
+                  <CategoryCard {...cat} />
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
           </div>
         </section>
 

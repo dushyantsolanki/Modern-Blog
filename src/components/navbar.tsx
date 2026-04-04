@@ -36,7 +36,7 @@ export function Navbar() {
     <header
       className="sticky top-0 z-50 w-full bg-background border-b border-border transition-colors duration-300"
     >
-      <div className="h-20 flex items-center">
+      <div className="h-18 flex items-center">
         <div className="container mx-auto px-6 flex items-center justify-between">
           <Link href="/" className="text-2xl font-extrabold tracking-tight text-foreground">
             Insight<span className="text-primary">.</span>

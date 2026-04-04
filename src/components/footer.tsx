@@ -88,7 +88,7 @@ export function Footer() {
             <p className="text-sm text-[#94A3B8] mb-4">
               Get weekly insights delivered to your inbox.
             </p>
-            <form className="flex gap-2">
+            <form className="flex flex-col gap-2">
               <input
                 type="email"
                 placeholder="Your email"
@@ -97,7 +97,7 @@ export function Footer() {
               />
               <button
                 type="submit"
-                className="bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium hover:opacity-90 transition-opacity"
+                className="bg-primary text-white w-20 px-4 py-2 rounded-lg text-sm font-medium hover:opacity-90 transition-opacity"
               >
                 Go
               </button>

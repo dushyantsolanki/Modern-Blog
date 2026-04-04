@@ -77,11 +77,10 @@ export default function CategoryDetailPage() {
                   {["Latest", "Most Popular", "Oldest"].map((sort) => (
                     <button
                       key={sort}
-                      className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all ${
-                        sort === "Latest"
-                          ? "bg-primary text-white shadow-md shadow-primary/20"
-                          : "bg-surface-alt text-muted-foreground border border-border hover:bg-muted"
-                      }`}
+                      className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all ${sort === "Latest"
+                        ? "bg-primary text-white shadow-md shadow-primary/20"
+                        : "bg-surface-alt text-muted-foreground border border-border hover:bg-muted"
+                        }`}
                     >
                       {sort}
                     </button>
