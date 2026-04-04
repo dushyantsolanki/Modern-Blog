@@ -1,169 +1,222 @@
+"use client"
+
 import * as React from "react"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
-import { Mail, MapPin, Clock, Globe, Share2, MessageSquare } from "lucide-react"
+import { motion, AnimatePresence } from "framer-motion"
+import { Mail, Globe, MessageSquare, ArrowRight, CheckCircle2 } from "lucide-react"
+import { cn } from "@/lib/utils"
+
+const contactMethods = [
+  {
+    title: "General",
+    handle: "hello@insight.blog",
+    description: "For general inquiries and story ideas.",
+    icon: Mail,
+    className: "md:col-span-2 bg-gradient-to-br from-blue-500/5 to-transparent",
+  },
+  {
+    title: "Press",
+    handle: "press@insight.blog",
+    description: "Media and interview requests.",
+    icon: Globe,
+    className: "md:col-span-1 bg-surface-alt/50",
+  },
+  {
+    title: "Partnerships",
+    handle: "partners@insight.blog",
+    description: "Sponsorship and collaboration.",
+    icon: MessageSquare,
+    className: "md:col-span-1 bg-surface-alt/50",
+  },
+]
+
+const FADE_UP = {
+  initial: { opacity: 0, y: 20 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true },
+  transition: { duration: 0.6, ease: [0.23, 1, 0.32, 1] }
+} as const
 
 export default function ContactPage() {
+  const [isSubmitting, setIsSubmitting] = React.useState(false)
+  const [isSubmitted, setIsSubmitted] = React.useState(false)
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsSubmitting(true)
+    // Simulate API delay
+    await new Promise(resolve => setTimeout(resolve, 1500))
+    setIsSubmitting(false)
+    setIsSubmitted(true)
+  }
+
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-background text-foreground">
       <Navbar />
       <main className="flex-1">
-        {/* Page Header */}
-        <section className="py-20 bg-surface-alt/50 border-b border-border">
-          <div className="container mx-auto px-6 text-center lg:text-left">
-            <nav className="flex items-center justify-center lg:justify-start gap-2 text-sm text-muted-foreground mb-4">
-              <a href="/" className="hover:text-primary transition-colors">Home</a>
-              <span>/</span>
-              <span className="text-foreground font-medium">Contact</span>
-            </nav>
-            <h1 className="text-4xl lg:text-5xl font-extrabold tracking-tight mb-4">Get in Touch</h1>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto lg:mx-0">
-              Have a question, feedback, or a story idea? We'd love to hear from you.
-            </p>
+        
+        {/* Editorial Hero (Apple Style) */}
+        <section className="pt-32 pb-20 overflow-hidden">
+          <div className="container mx-auto px-6 text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] } as const}
+            >
+              <span className="inline-block px-4 py-1.5 rounded-full bg-surface-alt text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground mb-8">
+                Get in Touch
+              </span>
+              <h1 className="text-6xl md:text-8xl lg:text-[10rem] font-black tracking-tighter leading-[0.85] mb-12">
+                Connect. <br />
+                <span className="text-muted-foreground/30">Start a Conversation.</span>
+              </h1>
+            </motion.div>
           </div>
         </section>
 
-        {/* Content Section */}
-        <section className="py-20">
+        {/* Contact Bento Grid */}
+        <section className="py-24 border-y border-border/50 bg-surface-alt/10">
           <div className="container mx-auto px-6">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
-              {/* Contact Form */}
-              <div className="lg:col-span-7 bg-surface border border-border p-8 lg:p-12 rounded-3xl shadow-sm">
-                <h2 className="text-2xl font-bold mb-2">Send us a message</h2>
-                <p className="text-muted-foreground mb-10">Fill out the form below and we'll get back to you within 24 hours.</p>
-                
-                <form className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <label htmlFor="first-name" className="text-sm font-semibold">First Name <span className="text-destructive">*</span></label>
-                      <input
-                        type="text"
-                        id="first-name"
-                        placeholder="John"
-                        required
-                        className="w-full px-4 py-3 rounded-xl bg-surface-alt border border-border focus:border-primary focus:bg-background outline-none transition-all"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <label htmlFor="last-name" className="text-sm font-semibold">Last Name <span className="text-destructive">*</span></label>
-                      <input
-                        type="text"
-                        id="last-name"
-                        placeholder="Doe"
-                        required
-                        className="w-full px-4 py-3 rounded-xl bg-surface-alt border border-border focus:border-primary focus:bg-background outline-none transition-all"
-                      />
-                    </div>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 auto-rows-[200px]">
+              {contactMethods.map((method, i) => (
+                <motion.div
+                  key={i}
+                  {...FADE_UP}
+                  transition={{ delay: i * 0.1, duration: 0.6 }}
+                  whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                  className={cn(
+                    "relative group p-8 rounded-[2.5rem] border border-border/50 flex flex-col justify-end overflow-hidden glass-morphism",
+                    method.className
+                  )}
+                >
+                  <div className="absolute top-8 left-8 p-3 rounded-2xl bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 shadow-sm">
+                    <method.icon className="w-5 h-5" strokeWidth={1.5} />
                   </div>
-                  
-                  <div className="space-y-2">
-                    <label htmlFor="email" className="text-sm font-semibold">Email Address <span className="text-destructive">*</span></label>
-                    <input
-                      type="email"
-                      id="email"
-                      placeholder="john@example.com"
-                      required
-                      className="w-full px-4 py-3 rounded-xl bg-surface-alt border border-border focus:border-primary focus:bg-background outline-none transition-all"
-                    />
+                  <div className="relative z-10">
+                    <h3 className="text-sm font-bold uppercase tracking-widest text-muted-foreground mb-2">{method.title}</h3>
+                    <p className="text-xl font-bold mb-1">{method.handle}</p>
+                    <p className="text-muted-foreground/60 text-xs">{method.description}</p>
                   </div>
-                  
-                  <div className="space-y-2">
-                    <label htmlFor="subject" className="text-sm font-semibold">Subject</label>
-                    <select
-                      id="subject"
-                      className="w-full px-4 py-3 rounded-xl bg-surface-alt border border-border focus:border-primary focus:bg-background outline-none transition-all appearance-none cursor-pointer"
-                    >
-                      <option value="">Select a topic...</option>
-                      <option value="general">General Inquiry</option>
-                      <option value="feedback">Feedback</option>
-                      <option value="story">Story Idea / Pitch</option>
-                      <option value="partnership">Partnership / Sponsorship</option>
-                    </select>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <label htmlFor="message" className="text-sm font-semibold">Message <span className="text-destructive">*</span></label>
-                    <textarea
-                      id="message"
-                      rows={6}
-                      placeholder="Tell us what's on your mind..."
-                      required
-                      className="w-full px-4 py-3 rounded-xl bg-surface-alt border border-border focus:border-primary focus:bg-background outline-none transition-all resize-none"
-                    ></textarea>
-                  </div>
-                  
-                  <button
-                    type="submit"
-                    className="w-full md:w-auto px-10 py-4 bg-primary text-white rounded-xl font-bold text-lg hover:shadow-lg hover:shadow-primary/30 transition-all active:scale-[0.98]"
-                  >
-                    Send Message
-                  </button>
-                </form>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Refined Form Section */}
+        <section className="py-32">
+          <div className="container mx-auto px-6">
+            <div className="max-w-5xl mx-auto flex flex-col lg:flex-row gap-24">
+              <div className="lg:w-1/3">
+                <motion.h2 {...FADE_UP} className="text-4xl font-bold tracking-tight mb-8">Send a Message.</motion.h2>
+                <motion.p {...FADE_UP} transition={{ delay: 0.1 }} className="text-lg text-muted-foreground font-medium leading-relaxed mb-8">
+                  Whether you have a story pitch, feedback, or a partnership inquiry—we'd love to hear from you.
+                </motion.p>
+                <motion.div {...FADE_UP} transition={{ delay: 0.2 }} className="p-8 rounded-[2rem] bg-surface-alt/50 border border-border/50">
+                  <p className="text-sm font-bold text-muted-foreground/60 uppercase tracking-widest mb-4">Response Time</p>
+                  <p className="text-lg font-bold">Within 24 Hours.</p>
+                  <p className="text-sm text-muted-foreground mt-2 font-medium">During business days.</p>
+                </motion.div>
               </div>
 
-              {/* Contact Info */}
-              <div className="lg:col-span-5 space-y-12">
-                <div className="space-y-8">
-                  <div className="flex gap-6">
-                    <div className="w-12 h-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center flex-shrink-0">
-                      <Mail className="w-6 h-6" />
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-lg mb-1">Email</h4>
-                      <a href="mailto:hello@insight.blog" className="text-muted-foreground hover:text-primary transition-colors">
-                        hello@insight.blog
-                      </a>
-                    </div>
-                  </div>
-                  
-                  <div className="flex gap-6">
-                    <div className="w-12 h-12 rounded-2xl bg-accent/10 text-accent flex items-center justify-center flex-shrink-0">
-                      <MapPin className="w-6 h-6" />
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-lg mb-1">Location</h4>
-                      <p className="text-muted-foreground">San Francisco, CA<br />United States</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex gap-6">
-                    <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center flex-shrink-0">
-                      <Clock className="w-6 h-6" />
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-lg mb-1">Response Time</h4>
-                      <p className="text-muted-foreground">We typically respond within 24 hours during business days.</p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="p-8 bg-surface border border-border rounded-3xl">
-                  <h3 className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-6">Follow Us</h3>
-                  <div className="space-y-2">
-                    {[
-                      { name: "Website", icon: Globe, handle: "@InsightBlog" },
-                      { name: "Share", icon: Share2, handle: "Insight Blog" },
-                      { name: "Chat", icon: MessageSquare, handle: "@insight-blog" },
-                    ].map((social) => (
-                      <a
-                        key={social.name}
-                        href="#"
-                        className="flex items-center gap-4 p-4 rounded-xl hover:bg-surface-alt transition-all group"
+              <div className="lg:w-2/3">
+                <AnimatePresence mode="wait">
+                  {isSubmitted ? (
+                    <motion.div
+                      key="success"
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      className="h-full flex flex-col items-center justify-center text-center p-12 bg-primary/5 rounded-[3rem] border border-primary/20 border-dashed"
+                    >
+                      <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mb-8">
+                        <CheckCircle2 className="w-10 h-10 text-primary" strokeWidth={1.5} />
+                      </div>
+                      <h3 className="text-3xl font-bold mb-4">Message Received.</h3>
+                      <p className="text-lg text-muted-foreground max-w-sm mx-auto mb-8 font-medium">
+                        Thank you for reaching out. A member of our team will get back to you shortly.
+                      </p>
+                      <button 
+                        onClick={() => setIsSubmitted(false)}
+                        className="text-sm font-bold hover:text-primary transition-colors flex items-center gap-2"
                       >
-                        <div className="w-10 h-10 rounded-lg bg-surface-alt group-hover:bg-background flex items-center justify-center transition-colors">
-                          <social.icon className="w-5 h-5 text-muted-foreground" />
+                        Send another message <ArrowRight className="w-4 h-4" />
+                      </button>
+                    </motion.div>
+                  ) : (
+                    <motion.form
+                      key="form"
+                      initial={{ opacity: 1 }}
+                      exit={{ opacity: 0, y: -20 }}
+                      onSubmit={handleSubmit}
+                      className="space-y-8"
+                    >
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div className="space-y-2">
+                          <label htmlFor="name" className="text-xs font-bold uppercase tracking-widest text-muted-foreground ml-4">Your Name</label>
+                          <input
+                            type="text"
+                            id="name"
+                            required
+                            placeholder="John Doe"
+                            className="w-full px-6 py-5 rounded-[1.5rem] bg-surface-alt/50 border border-border/50 focus:border-primary focus:bg-background outline-none transition-all font-medium selection:bg-primary/20"
+                          />
                         </div>
-                        <span className="text-sm font-medium text-muted-foreground group-hover:text-foreground transition-colors">
-                          {social.handle}
-                        </span>
-                      </a>
-                    ))}
-                  </div>
-                </div>
+                        <div className="space-y-2">
+                          <label htmlFor="email" className="text-xs font-bold uppercase tracking-widest text-muted-foreground ml-4">Email Address</label>
+                          <input
+                            type="email"
+                            id="email"
+                            required
+                            placeholder="john@example.com"
+                            className="w-full px-6 py-5 rounded-[1.5rem] bg-surface-alt/50 border border-border/50 focus:border-primary focus:bg-background outline-none transition-all font-medium selection:bg-primary/20"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="space-y-2">
+                        <label htmlFor="subject" className="text-xs font-bold uppercase tracking-widest text-muted-foreground ml-4">Topic</label>
+                        <select
+                          id="subject"
+                          className="w-full px-6 py-5 rounded-[1.5rem] bg-surface-alt/50 border border-border/50 focus:border-primary focus:bg-background outline-none transition-all font-medium cursor-pointer appearance-none"
+                        >
+                          <option value="general">General Inquiry</option>
+                          <option value="story">Story Idea / Pitch</option>
+                          <option value="partnership">Partnership</option>
+                        </select>
+                      </div>
+
+                      <div className="space-y-2">
+                        <label htmlFor="message" className="text-xs font-bold uppercase tracking-widest text-muted-foreground ml-4">Message</label>
+                        <textarea
+                          id="message"
+                          required
+                          rows={6}
+                          placeholder="Tell us what's on your mind..."
+                          className="w-full px-6 py-5 rounded-[1.5rem] bg-surface-alt/50 border border-border/50 focus:border-primary focus:bg-background outline-none transition-all font-medium resize-none selection:bg-primary/20"
+                        />
+                      </div>
+
+                      <motion.button
+                        whileHover={{ scale: 1.01 }}
+                        whileTap={{ scale: 0.98 }}
+                        disabled={isSubmitting}
+                        type="submit"
+                        className={cn(
+                          "w-full py-6 rounded-[1.5rem] font-bold text-lg transition-all",
+                          isSubmitting ? "bg-muted text-muted-foreground" : "bg-primary text-white shadow-xl shadow-primary/20 hover:shadow-2xl hover:shadow-primary/30"
+                        )}
+                      >
+                        {isSubmitting ? "Sending..." : "Send Message."}
+                      </motion.button>
+                    </motion.form>
+                  )}
+                </AnimatePresence>
               </div>
             </div>
           </div>
         </section>
+
       </main>
       <Footer />
     </div>

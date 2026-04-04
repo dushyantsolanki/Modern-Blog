@@ -66,7 +66,7 @@ export function Navbar() {
           </nav>
 
           <div className="flex items-center gap-4">
-            <form
+            {/* <form
               onSubmit={(e) => {
                 e.preventDefault()
                 if (searchQuery.trim()) {
@@ -83,7 +83,7 @@ export function Navbar() {
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="bg-transparent border-none outline-none text-sm w-32 focus:w-48 transition-all"
               />
-            </form>
+            </form> */}
 
             <ThemeToggle />
             <Link href="/#newsletter" className="hidden md:flex bg-primary dark:text-white  px-5 py-2 rounded-full text-sm font-medium hover:opacity-90 transition-opacity">

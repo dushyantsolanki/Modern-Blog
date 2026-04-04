@@ -9,28 +9,6 @@ export default function TermsPage() {
     <div className="flex flex-col min-h-screen bg-background">
       <Navbar />
       <main className="flex-1">
-        {/* Page Header */}
-        <section className="relative py-24 lg:py-32 bg-slate-950 text-white overflow-hidden">
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[100px]" />
-          <div className="container mx-auto px-6 relative z-10">
-            <div className="max-w-3xl">
-              <nav className="flex items-center gap-2 text-sm text-slate-400 mb-8">
-                <a href="/" className="hover:text-white transition-colors">Home</a>
-                <span>/</span>
-                <span className="text-white">Terms of Service</span>
-              </nav>
-              <h1 className="text-5xl lg:text-7xl font-extrabold tracking-tight mb-8">
-                Agreement & <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-light to-accent-light">
-                  Terms of Service.
-                </span>
-              </h1>
-              <p className="text-xl text-slate-300 leading-relaxed max-w-2xl">
-                Please read these terms carefully before using our website. By accessing or using Insight, you agree to be bound by these terms.
-              </p>
-            </div>
-          </div>
-        </section>
 
         {/* Content */}
         <section className="py-24">

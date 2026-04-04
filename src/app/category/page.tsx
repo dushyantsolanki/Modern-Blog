@@ -78,7 +78,7 @@ export default function CategoriesPage() {
     <div className="flex flex-col min-h-screen">
       <Navbar />
       <main className="flex-1">
-        <section className="py-24 bg-surface-alt/50 border-b border-border text-center">
+        <section className="py-24 bg-surface-alt/50 text-center">
           <div className="container mx-auto px-6">
             <h1 className="text-4xl lg:text-6xl font-black tracking-tighter mb-4">Explore by Category</h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto font-medium">
@@ -87,9 +87,9 @@ export default function CategoriesPage() {
           </div>
         </section>
 
-        <section className="py-24">
+        <section className="py-10">
           <div className="container mx-auto px-6 lg:px-12">
-            <motion.div 
+            <motion.div
               variants={container}
               initial="hidden"
               animate="show"
