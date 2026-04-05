@@ -12,8 +12,8 @@ import { posts } from "@/lib/data"
 import { DirectionalTransition } from "@/components/view-transition/directional-transition"
 
 
-const featuredPost = posts[0]
-const latestPosts = posts.slice(1)
+const featuredSectionPosts = posts.slice(0, 3)
+const remainingPosts = posts.slice(3)
 
 
 const categories = [
@@ -91,8 +91,8 @@ export default function Home() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              <PostCard {...featuredPost} featured />
-              {latestPosts.slice(0, 2).map((post, i) => (
+              <PostCard {...featuredSectionPosts[0]} featured />
+              {featuredSectionPosts.slice(1).map((post, i) => (
                 <PostCard key={i} {...post} />
               ))}
             </div>
@@ -135,7 +135,7 @@ export default function Home() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {latestPosts.map((post, i) => (
+              {remainingPosts.map((post, i) => (
                 <PostCard key={i} {...post} />
               ))}
             </div>
