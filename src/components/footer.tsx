@@ -27,7 +27,10 @@ const footerLinks = {
 
 export function Footer() {
   return (
-    <footer className="bg-[#000000] text-[#CBD5E1] pt-20 border-t border-border">
+    <footer
+      style={{ viewTransitionName: "site-footer" }}
+      className="bg-[#000000] text-[#CBD5E1] pt-20 border-t border-border"
+    >
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-12 pb-16 border-b border-white/10">
           <div className="lg:col-span-2">
@@ -58,9 +61,15 @@ export function Footer() {
             <ul className="flex flex-col gap-3">
               {footerLinks.navigation.map((link) => (
                 <li key={link.name}>
-                  <Link href={link.href} className="text-sm text-[#94A3B8] hover:text-[#F8FAFC] transition-colors">
+                  <Link
+                    href={link.href}
+                    // @ts-ignore
+                    transitionTypes={['nav-forward']}
+                    className="text-sm text-[#94A3B8] hover:text-[#F8FAFC] transition-colors"
+                  >
                     {link.name}
                   </Link>
+
                 </li>
               ))}
             </ul>
@@ -73,9 +82,15 @@ export function Footer() {
             <ul className="flex flex-col gap-3">
               {footerLinks.categories.map((link) => (
                 <li key={link.name}>
-                  <Link href={link.href} className="text-sm text-[#94A3B8] hover:text-[#F8FAFC] transition-colors">
+                  <Link
+                    href={link.href}
+                    // @ts-ignore
+                    transitionTypes={['nav-forward']}
+                    className="text-sm text-[#94A3B8] hover:text-[#F8FAFC] transition-colors"
+                  >
                     {link.name}
                   </Link>
+
                 </li>
               ))}
             </ul>

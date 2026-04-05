@@ -1,3 +1,4 @@
+"use client"
 import * as React from "react"
 import Image from "next/image"
 import Link from "next/link"
@@ -12,6 +13,9 @@ import { Calendar, Clock, ChevronRight, MessageSquare, X, Link2 } from "lucide-r
 import { VideoPlayer } from "@/components/video-player"
 import { posts } from "@/lib/data"
 import { notFound } from "next/navigation"
+import { DirectionalTransition } from "@/components/view-transition/directional-transition"
+import { ViewTransition } from "react"
+
 
 
 const tocItems = [
@@ -33,7 +37,9 @@ export default async function PostDetailPage({ params }: { params: Promise<{ slu
 
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <DirectionalTransition>
+      <div className="flex flex-col min-h-screen">
+
       <Navbar />
       <main className="flex-1">
         {/* Article Header / Hero */}
@@ -50,9 +56,12 @@ export default async function PostDetailPage({ params }: { params: Promise<{ slu
             <span className="px-3 py-1 text-xs font-bold rounded-full bg-primary text-white mb-6 inline-block">
               Technology
             </span>
-            <h1 className="text-4xl lg:text-6xl font-extrabold tracking-tight mb-8 leading-tight">
-              {post.title}
-            </h1>
+            <ViewTransition name={`post-title-${slug}`} share="text-morph">
+              <h1 className="text-4xl lg:text-6xl font-extrabold tracking-tight mb-8 leading-tight">
+                {post.title}
+              </h1>
+            </ViewTransition>
+
 
 
             <div className="flex flex-wrap items-center gap-8 py-8 border-y border-border mb-12">
@@ -83,16 +92,19 @@ export default async function PostDetailPage({ params }: { params: Promise<{ slu
           <div className="flex flex-col lg:flex-row gap-16">
             <div className="lg:flex-1">
               <div className="relative aspect-video rounded-3xl overflow-hidden mb-12 shadow-2xl bg-black flex items-center justify-center">
-                {post.videoUrl ? (
-                  <VideoPlayer src={post.videoUrl} poster={post.image} />
-                ) : (
-                  <Image
-                    src={post.image}
-                    alt={post.title}
-                    fill
-                    className="object-cover"
-                  />
-                )}
+                <ViewTransition name={`post-image-${slug}`} share="morph">
+                  {post.videoUrl ? (
+                    <VideoPlayer src={post.videoUrl} poster={post.image} />
+                  ) : (
+                    <Image
+                      src={post.image}
+                      alt={post.title}
+                      fill
+                      className="object-cover"
+                    />
+                  )}
+                </ViewTransition>
+
               </div>
 
 
@@ -220,5 +232,7 @@ export default async function PostDetailPage({ params }: { params: Promise<{ slu
       </main>
       <Footer />
     </div>
+    </DirectionalTransition>
   )
 }
+

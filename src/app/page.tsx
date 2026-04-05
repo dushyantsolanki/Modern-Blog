@@ -9,6 +9,8 @@ import { Newsletter } from "@/components/newsletter"
 import { FAQ } from "@/components/faq"
 import { Footer } from "@/components/footer"
 import { posts } from "@/lib/data"
+import { DirectionalTransition } from "@/components/view-transition/directional-transition"
+
 
 const featuredPost = posts[0]
 const latestPosts = posts.slice(1)
@@ -73,7 +75,9 @@ const categories = [
 
 export default function Home() {
   return (
-    <div className="flex flex-col min-h-screen">
+    <DirectionalTransition>
+      <div className="flex flex-col min-h-screen">
+
       <Navbar />
       <main>
         <HeroCarousel posts={posts.slice(0, 4)} />
@@ -118,9 +122,16 @@ export default function Home() {
                 <h2 className="text-3xl font-extrabold mb-2 tracking-tight">Latest Articles</h2>
                 <p className="text-muted-foreground">Fresh perspectives, published weekly</p>
               </div>
-              <Link href="/blog" className="text-primary font-bold hover:underline mb-1">
+              <Link
+                href="/blog"
+                // transitionTypes is experimental
+                // @ts-ignore
+                transitionTypes={['nav-forward']}
+                className="text-primary font-bold hover:underline mb-1"
+              >
                 View All Articles →
               </Link>
+
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -137,5 +148,7 @@ export default function Home() {
       </main>
       <Footer />
     </div>
+    </DirectionalTransition>
   )
 }
+

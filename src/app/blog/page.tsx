@@ -9,6 +9,8 @@ import { Newsletter } from "@/components/newsletter"
 import { BlogFilterBar } from "@/components/blog/blog-filter-bar"
 import { motion, AnimatePresence } from "framer-motion"
 import { cn } from "@/lib/utils"
+import { DirectionalTransition } from "@/components/view-transition/directional-transition"
+
 
 import { posts } from "@/lib/data"
 
@@ -18,26 +20,28 @@ export default function BlogPage() {
   const [sortBy, setSortBy] = React.useState('latest')
 
   const filteredPosts = posts.filter(post => {
-    const matchesSearch = post.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                          post.excerpt.toLowerCase().includes(searchQuery.toLowerCase())
+    const matchesSearch = post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      post.excerpt.toLowerCase().includes(searchQuery.toLowerCase())
     return matchesSearch
   })
 
   return (
-    <div className="flex flex-col min-h-screen bg-background">
+    <DirectionalTransition>
+      <div className="flex flex-col min-h-screen bg-background">
+
       <Navbar />
       <main className="flex-1 pb-24">
         {/* Page Header - Minimalist Editorial Style */}
         <section className="pt-32 mb-8">
           <div className="container mx-auto px-6 text-center">
-            <motion.h1 
+            <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               className="text-6xl lg:text-8xl font-black tracking-tight mb-8"
             >
               Stories. <span className="text-muted-foreground/30">Expertly Told.</span>
             </motion.h1>
-            <motion.p 
+            <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
@@ -49,7 +53,7 @@ export default function BlogPage() {
         </section>
 
         {/* Premium Category-Less Filter Bar */}
-        <BlogFilterBar 
+        <BlogFilterBar
           onSearchChange={setSearchQuery}
           onSortChange={setSortBy}
           onViewChange={setView}
@@ -62,7 +66,7 @@ export default function BlogPage() {
             <div className="lg:flex-1">
               <AnimatePresence mode="popLayout">
                 {filteredPosts.length > 0 ? (
-                  <motion.div 
+                  <motion.div
                     layout
                     className={cn(
                       "grid gap-8 transition-all duration-500",
@@ -77,8 +81,8 @@ export default function BlogPage() {
                         exit={{ opacity: 0, scale: 0.95 }}
                         transition={{ duration: 0.5, delay: i * 0.05, ease: [0.23, 1, 0.32, 1] }}
                       >
-                        <PostCard 
-                          {...post} 
+                        <PostCard
+                          {...post}
                           className={view === 'list' ? "md:flex-row gap-8 py-8 border-b border-border/50 bg-transparent hover:bg-muted/5 shadow-none hover:shadow-none translate-y-0 hover:translate-y-0" : ""}
                           featured={view === 'list'}
                         />
@@ -86,7 +90,7 @@ export default function BlogPage() {
                     ))}
                   </motion.div>
                 ) : (
-                  <motion.div 
+                  <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     className="text-center py-32 bg-surface-alt rounded-[3rem] border border-dashed border-border/60"
@@ -109,5 +113,7 @@ export default function BlogPage() {
       <Newsletter />
       <Footer />
     </div>
+    </DirectionalTransition>
   )
 }
+

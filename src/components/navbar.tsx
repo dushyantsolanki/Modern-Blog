@@ -34,36 +34,37 @@ export function Navbar() {
 
   return (
     <header
-      className="sticky top-0 z-50 w-full bg-background border-b border-border transition-colors duration-300"
+      style={{ viewTransitionName: "site-header" }}
+      className={cn(
+        "sticky top-0 z-50 w-full transition-all duration-300 border-b border-border/40",
+        isScrolled ? "bg-background/70 backdrop-blur-md" : "bg-background"
+      )}
     >
-      <div className="h-18 flex items-center">
+      <div className="h-14 flex items-center">
         <div className="container mx-auto px-6 flex items-center justify-between">
-          <Link href="/" className="text-2xl font-extrabold tracking-tight text-foreground">
-            Insight<span className="text-primary">.</span>
+          <Link href="/" className="text-xl font-bold tracking-tight text-foreground transition-opacity hover:opacity-70">
+            Insight
           </Link>
 
+
           {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-8">
+          <nav className="hidden md:flex items-center gap-6">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
+                // @ts-ignore
+                transitionTypes={['nav-forward']}
                 className={cn(
-                  "text-sm font-medium transition-colors hover:text-primary relative py-1",
-                  pathname === link.href ? "text-foreground" : "text-muted-foreground"
+                  "text-[13px] font-medium tracking-tight transition-colors hover:text-foreground/80 relative py-1",
+                  pathname === link.href ? "text-foreground" : "text-muted-foreground/80"
                 )}
               >
                 {link.name}
-                {pathname === link.href && (
-                  <motion.div
-                    layoutId="activeNav"
-                    className="absolute -bottom-1 left-0 right-0 h-0.5 bg-primary rounded-full"
-                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                  />
-                )}
               </Link>
             ))}
           </nav>
+
 
           <div className="flex items-center gap-4">
             {/* <form
@@ -86,17 +87,19 @@ export function Navbar() {
             </form> */}
 
             <ThemeToggle />
-            <Link href="/#newsletter" className="hidden md:flex bg-primary dark:text-white  px-5 py-2 rounded-full text-sm font-medium hover:opacity-90 transition-opacity">
+            <Link href="/#newsletter" className="hidden md:flex bg-foreground text-background dark:bg-white dark:text-black px-4 py-1.5 rounded-full text-[13px] font-medium hover:opacity-80 transition-opacity">
               Subscribe
             </Link>
 
+
             {/* Mobile Menu Toggle */}
             <button
-              className="md:hidden p-2 text-foreground"
+              className="md:hidden p-2 text-foreground relative z-[110]"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
               {isMobileMenuOpen ? <X /> : <Menu />}
             </button>
+
           </div>
         </div>
       </div>
@@ -105,38 +108,53 @@ export function Navbar() {
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-background border-b border-border overflow-hidden"
+            initial={{ opacity: 0, scale: 1.1 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 1.1 }}
+            transition={{ duration: 0.4, ease: [0.32, 0.72, 0, 1] }}
+            className="fixed inset-0 z-[100] bg-background/95 backdrop-blur-2xl md:hidden overflow-hidden flex flex-col items-center justify-center pt-14 h-dvh"
           >
-            <div className="flex flex-col gap-4 p-6">
-              {navLinks.map((link) => (
-                <Link
+
+            <div className="flex flex-col items-center gap-8 p-12 w-full max-w-sm">
+              {navLinks.map((link, i) => (
+                <motion.div
                   key={link.href}
-                  href={link.href}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className={cn(
-                    "text-lg font-medium transition-colors",
-                    pathname === link.href ? "text-primary" : "text-foreground"
-                  )}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.05 + 0.1, duration: 0.4 }}
+                  className="w-full text-center"
                 >
-                  {link.name}
-                </Link>
+                  <Link
+                    href={link.href}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={cn(
+                      "text-4xl font-bold tracking-tight transition-all active:scale-95 block",
+                      pathname === link.href ? "text-foreground" : "text-muted-foreground/60 hover:text-foreground"
+                    )}
+                  >
+                    {link.name}
+                  </Link>
+                </motion.div>
               ))}
-              <div className="pt-4 border-t border-border mt-2">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: navLinks.length * 0.05 + 0.1, duration: 0.4 }}
+                className="w-full pt-8"
+              >
                 <Link
                   href="/#newsletter"
-                  className="w-full flex justify-center bg-primary text-primary-foreground py-3 rounded-xl font-medium"
+                  className="w-full flex justify-center bg-foreground text-background dark:bg-white dark:text-black py-4 rounded-2xl font-bold text-lg active:scale-95 transition-transform"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Subscribe
                 </Link>
-              </div>
+              </motion.div>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
+
     </header>
   )
 }

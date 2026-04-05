@@ -26,7 +26,7 @@ export function AuthorContent({ author, posts }: AuthorContentProps) {
         <div className="container mx-auto px-6">
           <div className="flex flex-col lg:flex-row items-start gap-12 lg:gap-20">
             {/* Asymmetric Profile Section */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] } as const}
@@ -37,9 +37,9 @@ export function AuthorContent({ author, posts }: AuthorContentProps) {
                 author.gradient
               )}>
                 <div className="w-full h-full rounded-[2.8rem] bg-surface flex items-center justify-center border-4 border-surface overflow-hidden transition-transform duration-700 hover:scale-105">
-                   <span className="text-6xl font-black text-muted-foreground/20 leading-none">
+                  <span className="text-6xl font-black text-muted-foreground/20 leading-none">
                     {author.name.split(' ').map((n: string) => n[0]).join('')}
-                   </span>
+                  </span>
                 </div>
               </div>
               <div className="absolute -bottom-4 -right-4 p-4 rounded-3xl bg-primary text-white shadow-xl shadow-primary/20 border-4 border-background">
@@ -78,17 +78,17 @@ export function AuthorContent({ author, posts }: AuthorContentProps) {
                     { icon: Share2, href: author.social.linkedin },
                     { icon: Globe, href: author.social.website },
                   ].map((social, i) => (
-                    <motion.a 
+                    <motion.a
                       key={i}
                       whileHover={{ scale: 1.1, y: -2 }}
                       whileTap={{ scale: 0.9 }}
-                      href={social.href} 
+                      href={social.href}
                       className="w-12 h-12 rounded-2xl bg-surface-alt border border-border/40 flex items-center justify-center hover:bg-primary hover:text-white hover:border-primary transition-all shadow-sm"
                     >
                       <social.icon className="w-5 h-5" strokeWidth={1.5} />
                     </motion.a>
                   ))}
-                  <motion.button 
+                  <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     className="flex items-center gap-2 px-8 py-3.5 bg-primary text-white rounded-2xl font-bold shadow-lg shadow-primary/20 hover:shadow-xl transition-all ml-4"
@@ -107,14 +107,14 @@ export function AuthorContent({ author, posts }: AuthorContentProps) {
         <div className="container mx-auto px-6">
           <motion.div {...FADE_UP} className="flex items-center justify-between mb-20">
             <div>
-               <h2 className="text-sm font-bold uppercase tracking-[0.2em] text-muted-foreground mb-4">Discovery</h2>
-               <p className="text-4xl font-black tracking-tight">Recent stories from {author.name.split(' ')[0]}.</p>
+              <h2 className="text-sm font-bold uppercase tracking-[0.2em] text-muted-foreground mb-4">Discovery</h2>
+              <p className="text-4xl font-black tracking-tight">Recent stories from {author.name.split(' ')[0]}.</p>
             </div>
           </motion.div>
 
           <AnimatePresence mode="popLayout">
             {posts.length > 0 ? (
-              <motion.div 
+              <motion.div
                 layout
                 className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12"
               >

@@ -34,15 +34,15 @@ export function ThemeToggle() {
   return (
     <motion.button
       whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.92 }}
+      whileTap={{ scale: 0.95 }}
       onClick={() => setTheme(isDark ? "light" : "dark")}
       className={cn(
-        "relative flex h-10 w-10 items-center justify-center rounded-full transition-colors duration-500",
-        "bg-surface-alt/80 backdrop-blur-md border border-border/40",
-        "hover:bg-muted/80 hover:border-border/80 focus:outline-none"
+        "relative flex h-9 w-9 items-center justify-center rounded-full transition-all duration-300",
+        "bg-transparent hover:bg-muted/50 focus:outline-none"
       )}
       aria-label="Toggle theme"
     >
+
       <AnimatePresence mode="wait" initial={false}>
         <motion.div
           key={isDark ? "dark" : "light"}

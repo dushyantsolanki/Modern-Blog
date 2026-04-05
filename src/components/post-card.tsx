@@ -4,6 +4,10 @@ import Image from "next/image"
 import { motion } from "framer-motion"
 import { ArrowRight } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { ViewTransition } from "react"
+
+
+
 
 interface PostCardProps {
   slug: string
@@ -35,6 +39,7 @@ export function PostCard({
 }: PostCardProps) {
 
   return (
+
     <article
       className={cn(
         "group flex flex-col bg-surface border border-border rounded-2xl overflow-hidden transition-all hover:shadow-xl hover:-translate-y-1",
@@ -43,13 +48,16 @@ export function PostCard({
       )}
     >
       <div className={cn("relative overflow-hidden", featured ? "md:w-1/2" : "h-64")}>
-        <Image
-          src={image}
-          alt={title}
-          fill
-          className="object-cover transition-transform duration-500 group-hover:scale-105"
-        />
+        <ViewTransition name={`post-image-${slug}`} share="morph" default="none">
+          <Image
+            src={image}
+            alt={title}
+            fill
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+        </ViewTransition>
         <div className="absolute top-4 left-4">
+
           <span className={cn(
             "px-3 py-1 text-xs font-semibold rounded-full bg-primary text-white shadow-sm",
             featured ? "bg-accent" : ""
@@ -66,12 +74,15 @@ export function PostCard({
           <span>{readTime}</span>
         </div>
 
-        <h3 className={cn(
-          "font-bold text-foreground mb-3 group-hover:text-primary transition-colors leading-tight",
-          featured ? "text-2xl lg:text-3xl" : "text-xl"
-        )}>
-          {title}
-        </h3>
+        <ViewTransition name={`post-title-${slug}`} share="text-morph" default="none">
+          <h3 className={cn(
+            "font-bold text-foreground mb-3 group-hover:text-primary transition-colors leading-tight",
+            featured ? "text-2xl lg:text-3xl" : "text-xl"
+          )}>
+            {title}
+          </h3>
+        </ViewTransition>
+
 
         <p className="text-muted-foreground text-sm line-clamp-3 mb-6 flex-1">
           {excerpt}
@@ -89,10 +100,14 @@ export function PostCard({
           </Link>
           <Link
             href={`/blog/${slug}`}
+            transitionTypes={['nav-forward']}
             className="flex items-center gap-1 text-sm font-semibold text-primary group/link hover:gap-2 transition-all"
           >
+
             Read More <ArrowRight className="w-4 h-4" />
           </Link>
+
+
 
         </div>
       </div>
