@@ -6,6 +6,7 @@ import { Navbar } from "@/components/navbar"
 import { CategoryCard } from "@/components/category-card"
 import { Footer } from "@/components/footer"
 import { Newsletter } from "@/components/newsletter"
+import { DirectionalTransition } from "@/components/view-transition/directional-transition"
 
 const allCategories = [
   {
@@ -75,6 +76,7 @@ const item = {
 
 export default function CategoriesPage() {
   return (
+    <DirectionalTransition>
     <div className="flex flex-col min-h-screen">
       <Navbar />
       <main className="flex-1">
@@ -120,5 +122,6 @@ export default function CategoriesPage() {
       </main>
       <Footer />
     </div>
+    </DirectionalTransition>
   )
 }

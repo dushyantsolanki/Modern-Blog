@@ -6,6 +6,7 @@ import { Footer } from "@/components/footer"
 import { motion, AnimatePresence } from "framer-motion"
 import { Mail, Globe, MessageSquare, ArrowRight, CheckCircle2 } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { DirectionalTransition } from "@/components/view-transition/directional-transition"
 
 const contactMethods = [
   {
@@ -52,6 +53,7 @@ export default function ContactPage() {
   }
 
   return (
+    <DirectionalTransition>
     <div className="flex flex-col min-h-screen bg-background text-foreground">
       <Navbar />
       <main className="flex-1">
@@ -220,5 +222,6 @@ export default function ContactPage() {
       </main>
       <Footer />
     </div>
+    </DirectionalTransition>
   )
 }

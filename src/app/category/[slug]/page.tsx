@@ -3,6 +3,7 @@ import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { CategoryContent } from "./CategoryContent"
 import { posts } from "@/lib/data"
+import { DirectionalTransition } from "@/components/view-transition/directional-transition"
 
 export async function generateStaticParams() {
   const categories = Array.from(new Set(posts.map((post) => post.category.toLowerCase())))
@@ -17,13 +18,15 @@ export default async function CategoryDetailPage({ params }: { params: Promise<{
   const categoryPosts = posts.filter(p => p.category.toLowerCase() === slug.toLowerCase())
   
   return (
-    <div className="flex flex-col min-h-screen bg-background">
-      <Navbar />
-      <CategoryContent 
-        initialPosts={categoryPosts} 
-        categoryName={categoryName} 
-      />
-      <Footer />
-    </div>
+    <DirectionalTransition>
+      <div className="flex flex-col min-h-screen bg-background">
+        <Navbar />
+        <CategoryContent 
+          initialPosts={categoryPosts} 
+          categoryName={categoryName} 
+        />
+        <Footer />
+      </div>
+    </DirectionalTransition>
   )
 }

@@ -7,6 +7,7 @@ import { Footer } from "@/components/footer"
 import { motion } from "framer-motion"
 import { Sparkles, Users, Target, ArrowRight } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { DirectionalTransition } from "@/components/view-transition/directional-transition"
 
 const values = [
   {
@@ -66,6 +67,7 @@ const FADE_UP = {
 
 export default function AboutPage() {
   return (
+    <DirectionalTransition>
     <div className="flex flex-col min-h-screen bg-background text-foreground">
       <Navbar />
       <main className="flex-1">
@@ -211,5 +213,6 @@ export default function AboutPage() {
       </main>
       <Footer />
     </div>
+    </DirectionalTransition>
   )
 }
