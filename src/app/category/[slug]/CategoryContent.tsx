@@ -26,7 +26,7 @@ export function CategoryContent({ initialPosts, categoryName }: CategoryContentP
 
   return (
     <main className="flex-1 pb-24">
-      {/* Page Header */}
+      {/* Page Header - Minimalist Editorial Style */}
       <section className="pt-32 mb-8">
         <div className="container mx-auto px-6 text-center">
           <motion.h1
@@ -42,7 +42,7 @@ export function CategoryContent({ initialPosts, categoryName }: CategoryContentP
             transition={{ delay: 0.1 }}
             className="max-w-xl mx-auto text-lg text-muted-foreground/80 font-medium leading-relaxed"
           >
-            Curated perspectives on {categoryName.toLowerCase()}, design, and the future of work.
+            Curated perspectives on technology, design, and the future of work.
           </motion.p>
         </div>
       </section>

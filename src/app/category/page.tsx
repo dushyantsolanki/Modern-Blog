@@ -78,12 +78,24 @@ export default function CategoriesPage() {
     <div className="flex flex-col min-h-screen">
       <Navbar />
       <main className="flex-1">
-        <section className="py-24 bg-surface-alt/50 text-center">
+        {/* Page Header - Minimalist Editorial Style */}
+        <section className="pt-32 mb-8 text-center">
           <div className="container mx-auto px-6">
-            <h1 className="text-4xl lg:text-6xl font-black tracking-tighter mb-4">Explore by Category</h1>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto font-medium">
-              Browse our complete library of articles organized by topic. Find the insights that matter most to you.
-            </p>
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-6xl lg:text-8xl font-black tracking-tight mb-8"
+            >
+              Stories. <span className="text-muted-foreground/30">Expertly Told.</span>
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="max-w-xl mx-auto text-lg text-muted-foreground/80 font-medium leading-relaxed"
+            >
+              Curated perspectives on technology, design, and the future of work.
+            </motion.p>
           </div>
         </section>
 
