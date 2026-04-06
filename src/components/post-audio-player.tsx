@@ -308,7 +308,11 @@ export const PostAudioPlayer = ({ contentSelector = "article", title }: PostAudi
     }
     const textReady = instrumentContent()
     if (!textReady) return
-    speakFromIndex(lastCharIndex.current, rate)
+
+    // Small delay for mobile browsers to finalize DOM layout after instrumentation
+    setTimeout(() => {
+      speakFromIndex(lastCharIndex.current, rate)
+    }, 100)
   }
 
   const handlePause = () => {
