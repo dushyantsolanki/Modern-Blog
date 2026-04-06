@@ -27,6 +27,8 @@ const tocItems = [
   { id: "section-6", title: "Future Outlook", level: 2 },
 ]
 
+import { PostAudioPlayer } from "@/components/post-audio-player"
+
 export default async function PostDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
   const post = posts.find((p) => p.slug === slug)
@@ -49,18 +51,21 @@ export default async function PostDetailPage({ params }: { params: Promise<{ slu
               <ChevronRight className="w-4 h-4" />
               <Link href="/blog" className="hover:text-primary transition-colors">Blog</Link>
               <ChevronRight className="w-4 h-4" />
-              <span className="text-foreground font-medium truncate">The Future of AI in Creative Work</span>
+              <span className="text-foreground font-medium truncate">{post.title}</span>
             </nav>
 
             <div className="max-w-4xl">
               <span className="px-3 py-1 text-xs font-bold rounded-full bg-primary text-white mb-6 inline-block">
-                Technology
+                {post.category}
               </span>
               <ViewTransition name={`post-title-${slug}`} share="text-morph">
                 <h1 className="text-4xl lg:text-6xl font-extrabold tracking-tight mb-8 leading-tight">
                   {post.title}
                 </h1>
               </ViewTransition>
+              
+              {/* Premium Audio Player Integration */}
+              <PostAudioPlayer title={post.title} contentSelector="article" />
 
 
 

@@ -49,13 +49,13 @@ export function PostCard({
         className
       )}
     >
-      <div className={cn("relative overflow-hidden", featured ? "md:w-1/2" : "h-64")}>
+      <div className={cn("relative overflow-hidden bg-muted/20", featured ? "md:w-1/2" : "h-64")}>
         <ViewTransition name={`post-image-${slug}`} share="morph" default="none">
           <Image
             src={image}
             alt={title}
             fill
-            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             priority={priority}
           />
@@ -63,8 +63,8 @@ export function PostCard({
         <div className="absolute top-4 left-4">
 
           <span className={cn(
-            "px-3 py-1 text-xs font-semibold rounded-full bg-primary text-white shadow-sm",
-            featured ? "bg-accent" : ""
+            "px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-full glass border border-white/20 text-white shadow-lg backdrop-blur-md",
+            featured ? "bg-accent/40" : "bg-primary/40"
           )}>
             {category}
           </span>

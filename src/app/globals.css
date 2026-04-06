@@ -77,6 +77,7 @@
     --popover-foreground: 222 47% 11%;
 
     --primary: 221 83% 53%;
+    --primary-rgb: 37, 99, 235;
     --primary-foreground: 210 40% 98%;
 
     --secondary: 210 40% 96%;
@@ -110,6 +111,7 @@
     --popover-foreground: 210 40% 98%;
 
     --primary: 217 91% 60%;
+    --primary-rgb: 37, 99, 235;
     --primary-foreground: 222 47% 11%;
 
     --secondary: 217 33% 17%;
@@ -138,6 +140,39 @@
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  .glass {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+  }
+
+  .dark .glass {
+    background: rgba(10, 10, 10, 0.75);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+  }
+
+  .reader-word {
+    display: inline-block;
+    transition: all 0.2s ease;
+    border-radius: 4px;
+    padding: 0 2px;
+    margin: 0 -1px;
+  }
+
+  .highlight-word {
+    background-color: hsla(var(--primary), 0.15);
+    color: hsl(var(--primary));
+    box-shadow: 0 0 0 2px hsla(var(--primary), 0.1);
+    transform: scale(1.05);
+    z-index: 10;
+    position: relative;
   }
 }
 
