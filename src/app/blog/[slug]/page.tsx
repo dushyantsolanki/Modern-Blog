@@ -28,6 +28,7 @@ const tocItems = [
 ]
 
 import { PostAudioPlayer } from "@/components/post-audio-player"
+import { BlogShare } from "@/components/blog-share"
 
 export default function PostDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = React.use(params)
@@ -66,6 +67,9 @@ export default function PostDetailPage({ params }: { params: Promise<{ slug: str
 
               {/* Premium Audio Player Integration */}
               <PostAudioPlayer title={post.title} contentSelector="article" />
+
+              {/* Apple-Inspired Share Bar (Top) */}
+              <BlogShare url={typeof window !== 'undefined' ? window.location.href : ''} title={post.title} />
 
 
 
@@ -193,6 +197,9 @@ export default function PostDetailPage({ params }: { params: Promise<{ slug: str
 
                   <p><strong>The question isn't whether AI will change creative work. It already has. The question is whether you'll be the one shaping that change, or simply reacting to it.</strong></p>
                 </article>
+
+                {/* Final Engagement Share (Bottom) */}
+                <BlogShare url={typeof window !== 'undefined' ? window.location.href : ''} title={post.title} className="mb-0 pt-0 pb-12" />
 
                 {/* Tags and Author Box */}
                 <div className="mt-16 pt-16 border-t border-border">
