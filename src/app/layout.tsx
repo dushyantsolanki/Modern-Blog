@@ -8,6 +8,7 @@ const poppins = Poppins({
   variable: "--font-poppins",
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700", "800"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -22,6 +23,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={poppins.variable} suppressHydrationWarning>
+      <head>
+        <link rel="preconnect" href="https://images.unsplash.com" />
+      </head>
       <body className="antialiased min-h-screen bg-background text-foreground transition-colors duration-300">
         <ThemeProvider
           attribute="class"
@@ -31,12 +35,12 @@ export default function RootLayout({
         >
           {children}
         </ThemeProvider>
-        <Script
+        {/* <Script
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-0000000000000000"
           crossOrigin="anonymous"
           strategy="afterInteractive"
-        />
+        /> */}
       </body>
     </html>
   );

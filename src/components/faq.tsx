@@ -28,19 +28,16 @@ const faqs = [
   }
 ]
 
-function FAQItem({ question, answer, isOpen, onClick, index }: { 
-  question: string; 
-  answer: string; 
-  isOpen: boolean; 
+function FAQItem({ question, answer, isOpen, onClick, index }: {
+  question: string;
+  answer: string;
+  isOpen: boolean;
   onClick: () => void;
   index: number;
 }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: index * 0.1, duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
+    <div
+
       className="border-b border-border last:border-0"
     >
       <button
@@ -81,7 +78,7 @@ function FAQItem({ question, answer, isOpen, onClick, index }: {
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.div>
+    </div>
   )
 }
 
@@ -92,7 +89,7 @@ export function FAQ() {
     <section className="py-24 bg-surface relative overflow-hidden">
       {/* Decorative background elements */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-px bg-gradient-to-r from-transparent via-border to-transparent" />
-      
+
       <div className="container mx-auto px-6">
         <div className="flex flex-col lg:flex-row gap-16 lg:gap-24">
           {/* Header Section */}

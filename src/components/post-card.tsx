@@ -22,6 +22,7 @@ interface PostCardProps {
   }
   image: string
   featured?: boolean
+  priority?: boolean
   className?: string
 }
 
@@ -35,6 +36,7 @@ export function PostCard({
   author,
   image,
   featured = false,
+  priority = false,
   className,
 }: PostCardProps) {
 
@@ -54,6 +56,8 @@ export function PostCard({
             alt={title}
             fill
             className="object-cover transition-transform duration-500 group-hover:scale-105"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            priority={priority}
           />
         </ViewTransition>
         <div className="absolute top-4 left-4">

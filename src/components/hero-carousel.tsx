@@ -77,7 +77,7 @@ export function HeroCarousel({ posts }: HeroCarouselProps) {
                 <AnimatePresence mode="wait">
                   {selectedIndex === index && (
                     <motion.div
-                      initial={{ scale: 1.15, opacity: 0 }}
+                      initial={index === 0 ? { scale: 1.05, opacity: 1 } : { scale: 1.15, opacity: 0 }}
                       animate={{ scale: 1.05, opacity: 1 }}
                       exit={{ opacity: 0 }}
                       transition={{ duration: 2, ease: [0.33, 1, 0.68, 1] }}
@@ -104,6 +104,9 @@ export function HeroCarousel({ posts }: HeroCarouselProps) {
                             fill
                             className="object-cover"
                             priority={index === 0}
+                            sizes="(max-width: 768px) 100vw, 90vw"
+                            // @ts-ignore
+                            fetchPriority={index === 0 ? "high" : "auto"}
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
                         </div>
@@ -119,27 +122,27 @@ export function HeroCarousel({ posts }: HeroCarouselProps) {
                   {selectedIndex === index && (
                     <div className="max-w-3xl space-y-6">
                       <motion.span
-                        initial={{ opacity: 0, transform: "translateY(20px)" }}
+                        initial={index === 0 ? { opacity: 1, transform: "translateY(0px)" } : { opacity: 0, transform: "translateY(20px)" }}
                         animate={{ opacity: 1, transform: "translateY(0px)" }}
-                        transition={{ duration: 0.8, delay: 0.3, ease: [0.32, 0.72, 0, 1] }}
+                        transition={{ duration: 0.8, delay: index === 0 ? 0 : 0.3, ease: [0.32, 0.72, 0, 1] }}
                         className="inline-block px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 text-indigo-200 text-xs font-bold tracking-widest uppercase"
                       >
                         {post.category}
                       </motion.span>
 
                       <motion.h2
-                        initial={{ opacity: 0, transform: "translateY(30px)" }}
+                        initial={index === 0 ? { opacity: 1, transform: "translateY(0px)" } : { opacity: 0, transform: "translateY(30px)" }}
                         animate={{ opacity: 1, transform: "translateY(0px)" }}
-                        transition={{ duration: 0.8, delay: 0.4, ease: [0.32, 0.72, 0, 1] }}
+                        transition={{ duration: 0.8, delay: index === 0 ? 0 : 0.4, ease: [0.32, 0.72, 0, 1] }}
                         className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-white leading-[1.05] tracking-tight"
                       >
                         {post.title}
                       </motion.h2>
 
                       <motion.p
-                        initial={{ opacity: 0, transform: "translateY(20px)" }}
+                        initial={index === 0 ? { opacity: 1, transform: "translateY(0px)" } : { opacity: 0, transform: "translateY(20px)" }}
                         animate={{ opacity: 1, transform: "translateY(0px)" }}
-                        transition={{ duration: 0.8, delay: 0.5, ease: [0.32, 0.72, 0, 1] }}
+                        transition={{ duration: 0.8, delay: index === 0 ? 0 : 0.5, ease: [0.32, 0.72, 0, 1] }}
                         className="text-lg md:text-xl text-white/80 max-w-xl leading-relaxed"
                       >
                         {post.excerpt}

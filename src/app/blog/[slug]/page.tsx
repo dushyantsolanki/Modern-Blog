@@ -101,6 +101,10 @@ export default async function PostDetailPage({ params }: { params: Promise<{ slu
                         alt={post.title}
                         fill
                         className="object-cover"
+                        priority
+                        sizes="(max-width: 1200px) 100vw, 80vw"
+                        // @ts-ignore
+                        fetchPriority="high"
                       />
                     )}
                   </ViewTransition>
