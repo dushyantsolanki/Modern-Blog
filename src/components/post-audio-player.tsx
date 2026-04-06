@@ -36,6 +36,7 @@ export const PostAudioPlayer = ({ contentSelector = "article", title }: PostAudi
   
   // Track user manual scrolling to prevent auto-scrolling conflicts on mobile
   const isUserScrolling = useRef(false)
+  const isSwitching = useRef(false)
 
   const clearHighlights = () => {
     wordSpans.current.forEach(span => span.classList.remove("highlight-word"))
@@ -276,6 +277,9 @@ export const PostAudioPlayer = ({ contentSelector = "article", title }: PostAudi
     }
 
     u.onend = () => {
+      // Don't reset if we are just switching voices/rates
+      if (isSwitching.current) return
+
       if (synth.current && !synth.current.paused) {
         setIsPlaying(false)
         setIsPaused(false)
@@ -329,24 +333,43 @@ export const PostAudioPlayer = ({ contentSelector = "article", title }: PostAudi
     }
   }
 
+  // Soft stop for switching voices/rates without resetting progress UI
+  const softStop = () => {
+    if (synth.current) {
+      synth.current.cancel()
+      stopFallbackTimer()
+    }
+  }
+
   const toggleRate = () => {
     const rates = [1, 1.25, 1.5, 2]
     const nextRate = rates[(rates.indexOf(rate) + 1) % rates.length]
     setRate(nextRate)
+    
     if (isPlaying || isPaused) {
       const savedIndex = lastCharIndex.current
-      handleStop()
-      setTimeout(() => speakFromIndex(savedIndex, nextRate), 50)
+      isSwitching.current = true
+      softStop()
+      // Increased timeout for mobile stability to let cancel() finish
+      setTimeout(() => {
+        speakFromIndex(savedIndex, nextRate)
+        isSwitching.current = false
+      }, 150)
     }
   }
 
   const selectVoice = (voice: SpeechSynthesisVoice) => {
     setSelectedVoice(voice)
     localStorage.setItem('audio-voice-pref', voice.name)
+    
     if (isPlaying || isPaused) {
       const savedIndex = lastCharIndex.current
-      handleStop()
-      setTimeout(() => speakFromIndex(savedIndex, rate), 50)
+      isSwitching.current = true
+      softStop()
+      setTimeout(() => {
+        speakFromIndex(savedIndex, rate)
+        isSwitching.current = false
+      }, 150)
     }
   }
 
