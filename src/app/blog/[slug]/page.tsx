@@ -29,8 +29,8 @@ const tocItems = [
 
 import { PostAudioPlayer } from "@/components/post-audio-player"
 
-export default async function PostDetailPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params
+export default function PostDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = React.use(params)
   const post = posts.find((p) => p.slug === slug)
 
   if (!post) {
@@ -63,7 +63,7 @@ export default async function PostDetailPage({ params }: { params: Promise<{ slu
                   {post.title}
                 </h1>
               </ViewTransition>
-              
+
               {/* Premium Audio Player Integration */}
               <PostAudioPlayer title={post.title} contentSelector="article" />
 

@@ -29,7 +29,27 @@ export const PostAudioPlayer = ({ contentSelector = "article", title }: PostAudi
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([])
   const [selectedVoice, setSelectedVoice] = useState<SpeechSynthesisVoice | null>(null)
 
-  // Initialization & Ghost Audio Prevention
+  // Fallback progress state for mobile browsers that don't fire onboundary
+  const fallbackTimer = useRef<number | null>(null)
+  const startTime = useRef<number | null>(null)
+  const startCharIndex = useRef<number>(0)
+  
+  // Track user manual scrolling to prevent auto-scrolling conflicts on mobile
+  const isUserScrolling = useRef(false)
+
+  const clearHighlights = () => {
+    wordSpans.current.forEach(span => span.classList.remove("highlight-word"))
+    currentHighlightRef.current = null
+  }
+
+  const stopFallbackTimer = () => {
+    if (fallbackTimer.current) {
+        cancelAnimationFrame(fallbackTimer.current)
+        fallbackTimer.current = null
+    }
+  }
+
+  // Initialization & Global Event Listeners
   useEffect(() => {
     synth.current = window.speechSynthesis
     
@@ -71,62 +91,43 @@ export const PostAudioPlayer = ({ contentSelector = "article", title }: PostAudi
       }
     }
 
-    return () => {
-      if (synth.current) {
-        synth.current.cancel()
-        synth.current.onvoiceschanged = null
-        clearHighlights()
-      }
-    }
-  }, [contentSelector, title])
-
-  // Track user manual scrolling to prevent auto-scrolling conflicts on mobile
-  const isUserScrolling = useRef(false)
-  
-  useEffect(() => {
     const handleTouchStart = () => { isUserScrolling.current = true }
     const handleTouchEnd = () => { 
-      // Reset after a delay to allow the momentum scroll to finish
       setTimeout(() => { isUserScrolling.current = false }, 2000) 
     }
     window.addEventListener("touchstart", handleTouchStart)
     window.addEventListener("touchend", handleTouchEnd)
+
     return () => {
+      if (synth.current) {
+        synth.current.cancel()
+        synth.current.onvoiceschanged = null
+      }
+      stopFallbackTimer()
       window.removeEventListener("touchstart", handleTouchStart)
       window.removeEventListener("touchend", handleTouchEnd)
+      clearHighlights()
     }
-  }, [])
-
-  // Instrumentation: Now triggered on mount/visibility and before play
-  useEffect(() => {
-    if (isVisible || isPlaying) {
-      instrumentContent()
-    }
-  }, [isVisible, isPlaying])
-
-  const clearHighlights = () => {
-    wordSpans.current.forEach(span => span.classList.remove("highlight-word"))
-    currentHighlightRef.current = null
-  }
+  }, [contentSelector, title])
 
   const instrumentContent = () => {
     const article = document.querySelector(contentSelector)
-    if (!article || wordSpans.current.length > 0) return article?.textContent || fullText
+    if (!article || (wordSpans.current.length > 0 && article.querySelectorAll('.reader-word').length > 0)) {
+        if (wordSpans.current.length === 0) {
+           wordSpans.current = Array.from(article?.querySelectorAll('.reader-word') || []) as HTMLSpanElement[]
+        }
+        return article?.textContent || fullText
+    }
 
     const spans: HTMLSpanElement[] = []
     let accumulatedText = ""
 
     const walk = (node: Node) => {
-      // Skip unwanted elements
       if (node instanceof HTMLElement && (
-        node.tagName === "SCRIPT" || 
-        node.tagName === "STYLE" || 
-        node.tagName === "BUTTON" ||
-        node.tagName === "NAV" ||
-        node.classList.contains("no-read")
-      )) {
-        return
-      }
+        node.tagName === "SCRIPT" || node.tagName === "STYLE" || 
+        node.tagName === "BUTTON" || node.tagName === "NAV" ||
+        node.tagName === "HEADER" || node.classList.contains("no-read")
+      )) return
 
       if (node.nodeType === Node.TEXT_NODE) {
         const text = node.nodeValue || ""
@@ -154,7 +155,6 @@ export const PostAudioPlayer = ({ contentSelector = "article", title }: PostAudi
             fragment.appendChild(textNode)
           }
         })
-
         node.parentNode?.replaceChild(fragment, node)
       } else {
         Array.from(node.childNodes).forEach(child => walk(child))
@@ -168,10 +168,73 @@ export const PostAudioPlayer = ({ contentSelector = "article", title }: PostAudi
     return final
   }
 
+  // Instrumentation: Resilient trigger
+  useEffect(() => {
+    if (isVisible || isPlaying) {
+      const runInstrument = () => {
+        instrumentContent()
+        if (wordSpans.current.length === 0 && (isVisible || isPlaying)) {
+           setTimeout(runInstrument, 200)
+        }
+      }
+      runInstrument()
+      
+      const observer = new MutationObserver(() => {
+        wordSpans.current = []
+        runInstrument()
+      })
+      
+      const article = document.querySelector(contentSelector)
+      if (article) observer.observe(article, { childList: true, subtree: true, characterData: true })
+      return () => observer.disconnect()
+    }
+  }, [isVisible, isPlaying, contentSelector])
+
+  const startFallbackTracking = (startIndex: number, currentRate: number) => {
+    stopFallbackTimer()
+    startTime.current = performance.now()
+    startCharIndex.current = startIndex
+    
+    const charsPerMs = (18 / 1000) * currentRate 
+
+    const step = (now: number) => {
+      if (!startTime.current || !isPlaying) return
+
+      const elapsed = now - startTime.current
+      const estimatedCharsRead = Math.floor(elapsed * charsPerMs)
+      const currentIdx = Math.min(startCharIndex.current + estimatedCharsRead, fullText.length)
+      
+      if (fullText.length > 0) {
+        const p = (currentIdx / fullText.length) * 100
+        setProgress(p)
+        lastCharIndex.current = currentIdx
+        localStorage.setItem(`audio-progress-${title}`, currentIdx.toString())
+      }
+
+      const targetSpan = wordSpans.current.find(span => {
+        const start = parseInt(span.dataset.start || "0")
+        const end = parseInt(span.dataset.end || "0")
+        return currentIdx >= start && currentIdx < end
+      })
+
+      if (targetSpan && targetSpan !== currentHighlightRef.current) {
+        clearHighlights()
+        targetSpan.classList.add("highlight-word")
+        currentHighlightRef.current = targetSpan
+        if (!isUserScrolling.current) {
+          targetSpan.scrollIntoView({ behavior: window.innerWidth < 640 ? "auto" : "smooth", block: "center" })
+        }
+      }
+
+      if (currentIdx < fullText.length && isPlaying) {
+        fallbackTimer.current = requestAnimationFrame(step)
+      }
+    }
+    fallbackTimer.current = requestAnimationFrame(step)
+  }
+
   const speakFromIndex = (startIndex: number, currentRate: number) => {
     if (!synth.current) return
-
-    // Re-verify instrumentation before play (safety check)
     instrumentContent()
 
     const totalText = fullText
@@ -182,23 +245,22 @@ export const PostAudioPlayer = ({ contentSelector = "article", title }: PostAudi
     u.rate = currentRate
     u.pitch = 1
     u.volume = 1
-    
-    if (selectedVoice) {
-      u.voice = selectedVoice
-    }
+    if (selectedVoice) u.voice = selectedVoice
 
-    // High-precision tracking for mobile
+    startFallbackTracking(startIndex, currentRate)
+
     u.onboundary = (event) => {
       if (event.name === "word") {
         const absoluteCharIndex = startIndex + event.charIndex
+        startTime.current = performance.now()
+        startCharIndex.current = absoluteCharIndex
+        
         lastCharIndex.current = absoluteCharIndex
         setProgress((absoluteCharIndex / totalText.length) * 100)
 
-        // Find the matching span using a flexible fuzzy match for boundary indices
         const targetSpan = wordSpans.current.find(span => {
           const start = parseInt(span.dataset.start || "0")
           const end = parseInt(span.dataset.end || "0")
-          // Allow for 1-char offset which happens on some mobile browsers
           return (absoluteCharIndex >= start - 1 && absoluteCharIndex < end)
         })
 
@@ -206,13 +268,8 @@ export const PostAudioPlayer = ({ contentSelector = "article", title }: PostAudi
           clearHighlights()
           targetSpan.classList.add("highlight-word")
           currentHighlightRef.current = targetSpan
-          
-          // Only auto-scroll if the user isn't manually scrolling
           if (!isUserScrolling.current) {
-            targetSpan.scrollIntoView({ 
-              behavior: window.innerWidth < 640 ? "auto" : "smooth", 
-              block: "center" 
-            })
+            targetSpan.scrollIntoView({ behavior: window.innerWidth < 640 ? "auto" : "smooth", block: "center" })
           }
         }
       }
@@ -226,6 +283,7 @@ export const PostAudioPlayer = ({ contentSelector = "article", title }: PostAudi
         lastCharIndex.current = 0
         localStorage.removeItem(`audio-progress-${title}`)
         clearHighlights()
+        stopFallbackTimer()
       }
     }
 
@@ -237,17 +295,15 @@ export const PostAudioPlayer = ({ contentSelector = "article", title }: PostAudi
 
   const handlePlay = () => {
     if (!synth.current) return
-
     if (isPaused) {
       synth.current.resume()
       setIsPaused(false)
       setIsPlaying(true)
+      startFallbackTracking(lastCharIndex.current, rate)
       return
     }
-
     const textReady = instrumentContent()
     if (!textReady) return
-
     speakFromIndex(lastCharIndex.current, rate)
   }
 
@@ -256,6 +312,7 @@ export const PostAudioPlayer = ({ contentSelector = "article", title }: PostAudi
       synth.current.pause()
       setIsPaused(true)
       setIsPlaying(false)
+      stopFallbackTimer()
     }
   }
 
@@ -268,6 +325,7 @@ export const PostAudioPlayer = ({ contentSelector = "article", title }: PostAudi
       lastCharIndex.current = 0
       localStorage.removeItem(`audio-progress-${title}`)
       clearHighlights()
+      stopFallbackTimer()
     }
   }
 
@@ -275,26 +333,20 @@ export const PostAudioPlayer = ({ contentSelector = "article", title }: PostAudi
     const rates = [1, 1.25, 1.5, 2]
     const nextRate = rates[(rates.indexOf(rate) + 1) % rates.length]
     setRate(nextRate)
-    
     if (isPlaying || isPaused) {
       const savedIndex = lastCharIndex.current
       handleStop()
-      setTimeout(() => {
-        speakFromIndex(savedIndex, nextRate)
-      }, 50)
+      setTimeout(() => speakFromIndex(savedIndex, nextRate), 50)
     }
   }
 
   const selectVoice = (voice: SpeechSynthesisVoice) => {
     setSelectedVoice(voice)
     localStorage.setItem('audio-voice-pref', voice.name)
-    
     if (isPlaying || isPaused) {
       const savedIndex = lastCharIndex.current
       handleStop()
-      setTimeout(() => {
-        speakFromIndex(savedIndex, rate)
-      }, 50)
+      setTimeout(() => speakFromIndex(savedIndex, rate), 50)
     }
   }
 
@@ -326,7 +378,6 @@ export const PostAudioPlayer = ({ contentSelector = "article", title }: PostAudi
             )}
           >
             <div className="glass p-3 sm:p-4 rounded-[32px] sm:rounded-[40px] border border-white/40 dark:border-white/10 shadow-2xl relative">
-               
                <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-5">
                   {!isExpanded ? (
                       <div className="flex items-center gap-4 w-full">
@@ -354,15 +405,10 @@ export const PostAudioPlayer = ({ contentSelector = "article", title }: PostAudi
                             <div className="flex-1 min-w-0">
                                <div className="flex flex-col">
                                   <h4 className="text-[13px] sm:text-sm font-black text-foreground truncate max-w-[140px] tracking-tight">{title}</h4>
-                                  
                                   <div className="flex items-center gap-1.5 mt-0.5">
-                                    <button 
-                                      onClick={handlePrevVoice}
-                                      className="p-1 hover:bg-muted rounded-full transition-colors text-primary"
-                                    >
+                                    <button onClick={handlePrevVoice} className="p-1 hover:bg-muted rounded-full transition-colors text-primary">
                                       <ChevronUp className="w-3 h-3 -rotate-90" />
                                     </button>
-                                    
                                     <AnimatePresence mode="wait">
                                       <motion.span 
                                         key={selectedVoice?.name}
@@ -374,11 +420,7 @@ export const PostAudioPlayer = ({ contentSelector = "article", title }: PostAudi
                                         {selectedVoice?.name.split(' ')[0] || "Select Voice"}
                                       </motion.span>
                                     </AnimatePresence>
-
-                                    <button 
-                                      onClick={handleNextVoice}
-                                      className="p-1 hover:bg-muted rounded-full transition-colors text-primary"
-                                    >
+                                    <button onClick={handleNextVoice} className="p-1 hover:bg-muted rounded-full transition-colors text-primary">
                                       <ChevronUp className="w-3 h-3 rotate-90" />
                                     </button>
                                   </div>
@@ -397,17 +439,13 @@ export const PostAudioPlayer = ({ contentSelector = "article", title }: PostAudi
 
                         <div className="flex-1 w-full mx-1">
                            <div className="w-full h-2 sm:h-2.5 bg-muted/40 dark:bg-white/5 rounded-full overflow-hidden mb-1 sm:mb-0">
-                              <motion.div 
-                                className="h-full bg-primary relative" 
-                                initial={{ width: 0 }} 
-                                animate={{ width: `${progress}%` }} 
-                              >
+                              <motion.div className="h-full bg-primary relative" initial={{ width: 0 }} animate={{ width: `${progress}%` }}>
                                  <div className="absolute right-0 top-0 bottom-0 w-4 bg-white/20 blur-sm" />
                               </motion.div>
                            </div>
                            <div className="flex justify-between items-center sm:hidden mt-1 px-1">
                                <span className="text-[8px] font-bold text-muted-foreground uppercase tracking-widest">Post Reader</span>
-                               <span className="text-[8px] font-bold text-primary animate-pulse">{isPlaying ? "Live" : "Paused"}</span>
+                               <span className="text-[8px] font-bold text-primary animate-pulse">{isPlaying ? "Live Tracking" : "Paused"}</span>
                            </div>
                         </div>
 
@@ -415,7 +453,6 @@ export const PostAudioPlayer = ({ contentSelector = "article", title }: PostAudi
                            <button onClick={toggleRate} className="w-10 h-10 sm:w-11 sm:h-11 rounded-full hover:bg-muted font-bold flex items-center justify-center text-[10px] border border-border/50 transition-all shrink-0">
                              {rate}x
                            </button>
-
                            <div className="flex items-center gap-2 bg-muted/40 dark:bg-white/5 rounded-full p-1.5 border border-border/50 flex-1 sm:flex-none justify-center">
                               {isPlaying ? (
                                  <button onClick={handlePause} className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-primary text-white flex items-center justify-center shadow-lg shadow-primary/30 active:scale-90 transition-transform">
@@ -430,7 +467,6 @@ export const PostAudioPlayer = ({ contentSelector = "article", title }: PostAudi
                                  <Square className="w-4 h-4 fill-current" />
                               </button>
                            </div>
-
                            <div className="hidden sm:flex flex-col gap-1.5">
                               <button onClick={() => setIsExpanded(false)} className="p-1.5 hover:bg-muted rounded-full transition-colors">
                                  <ChevronDown className="w-5 h-5 text-muted-foreground" />
