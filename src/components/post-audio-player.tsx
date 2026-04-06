@@ -18,10 +18,13 @@ export const PostAudioPlayer = ({ contentSelector = "article", title }: PostAudi
   const [isVisible, setIsVisible] = useState(false)
   const [isExpanded, setIsExpanded] = useState(true)
 
+  // Tracking State: State-driven for robust mobile updates
+  const [currentCharIndex, setCurrentCharIndex] = useState(0)
+  const [fullText, setFullText] = useState("")
+
   const synth = useRef<SpeechSynthesis | null>(null)
   const utterance = useRef<SpeechSynthesisUtterance | null>(null)
-
-  const [fullText, setFullText] = useState("")
+  
   const wordSpans = useRef<HTMLSpanElement[]>([])
   const currentHighlightRef = useRef<HTMLSpanElement | null>(null)
   const lastCharIndex = useRef<number>(0)
@@ -173,6 +176,36 @@ export const PostAudioPlayer = ({ contentSelector = "article", title }: PostAudi
     }
   }, [fullText, contentSelector])
 
+  // Reactive UI Effect: Watches 'currentCharIndex' to update highlights and progress
+  useEffect(() => {
+    if (!fullText) return
+
+    // 1. Update Progress Bar
+    const p = (currentCharIndex / fullText.length) * 100
+    setProgress(p)
+
+    // 2. Update Highlights
+    const targetSpan = wordSpans.current.find(span => {
+      const start = parseInt(span.dataset.start || "0")
+      const end = parseInt(span.dataset.end || "0")
+      return currentCharIndex >= start && currentCharIndex < end
+    })
+
+    if (targetSpan && targetSpan !== currentHighlightRef.current) {
+      clearHighlights()
+      targetSpan.classList.add("highlight-word")
+      currentHighlightRef.current = targetSpan
+      
+      // 3. Scroll Into View
+      if (!isUserScrolling.current) {
+        targetSpan.scrollIntoView({ 
+          behavior: window.innerWidth < 640 ? "auto" : "smooth", 
+          block: "center" 
+        })
+      }
+    }
+  }, [currentCharIndex, fullText])
+
   const startFallbackTracking = (startIndex: number, currentRate: number) => {
     stopFallbackTimer()
     startTime.current = performance.now()
@@ -188,24 +221,8 @@ export const PostAudioPlayer = ({ contentSelector = "article", title }: PostAudi
       const currentIdx = Math.min(startCharIndex.current + estimatedCharsRead, fullText.length)
 
       if (fullText.length > 0) {
-        const p = (currentIdx / fullText.length) * 100
-        setProgress(p)
         lastCharIndex.current = currentIdx
-      }
-
-      const targetSpan = wordSpans.current.find(span => {
-        const start = parseInt(span.dataset.start || "0")
-        const end = parseInt(span.dataset.end || "0")
-        return currentIdx >= start && currentIdx < end
-      })
-
-      if (targetSpan && targetSpan !== currentHighlightRef.current) {
-        clearHighlights()
-        targetSpan.classList.add("highlight-word")
-        currentHighlightRef.current = targetSpan
-        if (!isUserScrolling.current) {
-          targetSpan.scrollIntoView({ behavior: window.innerWidth < 640 ? "auto" : "smooth", block: "center" })
-        }
+        setCurrentCharIndex(currentIdx)
       }
 
       if (currentIdx < fullText.length && isPlaying) {
@@ -223,47 +240,33 @@ export const PostAudioPlayer = ({ contentSelector = "article", title }: PostAudi
     const textToRead = totalText.substring(startIndex)
     if (!textToRead) return
 
+    // Immediately start tracking to ensure UI response even if engine lags
+    setIsPlaying(true)
+    setIsVisible(true)
+    setCurrentCharIndex(startIndex)
+    startFallbackTracking(startIndex, currentRate)
+
     const u = new SpeechSynthesisUtterance(textToRead)
     u.rate = currentRate
     u.pitch = 1
     u.volume = 1
-
-    startFallbackTracking(startIndex, currentRate)
 
     u.onboundary = (event) => {
       if (event.name === "word") {
         const absoluteCharIndex = startIndex + event.charIndex
         startTime.current = performance.now()
         startCharIndex.current = absoluteCharIndex
-
         lastCharIndex.current = absoluteCharIndex
-        setProgress((absoluteCharIndex / totalText.length) * 100)
-
-        const targetSpan = wordSpans.current.find(span => {
-          const start = parseInt(span.dataset.start || "0")
-          const end = parseInt(span.dataset.end || "0")
-          return (absoluteCharIndex >= start - 1 && absoluteCharIndex < end)
-        })
-
-        if (targetSpan && targetSpan !== currentHighlightRef.current) {
-          clearHighlights()
-          targetSpan.classList.add("highlight-word")
-          currentHighlightRef.current = targetSpan
-          if (!isUserScrolling.current) {
-            targetSpan.scrollIntoView({ behavior: window.innerWidth < 640 ? "auto" : "smooth", block: "center" })
-          }
-        }
+        setCurrentCharIndex(absoluteCharIndex)
       }
     }
 
     u.onend = () => {
-      // Don't reset if we are just switching rates
       if (isSwitching.current) return
-
       if (synth.current && !synth.current.paused) {
         setIsPlaying(false)
         setIsPaused(false)
-        setProgress(0)
+        setCurrentCharIndex(0)
         lastCharIndex.current = 0
         clearHighlights()
         stopFallbackTimer()
@@ -272,8 +275,6 @@ export const PostAudioPlayer = ({ contentSelector = "article", title }: PostAudi
 
     utterance.current = u
     synth.current.speak(u)
-    setIsPlaying(true)
-    setIsVisible(true)
   }
 
   const handlePlay = () => {
@@ -286,8 +287,6 @@ export const PostAudioPlayer = ({ contentSelector = "article", title }: PostAudi
       return
     }
 
-    // Instrumentation is now pre-loaded by useEffect in background
-    // If not ready, we fallback to a quick instrument before speaking
     const textReady = instrumentContent()
     if (!textReady) return
 
@@ -308,14 +307,13 @@ export const PostAudioPlayer = ({ contentSelector = "article", title }: PostAudi
       synth.current.cancel()
       setIsPlaying(false)
       setIsPaused(false)
-      setProgress(0)
+      setCurrentCharIndex(0)
       lastCharIndex.current = 0
       clearHighlights()
       stopFallbackTimer()
     }
   }
 
-  // Soft stop for switching rates without resetting progress UI
   const softStop = () => {
     if (synth.current) {
       synth.current.cancel()
@@ -332,7 +330,6 @@ export const PostAudioPlayer = ({ contentSelector = "article", title }: PostAudi
       const savedIndex = lastCharIndex.current
       isSwitching.current = true
       softStop()
-      // Increased timeout for mobile stability to let cancel() finish
       setTimeout(() => {
         speakFromIndex(savedIndex, nextRate)
         isSwitching.current = false
