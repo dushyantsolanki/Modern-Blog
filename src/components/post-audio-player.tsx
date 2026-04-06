@@ -80,9 +80,29 @@ export const PostAudioPlayer = ({ contentSelector = "article", title }: PostAudi
     }
   }, [contentSelector, title])
 
+  // Track user manual scrolling to prevent auto-scrolling conflicts on mobile
+  const isUserScrolling = useRef(false)
+  
   useEffect(() => {
-    localStorage.setItem(`audio-progress-${title}`, lastCharIndex.current.toString())
-  }, [progress, title])
+    const handleTouchStart = () => { isUserScrolling.current = true }
+    const handleTouchEnd = () => { 
+      // Reset after a delay to allow the momentum scroll to finish
+      setTimeout(() => { isUserScrolling.current = false }, 2000) 
+    }
+    window.addEventListener("touchstart", handleTouchStart)
+    window.addEventListener("touchend", handleTouchEnd)
+    return () => {
+      window.removeEventListener("touchstart", handleTouchStart)
+      window.removeEventListener("touchend", handleTouchEnd)
+    }
+  }, [])
+
+  // Instrumentation: Now triggered on mount/visibility and before play
+  useEffect(() => {
+    if (isVisible || isPlaying) {
+      instrumentContent()
+    }
+  }, [isVisible, isPlaying])
 
   const clearHighlights = () => {
     wordSpans.current.forEach(span => span.classList.remove("highlight-word"))
@@ -97,12 +117,24 @@ export const PostAudioPlayer = ({ contentSelector = "article", title }: PostAudi
     let accumulatedText = ""
 
     const walk = (node: Node) => {
-      if (node instanceof HTMLElement && (node.tagName === "SCRIPT" || node.tagName === "STYLE" || node.classList.contains("no-read"))) {
+      // Skip unwanted elements
+      if (node instanceof HTMLElement && (
+        node.tagName === "SCRIPT" || 
+        node.tagName === "STYLE" || 
+        node.tagName === "BUTTON" ||
+        node.tagName === "NAV" ||
+        node.classList.contains("no-read")
+      )) {
         return
       }
 
       if (node.nodeType === Node.TEXT_NODE) {
         const text = node.nodeValue || ""
+        if (!text.trim()) {
+           accumulatedText += text
+           return
+        }
+
         const fragment = document.createDocumentFragment()
         const parts = text.split(/(\b)/g) 
 
@@ -139,6 +171,9 @@ export const PostAudioPlayer = ({ contentSelector = "article", title }: PostAudi
   const speakFromIndex = (startIndex: number, currentRate: number) => {
     if (!synth.current) return
 
+    // Re-verify instrumentation before play (safety check)
+    instrumentContent()
+
     const totalText = fullText
     const textToRead = totalText.substring(startIndex)
     if (!textToRead) return
@@ -152,23 +187,33 @@ export const PostAudioPlayer = ({ contentSelector = "article", title }: PostAudi
       u.voice = selectedVoice
     }
 
+    // High-precision tracking for mobile
     u.onboundary = (event) => {
       if (event.name === "word") {
         const absoluteCharIndex = startIndex + event.charIndex
         lastCharIndex.current = absoluteCharIndex
         setProgress((absoluteCharIndex / totalText.length) * 100)
 
+        // Find the matching span using a flexible fuzzy match for boundary indices
         const targetSpan = wordSpans.current.find(span => {
           const start = parseInt(span.dataset.start || "0")
           const end = parseInt(span.dataset.end || "0")
-          return absoluteCharIndex >= start && absoluteCharIndex < end
+          // Allow for 1-char offset which happens on some mobile browsers
+          return (absoluteCharIndex >= start - 1 && absoluteCharIndex < end)
         })
 
         if (targetSpan && targetSpan !== currentHighlightRef.current) {
           clearHighlights()
           targetSpan.classList.add("highlight-word")
           currentHighlightRef.current = targetSpan
-          targetSpan.scrollIntoView({ behavior: "smooth", block: "center" })
+          
+          // Only auto-scroll if the user isn't manually scrolling
+          if (!isUserScrolling.current) {
+            targetSpan.scrollIntoView({ 
+              behavior: window.innerWidth < 640 ? "auto" : "smooth", 
+              block: "center" 
+            })
+          }
         }
       }
     }
