@@ -33,12 +33,30 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
+  // Lock body scroll when mobile menu is open
+  React.useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'unset'
+    }
+    return () => {
+      document.body.style.overflow = 'unset'
+    }
+  }, [isMobileMenuOpen])
+
+  // Close mobile menu on pathname change
+  React.useEffect(() => {
+    setIsMobileMenuOpen(false)
+  }, [pathname])
+
   return (
     <header
       style={{ viewTransitionName: "site-header" }}
       className={cn(
         "sticky top-0 z-50 w-full transition-all duration-300 border-b border-border/40",
-        isScrolled ? "bg-background/70 backdrop-blur-md" : "bg-background"
+        isScrolled ? "bg-background/70 backdrop-blur-md" : "bg-background",
+        isMobileMenuOpen && "fixed h-14 bg-background/95 backdrop-blur-2xl border-b-border/20"
       )}
     >
       <div className="h-14 flex items-center">
@@ -76,10 +94,18 @@ export function Navbar() {
 
             {/* Mobile Menu Toggle */}
             <button
-              className={getButtonClasses({ variant: "ghost", size: "icon", className: "md:hidden relative z-[110]" })}
+              className={getButtonClasses({ 
+                variant: "ghost", 
+                size: "icon", 
+                className: cn(
+                  "md:hidden relative z-[110] transition-colors",
+                  isMobileMenuOpen && "text-foreground"
+                ) 
+              })}
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
             >
-              {isMobileMenuOpen ? <X /> : <Menu />}
+              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
 
           </div>
