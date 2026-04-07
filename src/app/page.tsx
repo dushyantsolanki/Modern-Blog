@@ -1,3 +1,4 @@
+"use client"
 import * as React from "react"
 import Link from "next/link"
 import { Navbar } from "@/components/navbar"
@@ -10,6 +11,7 @@ import { FAQ } from "@/components/faq"
 import { Footer } from "@/components/footer"
 import { posts } from "@/lib/data"
 import { DirectionalTransition } from "@/components/view-transition/directional-transition"
+import { motion } from "framer-motion"
 
 
 const featuredSectionPosts = posts.slice(0, 3)
@@ -83,7 +85,13 @@ export default function Home() {
         <HeroCarousel posts={posts.slice(0, 4)} />
 
         {/* Featured Section */}
-        <section className="py-24">
+        <motion.section 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="py-24"
+        >
           <div className="container mx-auto px-6">
             <div className="mb-12">
               <h2 className="text-3xl font-extrabold mb-2 tracking-tight">Featured Article</h2>
@@ -97,7 +105,7 @@ export default function Home() {
               ))}
             </div>
           </div>
-        </section>
+        </motion.section>
 
         <section className="py-24 bg-surface-alt/50 border-y border-border overflow-hidden">
           <div className="container mx-auto px-6">
@@ -115,7 +123,13 @@ export default function Home() {
         </section>
 
         {/* Latest Articles */}
-        <section className="py-24">
+        <motion.section 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="py-24"
+        >
           <div className="container mx-auto px-6">
             <div className="flex items-end justify-between mb-16">
               <div>
@@ -140,7 +154,7 @@ export default function Home() {
               ))}
             </div>
           </div>
-        </section>
+        </motion.section>
 
         <FAQ />
 

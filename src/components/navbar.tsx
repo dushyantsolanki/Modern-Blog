@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation"
 import { ThemeToggle } from "./theme-toggle"
 import { motion, AnimatePresence } from "framer-motion"
 import { cn } from "@/lib/utils"
+import { OmniSearch } from "./blog/omni-search"
 
 const navLinks = [
   { name: "Home", href: "/" },
@@ -67,25 +68,7 @@ export function Navbar() {
 
 
           <div className="flex items-center gap-4">
-            {/* <form
-              onSubmit={(e) => {
-                e.preventDefault()
-                if (searchQuery.trim()) {
-                  router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`)
-                }
-              }}
-              className="hidden sm:flex items-center gap-2 px-4 py-2 bg-surface-alt rounded-full border border-transparent focus-within:border-primary focus-within:bg-background focus-within:shadow-md transition-all"
-            >
-              <Search className="w-4 h-4 text-muted-foreground" />
-              <input
-                type="search"
-                placeholder="Search articles..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="bg-transparent border-none outline-none text-sm w-32 focus:w-48 transition-all"
-              />
-            </form> */}
-
+            <OmniSearch />
             <ThemeToggle />
             <Link href="/#newsletter" className="hidden md:flex bg-foreground text-background dark:bg-white dark:text-black px-4 py-1.5 rounded-full text-[13px] font-medium hover:opacity-80 transition-opacity">
               Subscribe

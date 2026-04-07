@@ -14,6 +14,16 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   title: "Insight — A Modern Blog for Curious Minds",
   description: "Insight is a modern blog exploring ideas in technology, design, productivity and creativity. Join 12,000+ readers.",
+  manifest: "/manifest.json",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#000000" },
+  ],
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Insight",
+  },
 };
 
 export default function RootLayout({

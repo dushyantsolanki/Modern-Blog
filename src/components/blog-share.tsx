@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { Share2, Link as LinkIcon, Check } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 import { cn } from "@/lib/utils"
@@ -34,6 +34,11 @@ interface BlogShareProps {
 
 export const BlogShare = ({ url, title, className }: BlogShareProps) => {
   const [isCopied, setIsCopied] = useState(false)
+  const [canNativeShare, setCanNativeShare] = useState(false)
+
+  useEffect(() => {
+    setCanNativeShare(!!navigator.share)
+  }, [])
 
   const shareLinks = [
     {
@@ -78,8 +83,6 @@ export const BlogShare = ({ url, title, className }: BlogShareProps) => {
           console.error("Error sharing:", err)
         }
       }
-    } else {
-      handleCopyLink()
     }
   }
 
@@ -88,27 +91,31 @@ export const BlogShare = ({ url, title, className }: BlogShareProps) => {
       <span className="text-xs font-black text-muted-foreground uppercase tracking-[0.2em]">Share</span>
       
       <div className="flex items-center gap-2 p-1.5 glass rounded-full border border-white/20 shadow-lg shadow-black/5">
-        {shareLinks.map((link) => (
-          <motion.a
-            key={link.name}
-            href={link.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            whileHover={{ scale: 1.1, y: -2 }}
-            whileTap={{ scale: 0.9 }}
-            className={cn(
-              "w-10 h-10 flex items-center justify-center rounded-full transition-colors text-muted-foreground",
-              link.color,
-              "hover:bg-white dark:hover:bg-white/10"
-            )}
-            title={`Share on ${link.name}`}
-          >
-            <link.icon className="w-4.5 h-4.5" />
-          </motion.a>
-        ))}
+        {/* Desktop Custom Links (hidden on native-share heavy devices but selectable) */}
+        <div className="flex items-center gap-1">
+          {shareLinks.map((link) => (
+            <motion.a
+              key={link.name}
+              href={link.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ scale: 1.1, y: -2 }}
+              whileTap={{ scale: 0.9 }}
+              className={cn(
+                "w-10 h-10 flex items-center justify-center rounded-full transition-colors text-muted-foreground",
+                link.color,
+                "hover:bg-white dark:hover:bg-white/10"
+              )}
+              title={`Share on ${link.name}`}
+            >
+              <link.icon className="w-4.5 h-4.5" />
+            </motion.a>
+          ))}
+        </div>
 
         <div className="w-px h-6 bg-border/50 mx-1" />
 
+        {/* Copy Link Button */}
         <motion.button
           onClick={handleCopyLink}
           whileHover={{ scale: 1.1, y: -2 }}
@@ -144,15 +151,18 @@ export const BlogShare = ({ url, title, className }: BlogShareProps) => {
           </AnimatePresence>
         </motion.button>
 
-        <motion.button
-          onClick={handleNativeShare}
-          whileHover={{ scale: 1.1, y: -2 }}
-          whileTap={{ scale: 0.9 }}
-          className="w-10 h-10 flex items-center justify-center rounded-full text-muted-foreground hover:text-primary hover:bg-white dark:hover:bg-white/10 transition-all sm:hidden"
-          title="More Share Options"
-        >
-          <Share2 className="w-4.5 h-4.5" />
-        </motion.button>
+        {/* Native Share Button (High Visibility on Mobile) */}
+        {canNativeShare && (
+          <motion.button
+            onClick={handleNativeShare}
+            whileHover={{ scale: 1.1, y: -2 }}
+            whileTap={{ scale: 0.9 }}
+            className="w-10 h-10 flex items-center justify-center rounded-full text-primary bg-primary/10 hover:bg-primary/20 transition-all ml-1"
+            title="System Share"
+          >
+            <Share2 className="w-4.5 h-4.5" />
+          </motion.button>
+        )}
       </div>
       
       <AnimatePresence>
