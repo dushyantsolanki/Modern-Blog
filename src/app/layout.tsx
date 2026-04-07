@@ -43,8 +43,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <PwaSplash />
-          {children}
+          <PwaSplash>
+            {children}
+          </PwaSplash>
         </ThemeProvider>
         {/* <Script
           async
