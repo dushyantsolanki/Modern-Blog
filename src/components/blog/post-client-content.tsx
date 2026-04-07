@@ -17,6 +17,7 @@ import { PostAudioPlayer } from "@/components/post-audio-player"
 import { BlogShare } from "@/components/blog-share"
 import { ReadingProgress } from "@/components/blog/reading-progress"
 import { motion, AnimatePresence } from "framer-motion"
+import { ArticleSummarizer } from "@/components/article-summarizer"
 
 const tocItems = [
   { id: "section-1", title: "Current State of AI", level: 2 },
@@ -142,6 +143,9 @@ export default function PostClientContent({ post, slug }: { post: Post, slug: st
                       )}
                     </ViewTransition>
                   </div>
+
+                  {/* AI Article Summarizer */}
+                  <ArticleSummarizer summaryPoints={post.summaryPoints} />
 
                   <article className="prose prose-lg dark:prose-invert max-w-none prose-headings:font-extrabold prose-headings:text-foreground prose-p:text-muted-foreground prose-p:leading-relaxed prose-blockquote:border-primary prose-blockquote:bg-surface-alt prose-blockquote:p-8 prose-blockquote:rounded-md prose-blockquote:not-italic prose-strong:text-foreground prose-li:text-muted-foreground prose-ol:text-muted-foreground">
                     <p>The relationship between artificial intelligence and creative work has evolved dramatically over the past two years. What began as a novelty—generating amusing images from text prompts—has matured into a sophisticated ecosystem of tools that are fundamentally changing how designers, writers, and artists approach their craft.</p>
