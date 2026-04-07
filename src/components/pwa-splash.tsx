@@ -13,7 +13,7 @@ export function PwaSplash() {
     setMounted(true)
     const timer = setTimeout(() => {
       setIsVisible(false)
-    }, 5000) // Slightly longer for the premium reveal feel
+    }, 2200) // Slightly longer for the premium reveal feel
 
     return () => clearTimeout(timer)
   }, [])
@@ -33,7 +33,46 @@ export function PwaSplash() {
           }}
           className="fixed inset-0 z-[9999] flex items-center justify-center bg-background pointer-events-none"
         >
-          <div className="relative flex flex-col items-center">
+          <div className="relative flex items-center justify-center">
+            {/* Volumetric Spreading Light (Centered behind Insight) */}
+            <div className="absolute flex items-center justify-center">
+              {/* Intense Core Glow */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{
+                  opacity: [0, 0.4, 0.3],
+                  scale: [0.5, 1.2, 1.1]
+                }}
+                transition={{ duration: 3, ease: "easeOut" }}
+                className="absolute w-[150px] h-[150px] md:w-[300px] md:h-[300px] rounded-full bg-primary/20 blur-[40px] pointer-events-none"
+              />
+
+              {/* Large Spreading Aura */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.3 }}
+                animate={{
+                  opacity: [0, 0.1, 0.05],
+                  scale: [0.3, 2, 1.8]
+                }}
+                transition={{ duration: 4, ease: "circOut", delay: 0.5 }}
+                className="absolute w-[300px] h-[300px] md:w-[600px] md:h-[600px] rounded-full bg-primary/10 blur-[80px] pointer-events-none"
+              />
+
+              {/* Rotating Conic Light Sweep */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{
+                  opacity: [0, 0.08, 0.04],
+                  rotate: 360
+                }}
+                transition={{
+                  opacity: { duration: 2.5 },
+                  rotate: { duration: 12, repeat: Infinity, ease: "linear" }
+                }}
+                className="absolute w-[400px] h-[400px] md:w-[800px] md:h-[800px] rounded-full bg-[conic-gradient(from_0deg,transparent_0%,var(--color-primary)_50%,transparent_100%)] blur-[100px] opacity-10"
+              />
+            </div>
+
             {/* Branding Text with Typewriter Effect */}
             <motion.div
               initial="hidden"
