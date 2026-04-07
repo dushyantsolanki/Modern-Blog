@@ -1,11 +1,11 @@
 {
   "name": "Insight Blog",
   "short_name": "Insight",
-  "description": "A premium technology and design blog.",
+  "description": "Insight — A Modern Blog for Curious Minds.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#000000",
+  "background_color": "#000000",
+  "theme_color": "#2563EB",
   "icons": [
     {
       "src": "/next.svg",

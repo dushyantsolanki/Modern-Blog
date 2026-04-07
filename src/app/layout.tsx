@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import { PwaSplash } from "@/components/pwa-splash";
 import Script from "next/script";
 
 const inter = Inter({
@@ -42,6 +43,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <PwaSplash />
           {children}
         </ThemeProvider>
         {/* <Script

@@ -1,0 +1,109 @@
+"use client"
+
+import * as React from "react"
+import { motion, AnimatePresence } from "framer-motion"
+import { useTheme } from "next-themes"
+
+export function PwaSplash() {
+  const [isVisible, setIsVisible] = React.useState(true)
+  const { resolvedTheme } = useTheme()
+  const [mounted, setMounted] = React.useState(false)
+
+  React.useEffect(() => {
+    setMounted(true)
+    const timer = setTimeout(() => {
+      setIsVisible(false)
+    }, 5000) // Slightly longer for the premium reveal feel
+
+    return () => clearTimeout(timer)
+  }, [])
+
+  if (!mounted) return null
+
+  return (
+    <AnimatePresence>
+      {isVisible && (
+        <motion.div
+          initial={{ opacity: 1 }}
+          exit={{
+            opacity: 0,
+            scale: 1.05,
+            filter: "blur(20px)",
+            transition: { duration: 0.8, ease: [0.32, 0.72, 0, 1] }
+          }}
+          className="fixed inset-0 z-[9999] flex items-center justify-center bg-background pointer-events-none"
+        >
+          <div className="relative flex flex-col items-center">
+            {/* Branding Text with Typewriter Effect */}
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              variants={{
+                visible: {
+                  transition: {
+                    staggerChildren: 0.08,
+                    delayChildren: 0.5
+                  }
+                }
+              }}
+              className="flex flex-col items-center"
+            >
+              <h1 className="text-6xl md:text-8xl font-black tracking-[-0.05em] text-foreground selection:bg-transparent flex items-baseline">
+                {"Insight".split("").map((char, i) => (
+                  <motion.span
+                    key={i}
+                    variants={{
+                      hidden: { opacity: 0, y: 15, filter: "blur(8px)", scale: 0.9 },
+                      visible: {
+                        opacity: 1,
+                        y: 0,
+                        filter: "blur(0px)",
+                        scale: 1,
+                        transition: {
+                          duration: 0.8,
+                          ease: [0.32, 0.72, 0, 1]
+                        }
+                      }
+                    }}
+                  >
+                    {char}
+                  </motion.span>
+                ))}
+                <motion.span
+                  variants={{
+                    hidden: { opacity: 0, scale: 0 },
+                    visible: {
+                      opacity: 1,
+                      scale: 1,
+                      transition: {
+                        type: "spring",
+                        stiffness: 200,
+                        damping: 10,
+                        delay: 1.2
+                      }
+                    }
+                  }}
+                  className="text-primary ml-1"
+                >
+                  .
+                </motion.span>
+              </h1>
+
+            </motion.div>
+          </div>
+
+          {/* Background Ambient Glow (Refined Apple Style) */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 0.07, scale: 1 }}
+            transition={{ duration: 2.5, ease: "easeOut" }}
+            className="absolute inset-0 bg-[radial-gradient(circle_at_center,var(--color-primary)_0%,transparent_65%)] pointer-events-none"
+          />
+
+          {/* Subtle noise texture for "physical" screen depth */}
+          <div className="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-overlay bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
+        </motion.div>
+      )}
+    </AnimatePresence>
+  )
+}
