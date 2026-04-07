@@ -1,5 +1,6 @@
 import * as React from "react"
 import { motion } from "framer-motion"
+import { Button } from "@/components/ui/button"
 
 export function Newsletter() {
   return (
@@ -21,12 +22,12 @@ export function Newsletter() {
               className="flex-1 px-6 py-4 bg-transparent outline-none text-lg"
               aria-label="Email address"
             />
-            <button
+            <Button
               type="submit"
-              className="bg-accent text-white px-8 py-4 rounded-xl font-bold text-lg hover:shadow-lg hover:shadow-accent/30 transition-all"
+              size="lg"
             >
               Subscribe
-            </button>
+            </Button>
           </form>
 
           <p className="mt-6 text-sm text-muted-foreground flex items-center justify-center gap-2">

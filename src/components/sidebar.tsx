@@ -1,6 +1,7 @@
 import * as React from "react"
 import Link from "next/link"
 import { GoogleAd } from "@/components/google-ad"
+import { Button } from "@/components/ui/button"
 
 const categories = [
   { name: "Technology", count: 42, href: "/category/technology" },
@@ -80,9 +81,11 @@ export function Sidebar() {
             className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-sm placeholder:text-white/50 focus:bg-white/20 outline-none transition-all"
             required
           />
-          <button className="w-full py-3 bg-white text-primary rounded-xl font-bold text-sm hover:bg-white/90 transition-all">
+          <Button 
+            className="w-full h-12 bg-white text-primary hover:bg-white/90 hover:scale-[1.02] active:scale-[0.98] shadow-none"
+          >
             Subscribe Free
-          </button>
+          </Button>
         </form>
       </div>
 

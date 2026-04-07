@@ -6,6 +6,7 @@ import { Footer } from "@/components/footer"
 import { motion, AnimatePresence } from "framer-motion"
 import { Mail, Globe, MessageSquare, ArrowRight, CheckCircle2 } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
 import { DirectionalTransition } from "@/components/view-transition/directional-transition"
 
 const contactMethods = [
@@ -138,12 +139,14 @@ export default function ContactPage() {
                       <p className="text-lg text-muted-foreground max-w-sm mx-auto mb-8 font-medium">
                         Thank you for reaching out. A member of our team will get back to you shortly.
                       </p>
-                      <button 
+                      <Button
+                        variant="ghost"
+                        size="sm"
                         onClick={() => setIsSubmitted(false)}
-                        className="text-sm font-bold hover:text-primary transition-colors flex items-center gap-2"
+                        className="text-sm font-bold hover:text-primary transition-colors flex items-center gap-2 mt-4"
                       >
                         Send another message <ArrowRight className="w-4 h-4" />
-                      </button>
+                      </Button>
                     </motion.div>
                   ) : (
                     <motion.form
@@ -199,18 +202,14 @@ export default function ContactPage() {
                         />
                       </div>
 
-                      <motion.button
-                        whileHover={{ scale: 1.01 }}
-                        whileTap={{ scale: 0.98 }}
+                      <Button
                         disabled={isSubmitting}
                         type="submit"
-                        className={cn(
-                          "w-full py-6 rounded-[1.5rem] font-bold text-lg transition-all",
-                          isSubmitting ? "bg-muted text-muted-foreground" : "bg-primary text-white shadow-xl shadow-primary/20 hover:shadow-2xl hover:shadow-primary/30"
-                        )}
+                        size="lg"
+                        className="w-full text-lg h-16 rounded-[1.5rem]"
                       >
                         {isSubmitting ? "Sending..." : "Send Message."}
-                      </motion.button>
+                      </Button>
                     </motion.form>
                   )}
                 </AnimatePresence>

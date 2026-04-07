@@ -191,7 +191,7 @@ const Button = forwardRef<HTMLButtonElement, ComponentProps<'button'>>(function 
     <button
       ref={ref}
       type="button"
-      className={`media-button media-button--subtle media-button--icon ${className ?? ''}`}
+      className={`media-button media-button--subtle media-button--icon active:scale-95 transition-transform duration-200 ${className ?? ''}`}
       {...props}
     />
   );

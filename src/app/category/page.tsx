@@ -3,7 +3,7 @@
 import * as React from "react"
 import { motion } from "framer-motion"
 import { Navbar } from "@/components/navbar"
-import { CategoryCard } from "@/components/category-card"
+import { InfiniteScrollCategories } from "@/components/category/infinite-scroll-categories"
 import { Footer } from "@/components/footer"
 import { Newsletter } from "@/components/newsletter"
 import { DirectionalTransition } from "@/components/view-transition/directional-transition"
@@ -33,6 +33,140 @@ const allCategories = [
     image: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=800&auto=format&fit=crop",
     color: "#EC4899"
   },
+  {
+    title: "Creativity",
+    count: 24,
+    image: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=800&auto=format&fit=crop",
+    color: "#EC4899"
+  },
+  {
+    title: "Creativity",
+    count: 24,
+    image: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=800&auto=format&fit=crop",
+    color: "#EC4899"
+  },
+  {
+    title: "Creativity",
+    count: 24,
+    image: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=800&auto=format&fit=crop",
+    color: "#EC4899"
+  },
+  {
+    title: "Creativity",
+    count: 24,
+    image: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=800&auto=format&fit=crop",
+    color: "#EC4899"
+  },
+  {
+    title: "Creativity",
+    count: 24,
+    image: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=800&auto=format&fit=crop",
+    color: "#EC4899"
+  },
+  {
+    title: "Creativity",
+    count: 24,
+    image: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=800&auto=format&fit=crop",
+    color: "#EC4899"
+  },
+  {
+    title: "Creativity",
+    count: 24,
+    image: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=800&auto=format&fit=crop",
+    color: "#EC4899"
+  },
+  {
+    title: "Creativity",
+    count: 24,
+    image: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=800&auto=format&fit=crop",
+    color: "#EC4899"
+  },
+  {
+    title: "Creativity",
+    count: 24,
+    image: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=800&auto=format&fit=crop",
+    color: "#EC4899"
+  },
+  {
+    title: "Creativity",
+    count: 24,
+    image: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=800&auto=format&fit=crop",
+    color: "#EC4899"
+  },
+  {
+    title: "Creativity",
+    count: 24,
+    image: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=800&auto=format&fit=crop",
+    color: "#EC4899"
+  },
+  {
+    title: "Creativity",
+    count: 24,
+    image: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=800&auto=format&fit=crop",
+    color: "#EC4899"
+  },
+  {
+    title: "Creativity",
+    count: 24,
+    image: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=800&auto=format&fit=crop",
+    color: "#EC4899"
+  },
+  {
+    title: "Creativity",
+    count: 24,
+    image: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=800&auto=format&fit=crop",
+    color: "#EC4899"
+  },
+  {
+    title: "Creativity",
+    count: 24,
+    image: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=800&auto=format&fit=crop",
+    color: "#EC4899"
+  },
+
+  {
+    title: "Creativity",
+    count: 24,
+    image: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=800&auto=format&fit=crop",
+    color: "#EC4899"
+  },
+  {
+    title: "Creativity",
+    count: 24,
+    image: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=800&auto=format&fit=crop",
+    color: "#EC4899"
+  },
+  {
+    title: "Creativity",
+    count: 24,
+    image: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=800&auto=format&fit=crop",
+    color: "#EC4899"
+  },
+  {
+    title: "Creativity",
+    count: 24,
+    image: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=800&auto=format&fit=crop",
+    color: "#EC4899"
+  },
+  {
+    title: "Creativity",
+    count: 24,
+    image: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=800&auto=format&fit=crop",
+    color: "#EC4899"
+  },
+  {
+    title: "Creativity",
+    count: 24,
+    image: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=800&auto=format&fit=crop",
+    color: "#EC4899"
+  },
+  {
+    title: "Creativity",
+    count: 24,
+    image: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=800&auto=format&fit=crop",
+    color: "#EC4899"
+  },
+
   {
     title: "Wellness",
     count: 18,
@@ -77,51 +211,40 @@ const item = {
 export default function CategoriesPage() {
   return (
     <DirectionalTransition>
-    <div className="flex flex-col min-h-screen">
-      <Navbar />
-      <main className="flex-1">
-        {/* Page Header - Minimalist Editorial Style */}
-        <section className="pt-32 mb-8 text-center">
-          <div className="container mx-auto px-6">
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="text-6xl lg:text-8xl font-black tracking-tight mb-8"
-            >
-              Stories. <span className="text-muted-foreground/30">Expertly Told.</span>
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="max-w-xl mx-auto text-lg text-muted-foreground/80 font-medium leading-relaxed"
-            >
-              Curated perspectives on technology, design, and the future of work.
-            </motion.p>
-          </div>
-        </section>
+      <div className="flex flex-col min-h-screen">
+        <Navbar />
+        <main className="flex-1">
+          {/* Page Header - Minimalist Editorial Style */}
+          <section className="pt-32 mb-8 text-center">
+            <div className="container mx-auto px-6">
+              <motion.h1
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="text-6xl lg:text-8xl font-black tracking-tight mb-8"
+              >
+                Stories. <span className="text-muted-foreground/30">Expertly Told.</span>
+              </motion.h1>
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+                className="max-w-xl mx-auto text-lg text-muted-foreground/80 font-medium leading-relaxed"
+              >
+                Curated perspectives on technology, design, and the future of work.
+              </motion.p>
+            </div>
+          </section>
 
-        <section className="py-10">
-          <div className="container mx-auto px-6 lg:px-12">
-            <motion.div
-              variants={container}
-              initial="hidden"
-              animate="show"
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10 lg:gap-12"
-            >
-              {allCategories.map((cat, i) => (
-                <motion.div key={i} variants={item}>
-                  <CategoryCard {...cat} />
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
-        </section>
+          <section className="py-10">
+            <div className="container mx-auto px-6 lg:px-12">
+              <InfiniteScrollCategories categories={allCategories} />
+            </div>
+          </section>
 
-        <Newsletter />
-      </main>
-      <Footer />
-    </div>
+          <Newsletter />
+        </main>
+        <Footer />
+      </div>
     </DirectionalTransition>
   )
 }

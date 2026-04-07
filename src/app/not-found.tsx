@@ -4,6 +4,7 @@ import Link from "next/link"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { Home, ArrowLeft } from "lucide-react"
+import { getButtonClasses, Button } from "@/components/ui/button"
 
 export default function NotFound() {
   return (
@@ -31,18 +32,20 @@ export default function NotFound() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
               href="/"
-              className="flex items-center gap-2 px-8 py-4 bg-primary text-white rounded-2xl font-bold hover:bg-primary-dark transition-all hover:scale-105 active:scale-95 shadow-xl shadow-primary/20"
+              className={getButtonClasses({ variant: "primary", size: "lg", className: "gap-2" })}
             >
               <Home className="w-5 h-5" />
               Back to Home
             </Link>
-            <button
+            <Button
+              variant="secondary"
+              size="lg"
+              className="gap-2"
               onClick={() => window.history.back()}
-              className="flex items-center gap-2 px-8 py-4 bg-surface-alt border border-border rounded-2xl font-bold hover:bg-muted transition-all"
             >
               <ArrowLeft className="w-5 h-5" />
               Previous Page
-            </button>
+            </Button>
           </div>
         </div>
       </main>

@@ -5,6 +5,7 @@ import { motion } from "framer-motion"
 import { ArrowRight } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { ViewTransition } from "react"
+import { getButtonClasses } from "@/components/ui/button"
 
 
 
@@ -104,11 +105,10 @@ export function PostCard({
           </Link>
           <Link
             href={`/blog/${slug}`}
-            transitionTypes={['nav-forward']}
-            className="flex items-center gap-1 text-sm font-semibold text-primary group/link hover:gap-2 transition-all"
+            className={getButtonClasses({ variant: "ghost", size: "sm", className: "text-primary hover:text-primary-dark group/link gap-2 -mr-2" })}
           >
-
-            Read More <ArrowRight className="w-4 h-4" />
+            Read More
+            <ArrowRight className="w-4 h-4 transition-transform group-hover/link:translate-x-1" />
           </Link>
 
 

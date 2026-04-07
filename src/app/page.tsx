@@ -12,6 +12,8 @@ import { Footer } from "@/components/footer"
 import { posts } from "@/lib/data"
 import { DirectionalTransition } from "@/components/view-transition/directional-transition"
 import { motion } from "framer-motion"
+import { ArrowRight } from "lucide-react"
+import { getButtonClasses } from "@/components/ui/button"
 
 
 const featuredSectionPosts = posts.slice(0, 3)
@@ -116,6 +118,13 @@ export default function Home() {
                   Dive into the topics that matter most to you and discover fresh perspectives.
                 </p>
               </div>
+              <Link
+                href="/category"
+                className={getButtonClasses({ variant: "secondary", size: "sm", className: "gap-2 group shadow-none border-none bg-surface-alt/80 hover:bg-surface-alt" })}
+              >
+                View All Categories
+                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+              </Link>
             </div>
 
             <CategoryCarousel categories={categories} />
@@ -138,12 +147,10 @@ export default function Home() {
               </div>
               <Link
                 href="/blog"
-                // transitionTypes is experimental
-                // @ts-ignore
-                transitionTypes={['nav-forward']}
-                className="text-primary font-bold hover:underline mb-1"
+                className={getButtonClasses({ variant: "secondary", size: "sm", className: "gap-2 group shadow-none border-none bg-surface-alt/80 hover:bg-surface-alt" })}
               >
-                View All Articles →
+                View All Articles
+                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </Link>
 
             </div>

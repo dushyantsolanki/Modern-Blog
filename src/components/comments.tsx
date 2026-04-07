@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { Button } from "@/components/ui/button"
 
 interface Comment {
   id: string
@@ -61,7 +62,7 @@ export function Comments() {
 
   return (
     <section className="mt-12">
-      <h2 className="text-xl font-semibold mb-8 font-poppins text-foreground">
+      <h2 className="text-xl font-semibold mb-8 text-foreground">
         Comments ({comments.length})
       </h2>
 
@@ -86,7 +87,7 @@ export function Comments() {
       </div>
 
       <div className="mt-8 pt-8 border-t border-border/10">
-        <h3 className="text-lg font-semibold mb-6 font-poppins text-foreground">
+        <h3 className="text-lg font-semibold mb-6 text-foreground">
           Leave a Comment
         </h3>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -117,12 +118,11 @@ export function Comments() {
             />
           </div>
 
-          <button
+          <Button
             type="submit"
-            className="px-6 py-3 bg-primary text-white font-semibold text-sm rounded-md transition-all hover:bg-primary-dark active:scale-[0.97] shadow-sm hover:shadow-md"
           >
             Post Comment
-          </button>
+          </Button>
         </form>
       </div>
     </section>

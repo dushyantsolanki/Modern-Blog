@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation"
 import { ThemeToggle } from "./theme-toggle"
 import { motion, AnimatePresence } from "framer-motion"
 import { cn } from "@/lib/utils"
-import { OmniSearch } from "./blog/omni-search"
+import { getButtonClasses } from "@/components/ui/button"
 
 const navLinks = [
   { name: "Home", href: "/" },
@@ -68,16 +68,15 @@ export function Navbar() {
 
 
           <div className="flex items-center gap-4">
-            <OmniSearch />
             <ThemeToggle />
-            <Link href="/#newsletter" className="hidden md:flex bg-foreground text-background dark:bg-white dark:text-black px-4 py-1.5 rounded-full text-[13px] font-medium hover:opacity-80 transition-opacity">
+            <Link href="/#newsletter" className={getButtonClasses({ variant: "primary", size: "sm", className: "hidden md:flex" })}>
               Subscribe
             </Link>
 
 
             {/* Mobile Menu Toggle */}
             <button
-              className="md:hidden p-2 text-foreground relative z-[110]"
+              className={getButtonClasses({ variant: "ghost", size: "icon", className: "md:hidden relative z-[110]" })}
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
               {isMobileMenuOpen ? <X /> : <Menu />}
@@ -127,7 +126,7 @@ export function Navbar() {
               >
                 <Link
                   href="/#newsletter"
-                  className="w-full flex justify-center bg-foreground text-background dark:bg-white dark:text-black py-4 rounded-2xl font-bold text-lg active:scale-95 transition-transform"
+                  className={getButtonClasses({ variant: "primary", size: "lg", className: "w-full text-lg" })}
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Subscribe

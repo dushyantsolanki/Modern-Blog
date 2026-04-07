@@ -4,6 +4,7 @@ import * as React from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { ChevronDown } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
 
 const faqs = [
   {
@@ -107,13 +108,12 @@ export function FAQ() {
               <p className="text-lg text-muted-foreground leading-relaxed mb-8">
                 Everything you need to know about Insight. If you can't find the answer you're looking for, feel free to reach out.
               </p>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="px-6 py-3 bg-surface border border-border rounded-xl font-bold text-sm shadow-sm hover:shadow-md transition-all"
+              <Button
+                variant="outline"
+                className="px-6 py-3 font-bold text-sm shadow-sm hover:shadow-md h-auto"
               >
                 Get in touch
-              </motion.button>
+              </Button>
             </motion.div>
           </div>
 

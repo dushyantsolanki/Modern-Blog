@@ -4,6 +4,7 @@ import * as React from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Search, LayoutGrid, List, SlidersHorizontal, X } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { getButtonClasses } from "@/components/ui/button"
 
 interface BlogFilterBarProps {
   onSearchChange: (query: string) => void
@@ -57,13 +58,12 @@ export function BlogFilterBar({
 
           {/* Filter Action (Tactile Feedback) */}
           <div className="relative z-10 flex items-center pl-2">
-            <motion.button
-              whileTap={{ scale: 0.92 }}
-              transition={{ duration: 0.1 }}
-              className="p-3 rounded-full hover:bg-black/[0.03] dark:hover:bg-white/[0.05] text-muted-foreground/40 hover:text-foreground transition-colors group"
+            <button
+              onClick={() => {}}
+              className={getButtonClasses({ variant: "ghost", size: "icon", className: "h-10 w-10 text-muted-foreground/40 hover:text-foreground" })}
             >
-              <SlidersHorizontal className="w-4 h-4 group-hover:text-foreground transition-colors" />
-            </motion.button>
+              <SlidersHorizontal className="w-4 h-4" />
+            </button>
           </div>
 
           {/* Centered Premium Search */}
@@ -92,42 +92,38 @@ export function BlogFilterBar({
             {/* Clear Button - Non-jarring Entrance */}
             <AnimatePresence>
               {searchQuery && (
-                <motion.button
-                  initial={{ opacity: 0, scale: 0.9, x: 5 }}
-                  animate={{ opacity: 1, scale: 1, x: 0 }}
-                  exit={{ opacity: 0, scale: 0.9, x: 5 }}
-                  whileTap={{ scale: 0.9 }}
+                <button
                   onClick={() => { setSearchQuery(""); onSearchChange(""); }}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full hover:bg-black/[0.05] dark:hover:bg-white/[0.1] text-muted-foreground/40 hover:text-foreground transition-colors z-20"
+                  className={getButtonClasses({ variant: "ghost", size: "icon", className: "absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 text-muted-foreground/40 hover:text-foreground z-20" })}
                 >
                   <X className="w-4 h-4" />
-                </motion.button>
+                </button>
               )}
             </AnimatePresence>
           </div>
 
           {/* Functional View Toggles (Snappy Responses) */}
           <div className="relative z-10 flex items-center gap-1.5 pr-1.5 border-l border-border/50 dark:border-white/5 ml-2 pl-3">
-            <motion.button
-              whileTap={{ scale: 0.92 }}
+            <button
               onClick={() => onViewChange('grid')}
-              className={cn(
-                "p-3 rounded-full transition-[background-color,color] duration-300",
-                currentView === 'grid' ? "bg-black/10 dark:bg-white/10 text-foreground" : "text-muted-foreground/30 hover:text-foreground/60"
-              )}
+              className={getButtonClasses({ 
+                variant: currentView === 'grid' ? "secondary" : "ghost", 
+                size: "icon", 
+                className: cn("h-10 w-10", currentView !== 'grid' && "text-muted-foreground/30") 
+              })}
             >
               <LayoutGrid className="w-4 h-4" />
-            </motion.button>
-            <motion.button
-              whileTap={{ scale: 0.92 }}
+            </button>
+            <button
               onClick={() => onViewChange('list')}
-              className={cn(
-                "p-3 rounded-full transition-[background-color,color] duration-300",
-                currentView === 'list' ? "bg-black/10 dark:bg-white/10 text-foreground" : "text-muted-foreground/30 hover:text-foreground/60"
-              )}
+              className={getButtonClasses({ 
+                variant: currentView === 'list' ? "secondary" : "ghost", 
+                size: "icon", 
+                className: cn("h-10 w-10", currentView !== 'list' && "text-muted-foreground/30") 
+              })}
             >
               <List className="w-4 h-4" />
-            </motion.button>
+            </button>
           </div>
         </motion.div>
       </div>

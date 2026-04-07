@@ -1,6 +1,7 @@
 import * as React from "react"
 import Link from "next/link"
 import { Globe, Share2, MessageSquare, Rss } from "lucide-react"
+import { Button } from "@/components/ui/button"
 
 const footerLinks = {
   navigation: [
@@ -42,14 +43,17 @@ export function Footer() {
             </p>
             <div className="flex gap-3 mt-6">
               {footerLinks.social.map((item) => (
-                <a
+                <Button
                   key={item.name}
-                  href={item.href}
-                  className="flex items-center justify-center w-10 h-10 rounded-xl bg-white/5 text-[#94A3B8] hover:bg-primary-light hover:text-white hover:-translate-y-1 transition-all"
-                  aria-label={item.name}
+                  variant="ghost"
+                  size="icon"
+                  asChild
+                  className="w-10 h-10 rounded-xl bg-white/5 text-[#94A3B8] hover:bg-primary-light hover:text-white hover:-translate-y-1 transition-all p-0"
                 >
-                  <item.icon className="w-4.5 h-4.5" />
-                </a>
+                  <a href={item.href} aria-label={item.name}>
+                    <item.icon className="w-4.5 h-4.5" />
+                  </a>
+                </Button>
               ))}
             </div>
           </div>
@@ -110,12 +114,13 @@ export function Footer() {
                 className="flex-1 px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-[#F8FAFC] text-sm focus:border-primary-light transition-colors outline-none"
                 aria-label="Email for newsletter"
               />
-              <button
+              <Button
                 type="submit"
-                className="bg-primary text-white w-20 px-4 py-2 rounded-lg text-sm font-medium hover:opacity-90 transition-opacity"
+                size="sm"
+                className="w-20 rounded-lg h-9"
               >
                 Go
-              </button>
+              </Button>
             </form>
           </div>
         </div>

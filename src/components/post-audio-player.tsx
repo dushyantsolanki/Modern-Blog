@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from "react"
 import { Play, Pause, Square, Volume2, X, ChevronUp, ChevronDown } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 import { cn } from "@/lib/utils"
+import { Button, getButtonClasses } from "@/components/ui/button"
 
 interface PostAudioPlayerProps {
   contentSelector?: string
@@ -375,9 +376,14 @@ export const PostAudioPlayer = ({ contentSelector = "article", title }: PostAudi
                     <div className="flex-1 min-w-0 pr-4">
                       <h4 className="text-[13px] font-bold truncate tracking-tight">{title}</h4>
                     </div>
-                    <button onClick={() => setIsExpanded(true)} className="p-2 hover:bg-muted font-bold rounded-full transition-colors">
+                    <Button 
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => setIsExpanded(true)} 
+                      className="p-2 h-10 w-10"
+                    >
                       <ChevronUp className="w-5 h-5" />
-                    </button>
+                    </Button>
                   </div>
                 ) : (
                   <>
@@ -398,12 +404,22 @@ export const PostAudioPlayer = ({ contentSelector = "article", title }: PostAudi
                       </div>
 
                       <div className="flex sm:hidden items-center gap-1">
-                        <button onClick={() => setIsExpanded(false)} className="p-2 hover:bg-muted rounded-full">
+                        <Button 
+                          variant="ghost" 
+                          size="icon" 
+                          onClick={() => setIsExpanded(false)} 
+                          className="w-8 h-8 rounded-full"
+                        >
                           <ChevronDown className="w-4 h-4 text-muted-foreground" />
-                        </button>
-                        <button onClick={() => { handleStop(); setIsVisible(false); }} className="p-2 hover:bg-error/10 text-error/60 rounded-full">
+                        </Button>
+                        <Button 
+                          variant="ghost" 
+                          size="icon" 
+                          onClick={() => { handleStop(); setIsVisible(false); }} 
+                          className="w-8 h-8 rounded-full text-error/60 hover:bg-error/10 hover:text-error"
+                        >
                           <X className="w-4 h-4" />
-                        </button>
+                        </Button>
                       </div>
                     </div>
 
@@ -419,30 +435,58 @@ export const PostAudioPlayer = ({ contentSelector = "article", title }: PostAudi
                     </div>
 
                     <div className="flex items-center justify-between sm:justify-end gap-3 sm:gap-4 w-full sm:w-auto mt-1 sm:mt-0">
-                      <button onClick={toggleRate} className="w-10 h-10 sm:w-11 sm:h-11 rounded-full hover:bg-muted font-bold flex items-center justify-center text-[10px] border border-border/50 transition-all shrink-0">
+                      <Button 
+                        variant="outline" 
+                        size="icon" 
+                        onClick={toggleRate} 
+                        className="w-10 h-10 sm:w-11 sm:h-11 rounded-full text-[10px] shrink-0"
+                      >
                         {rate}x
-                      </button>
+                      </Button>
                       <div className="flex items-center gap-2 bg-muted/40 dark:bg-white/5 rounded-full p-1.5 border border-border/50 flex-1 sm:flex-none justify-center">
                         {isPlaying ? (
-                          <button onClick={handlePause} className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-primary text-white flex items-center justify-center shadow-lg shadow-primary/30 active:scale-90 transition-transform">
+                          <Button 
+                            onClick={handlePause} 
+                            size="icon"
+                            className="w-10 h-10 sm:w-11 sm:h-11 rounded-full shadow-lg shadow-primary/30"
+                          >
                             <Pause className="w-5 h-5 sm:w-6 sm:h-6 fill-current" />
-                          </button>
+                          </Button>
                         ) : (
-                          <button onClick={handlePlay} className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-primary text-white flex items-center justify-center shadow-lg shadow-primary/30 active:scale-90 transition-transform">
+                          <Button 
+                            onClick={handlePlay} 
+                            size="icon"
+                            className="w-10 h-10 sm:w-11 sm:h-11 rounded-full shadow-lg shadow-primary/30"
+                          >
                             <Play className="w-5 h-5 sm:w-6 sm:h-6 fill-current ml-1" />
-                          </button>
+                          </Button>
                         )}
-                        <button onClick={handleStop} className="w-10 h-10 sm:w-11 sm:h-11 rounded-full hover:bg-muted text-muted-foreground flex items-center justify-center transition-colors">
+                        <Button 
+                          variant="ghost" 
+                          size="icon" 
+                          onClick={handleStop} 
+                          className="w-10 h-10 sm:w-11 sm:h-11 rounded-full text-muted-foreground"
+                        >
                           <Square className="w-4 h-4 fill-current" />
-                        </button>
+                        </Button>
                       </div>
                       <div className="hidden sm:flex flex-col gap-1.5">
-                        <button onClick={() => setIsExpanded(false)} className="p-1.5 hover:bg-muted rounded-full transition-colors">
+                        <Button 
+                          variant="ghost" 
+                          size="icon" 
+                          onClick={() => setIsExpanded(false)} 
+                          className="h-8 w-8 rounded-full"
+                        >
                           <ChevronDown className="w-5 h-5 text-muted-foreground" />
-                        </button>
-                        <button onClick={() => { handleStop(); setIsVisible(false); }} className="p-1.5 hover:bg-error/10 text-error/60 rounded-full transition-colors">
+                        </Button>
+                        <Button 
+                          variant="ghost" 
+                          size="icon" 
+                          onClick={() => { handleStop(); setIsVisible(false); }} 
+                          className="h-8 w-8 rounded-full text-error/60 hover:bg-error/10 hover:text-error"
+                        >
                           <X className="w-5 h-5" />
-                        </button>
+                        </Button>
                       </div>
                     </div>
                   </>
@@ -456,7 +500,9 @@ export const PostAudioPlayer = ({ contentSelector = "article", title }: PostAudi
       {!isVisible && (
         <button
           onClick={handlePlay}
-          className="flex items-center gap-3 sm:gap-4 px-4 sm:px-6 py-3 sm:py-4 rounded-xl sm:rounded-2xl glass border border-primary/20 hover:border-primary/40 transition-all group my-6 sm:my-8 w-fit"
+          className={cn(
+            getButtonClasses({ variant: "glass", className: "flex items-center gap-3 sm:gap-4 px-4 sm:px-6 py-3 sm:py-6 glass border border-primary/20 hover:border-primary/40 transition-all group my-6 sm:my-8 w-fit h-auto rounded-2xl" })
+          )}
         >
           <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-primary flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform">
             <Play className="w-5 h-5 sm:w-6 sm:h-6 fill-current ml-1" />

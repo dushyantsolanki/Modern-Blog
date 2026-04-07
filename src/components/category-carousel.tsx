@@ -6,6 +6,7 @@ import { motion } from "framer-motion"
 import useEmblaCarousel from "embla-carousel-react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
 
 interface Category {
   title: string
@@ -45,28 +46,32 @@ export function CategoryCarousel({ categories }: CategoryCarouselProps) {
     <div className="relative group/carousel">
       {/* Navigation Buttons */}
       <div className="absolute -top-16 right-0 flex items-center gap-2">
-        <button
+        <Button
+          variant="outline"
+          size="icon"
           onClick={() => emblaApi?.scrollPrev()}
           disabled={!canScrollPrev}
           className={cn(
-            "p-2 rounded-full border border-border bg-surface transition-all active:scale-95 disabled:opacity-30 disabled:pointer-events-none hover:bg-surface-alt",
+            "rounded-full transition-all active:scale-95 disabled:opacity-30 disabled:pointer-events-none hover:bg-surface-alt",
             !canScrollPrev && "opacity-0 invisible"
           )}
           aria-label="Previous categories"
         >
           <ChevronLeft className="w-5 h-5" />
-        </button>
-        <button
+        </Button>
+        <Button
+          variant="outline"
+          size="icon"
           onClick={() => emblaApi?.scrollNext()}
           disabled={!canScrollNext}
           className={cn(
-            "p-2 rounded-full border border-border bg-surface transition-all active:scale-95 disabled:opacity-30 disabled:pointer-events-none hover:bg-surface-alt",
+            "rounded-full transition-all active:scale-95 disabled:opacity-30 disabled:pointer-events-none hover:bg-surface-alt",
             !canScrollNext && "opacity-0 invisible"
           )}
           aria-label="Next categories"
         >
           <ChevronRight className="w-5 h-5" />
-        </button>
+        </Button>
       </div>
 
       {/* Carousel Viewport */}

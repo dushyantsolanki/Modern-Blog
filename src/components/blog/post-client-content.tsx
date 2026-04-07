@@ -16,7 +16,7 @@ import { ViewTransition } from "react"
 import { PostAudioPlayer } from "@/components/post-audio-player"
 import { BlogShare } from "@/components/blog-share"
 import { ReadingProgress } from "@/components/blog/reading-progress"
-import { motion } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 
 const tocItems = [
   { id: "section-1", title: "Current State of AI", level: 2 },
@@ -28,6 +28,17 @@ const tocItems = [
 ]
 
 export default function PostClientContent({ post, slug }: { post: Post, slug: string }) {
+  const [showFloatingShare, setShowFloatingShare] = React.useState(false)
+
+  React.useEffect(() => {
+    const handleScroll = () => {
+      // Show floating share after scrolling past the main header (roughly 600px)
+      setShowFloatingShare(window.scrollY > 600)
+    }
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
+
   // Related posts logic
   const relatedPosts = posts
     .filter((p) => p.category === post.category && p.slug !== slug)
@@ -39,6 +50,26 @@ export default function PostClientContent({ post, slug }: { post: Post, slug: st
       <DirectionalTransition>
         <div className="flex flex-col min-h-screen">
           <Navbar />
+
+          {/* Floating Lateral Share Bar - Apple Inspired */}
+          <AnimatePresence>
+            {showFloatingShare && (
+              <motion.div
+                initial={{ opacity: 0, x: 20, scale: 0.8 }}
+                animate={{ opacity: 1, x: 0, scale: 1 }}
+                exit={{ opacity: 0, x: 20, scale: 0.8 }}
+                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                className="fixed right-3 md:right-6 top-1/2 -translate-y-1/2 z-[60] scale-90 md:scale-100"
+              >
+                <BlogShare
+                  variant="floating"
+                  url={typeof window !== 'undefined' ? window.location.href : ''}
+                  title={post.title}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
+
           <main className="flex-1">
             {/* Article Header / Hero */}
             <div className="container mx-auto px-6 pt-12 pb-8">
@@ -61,8 +92,6 @@ export default function PostClientContent({ post, slug }: { post: Post, slug: st
                 </ViewTransition>
 
                 <PostAudioPlayer title={post.title} contentSelector="article" />
-                
-                <BlogShare url={typeof window !== 'undefined' ? window.location.href : ''} title={post.title} />
 
                 <div className="flex flex-wrap items-center gap-8 py-8 border-y border-border mb-12">
                   <div className="flex items-center gap-3">
@@ -147,17 +176,12 @@ export default function PostClientContent({ post, slug }: { post: Post, slug: st
                     <p><strong>The question isn't whether AI will change creative work. It already has. The question is whether you'll be the one shaping that change, or simply reacting to it.</strong></p>
                   </article>
 
-                  {/* Final Engagement Share (Bottom) */}
-                  <div className="mt-16">
-                    <BlogShare url={typeof window !== 'undefined' ? window.location.href : ''} title={post.title} />
-                  </div>
-
                   {/* Related Posts Section */}
                   {relatedPosts.length > 0 && (
                     <div className="mt-24 pt-16 border-t border-border">
                       <h3 className="text-2xl font-bold mb-8">Related Articles</h3>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        {relatedPosts.map((rp) => ( rp.slug !== post.slug && (
+                        {relatedPosts.map((rp) => (rp.slug !== post.slug && (
                           <Link key={rp.slug} href={`/blog/${rp.slug}`} className="group">
                             <div className="relative aspect-video rounded-2xl overflow-hidden mb-4">
                               <Image src={rp.image} alt={rp.title} fill className="object-cover transition-transform duration-500 group-hover:scale-110" />

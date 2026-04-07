@@ -9,6 +9,7 @@ import useEmblaCarousel from "embla-carousel-react"
 import Autoplay from "embla-carousel-autoplay"
 import { type Post } from "@/lib/data"
 import { cn } from "@/lib/utils"
+import { Button, getButtonClasses } from "@/components/ui/button"
 
 interface HeroCarouselProps {
   posts: Post[]
@@ -153,13 +154,13 @@ export function HeroCarousel({ posts }: HeroCarouselProps) {
                         animate={{ opacity: 1, transform: "scale(1)" }}
                         transition={{ duration: 0.8, delay: 0.6, ease: [0.32, 0.72, 0, 1] }}
                       >
-                        <Link
-                          href={`/blog/${post.slug}`}
-                          className="group inline-flex items-center gap-2 px-8 py-4 bg-white text-black rounded-full font-bold text-lg hover:scale(1.05) active:scale(0.97) transition-transform duration-200"
-                        >
-                          Explore Story
-                          <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
-                        </Link>
+                          <Link
+                            href={`/blog/${post.slug}`}
+                            className={getButtonClasses({ variant: "primary", size: "lg", className: "bg-white text-black hover:bg-white/90 gap-2 h-auto py-4 px-8" })}
+                          >
+                            Explore Story
+                            <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+                          </Link>
                       </motion.div>
                     </div>
                   )}
@@ -174,13 +175,15 @@ export function HeroCarousel({ posts }: HeroCarouselProps) {
       <div className="absolute bottom-16 md:bottom-20 left-0 right-0 z-30">
         <div className="container mx-auto px-6 flex items-center justify-center gap-6">
           {/* Autoplay Toggle */}
-          <button
+          <Button
+            variant="glass"
+            size="icon"
             onClick={toggleAutoplay}
-            className="w-10 h-10 flex items-center justify-center rounded-full bg-white/10 backdrop-blur-2xl border border-white/20 text-white hover:bg-white/20 transition-all active:scale-90"
+            className="w-10 h-10 flex items-center justify-center rounded-full bg-white/10 backdrop-blur-2xl border border-white/20 text-white hover:bg-white/20"
             aria-label={isPlaying ? "Pause" : "Play"}
           >
             {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 fill-current ml-0.5" />}
-          </button>
+          </Button>
 
           {/* Progress Indicators */}
           <div className="flex gap-2">
