@@ -145,21 +145,10 @@ export function PwaSplash({ children }: { children: React.ReactNode }) {
         )}
       </AnimatePresence>
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ 
-          opacity: isVisible ? 0 : 1,
-          scale: isVisible ? 0.98 : 1,
-          filter: isVisible ? "blur(10px)" : "blur(0px)" 
-        }}
-        transition={{ 
-          duration: 1.2, 
-          ease: [0.32, 0.72, 0, 1],
-          delay: 0.2 // Small delay after splash starts exit
-        }}
+      <div
       >
         {children}
-      </motion.div>
+      </div>
     </>
   )
 }
