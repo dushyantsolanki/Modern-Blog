@@ -31,11 +31,57 @@ export function ThemeToggle() {
 
   const isDark = resolvedTheme === "dark"
 
+  const toggleTheme = (event: React.MouseEvent) => {
+    // Fallback for browsers that don't support View Transitions
+    if (!document.startViewTransition) {
+      setTheme(isDark ? "light" : "dark")
+      return
+    }
+
+    const x = event.clientX
+    const y = event.clientY
+    const endRadius = Math.hypot(
+      Math.max(x, window.innerWidth - x),
+      Math.max(y, window.innerHeight - y)
+    )
+
+    // Add a class to the html element to handle Z-index in globals.css
+    document.documentElement.classList.add('theme-transitioning')
+
+    const transition = document.startViewTransition(() => {
+      setTheme(isDark ? "light" : "dark")
+    })
+
+    transition.ready.then(() => {
+      const clipPath = [
+        `circle(0px at ${x}px ${y}px)`,
+        `circle(${endRadius}px at ${x}px ${y}px)`,
+      ]
+
+      document.documentElement.animate(
+        {
+          clipPath: isDark ? [...clipPath].reverse() : clipPath,
+        },
+        {
+          duration: 700,
+          easing: "cubic-bezier(0.4, 0, 0.2, 1)",
+          pseudoElement: isDark
+            ? "::view-transition-old(root)"
+            : "::view-transition-new(root)",
+        }
+      )
+    })
+
+    transition.finished.then(() => {
+      document.documentElement.classList.remove('theme-transitioning')
+    })
+  }
+
   return (
     <motion.button
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
-      onClick={() => setTheme(isDark ? "light" : "dark")}
+      onClick={toggleTheme}
       className={cn(
         "relative flex h-9 w-9 items-center justify-center rounded-full transition-all duration-300",
         "bg-transparent hover:bg-muted/50 focus:outline-none"
