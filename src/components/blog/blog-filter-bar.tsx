@@ -40,7 +40,7 @@ export function BlogFilterBar({
   }
 
   return (
-    <div className="sticky top-[72px] z-40 px-4 md:px-6 mb-16 pt-6 pointer-events-none">
+    <div className="sticky top-9  z-40 px-4 md:px-6 mb-16 pt-6 pointer-events-none">
       <div className="max-w-3xl mx-auto pointer-events-auto">
         <motion.div
           layout
@@ -59,7 +59,7 @@ export function BlogFilterBar({
           {/* Filter Action (Tactile Feedback) */}
           <div className="relative z-10 flex items-center pl-2">
             <button
-              onClick={() => {}}
+              onClick={() => { }}
               className={getButtonClasses({ variant: "ghost", size: "icon", className: "h-10 w-10 text-muted-foreground/40 hover:text-foreground" })}
             >
               <SlidersHorizontal className="w-4 h-4" />
@@ -106,20 +106,20 @@ export function BlogFilterBar({
           <div className="relative z-10 flex items-center gap-1.5 pr-1.5 border-l border-border/50 dark:border-white/5 ml-2 pl-3">
             <button
               onClick={() => onViewChange('grid')}
-              className={getButtonClasses({ 
-                variant: currentView === 'grid' ? "secondary" : "ghost", 
-                size: "icon", 
-                className: cn("h-10 w-10", currentView !== 'grid' && "text-muted-foreground/30") 
+              className={getButtonClasses({
+                variant: currentView === 'grid' ? "secondary" : "ghost",
+                size: "icon",
+                className: cn("h-10 w-10", currentView !== 'grid' && "text-muted-foreground/30")
               })}
             >
               <LayoutGrid className="w-4 h-4" />
             </button>
             <button
               onClick={() => onViewChange('list')}
-              className={getButtonClasses({ 
-                variant: currentView === 'list' ? "secondary" : "ghost", 
-                size: "icon", 
-                className: cn("h-10 w-10", currentView !== 'list' && "text-muted-foreground/30") 
+              className={getButtonClasses({
+                variant: currentView === 'list' ? "secondary" : "ghost",
+                size: "icon",
+                className: cn("h-10 w-10", currentView !== 'list' && "text-muted-foreground/30")
               })}
             >
               <List className="w-4 h-4" />

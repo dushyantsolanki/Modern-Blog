@@ -9,11 +9,12 @@ interface CategoryCardProps {
   count: number
   image: string
   color: string
+  slug: string
 }
 
-export function CategoryCard({ title, count, image, color }: CategoryCardProps) {
+export function CategoryCard({ title, count, image, color, slug }: CategoryCardProps) {
   return (
-    <Link href={`/category/${title.toLowerCase()}`}>
+    <Link href={`/category/${slug}`}>
       <motion.div
         whileHover={{ y: -8, scale: 1.02 }}
         whileTap={{ scale: 0.97 }}

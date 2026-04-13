@@ -13,7 +13,7 @@ export default function NotFound() {
       <main className="flex-1 flex items-center justify-center py-20 lg:py-32">
         <div className="container mx-auto px-6 text-center">
           <div className="relative mb-12">
-            <h1 className="text-[10rem] lg:text-[15rem] font-black text-slate-900 dark:text-white/5 select-none leading-none">
+            <h1 className="text-[10rem] lg:text-[15rem] font-black text-slate-900 dark:text-white/10 select-none leading-none">
               404
             </h1>
             {/* <div className="absolute inset-0 flex items-center justify-center">

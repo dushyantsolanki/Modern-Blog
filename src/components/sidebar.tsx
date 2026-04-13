@@ -1,70 +1,121 @@
+"use client"
+
 import * as React from "react"
 import Link from "next/link"
 import { GoogleAd } from "@/components/google-ad"
 import { Button } from "@/components/ui/button"
-
-const categories = [
-  { name: "Technology", count: 42, href: "/category/technology" },
-  { name: "Design", count: 38, href: "/category/design" },
-  { name: "Productivity", count: 29, href: "/category/productivity" },
-  { name: "Creativity", count: 24, href: "/category/creativity" },
-  { name: "Business", count: 18, href: "/category/business" },
-  { name: "Sustainability", count: 12, href: "/category/sustainability" },
-]
-
-const recentPosts = [
-  { title: "The Future of AI in Creative Work", date: "Mar 28, 2026", href: "/blog/post-1" },
-  { title: "10 Productivity Frameworks", date: "Mar 25, 2026", href: "/blog/post-2" },
-  { title: "Building a Sustainable Tech Stack", date: "Mar 22, 2026", href: "/blog/post-3" },
-]
-
-const tags = [
-  "AI", "Design Systems", "Remote Work", "Startups", "UX", "JavaScript", "Figma", "Leadership", "Wellness"
-]
+import { getCategories, getPosts } from "@/lib/api"
 
 export function Sidebar() {
+  const [categories, setCategories] = React.useState<any[]>([])
+  const [latestPosts, setLatestPosts] = React.useState<any[]>([])
+  const [isLoading, setIsLoading] = React.useState(true)
+  const [isPostsLoading, setIsPostsLoading] = React.useState(true)
+
+  React.useEffect(() => {
+    async function fetchData() {
+      try {
+        const [catsRes, postsRes] = await Promise.all([
+          getCategories({ limit: 10, status: 'active', sort: 'popular' }),
+          getPosts({ limit: 3, sort: 'latest' })
+        ]);
+
+        const mappedCats = (catsRes.categories || []).map((cat: any) => ({
+          name: cat.name,
+          count: cat.totalPost || 0,
+          href: `/category/${cat.slug}`
+        }));
+        
+        const mappedPosts = (postsRes.posts || []).map((post: any) => ({
+          title: post.title,
+          date: post.date,
+          href: `/blog/${post.slug}`,
+          image: post.image
+        }));
+
+        setCategories(mappedCats);
+        setLatestPosts(mappedPosts);
+      } catch (error) {
+        console.error("Error fetching sidebar data:", error);
+      } finally {
+        setIsLoading(false);
+        setIsPostsLoading(false);
+      }
+    }
+    fetchData();
+  }, [])
+
+  const tags = [
+    "AI", "Design Systems", "Remote Work", "Startups", "UX", "JavaScript", "Figma", "Leadership", "Wellness"
+  ]
+
   return (
     <aside className="flex flex-col gap-8">
       {/* Categories Widget */}
-      <div className="p-6 bg-surface border border-border rounded-2xl">
+      <div className="p-6 bg-surface border border-border rounded-2xl shadow-sm hover:shadow-md transition-shadow">
         <h3 className="text-sm font-bold uppercase tracking-wider text-muted-foreground mb-6 pb-3 border-b border-border/50">
-          Categories
+          <span>Popular Categories</span>
         </h3>
         <div className="flex flex-col gap-1">
-          {categories.map((cat) => (
-            <Link
-              key={cat.name}
-              href={cat.href}
-              className="flex items-center justify-between p-2 rounded-lg text-sm text-muted-foreground hover:bg-surface-alt hover:text-foreground transition-all"
-            >
-              <span>{cat.name}</span>
-              <span className="text-xs bg-surface-alt px-2 py-1 rounded-full text-muted-foreground font-medium">
-                {cat.count}
-              </span>
-            </Link>
-          ))}
+          {isLoading ? (
+            Array.from({ length: 5 }).map((_, i) => (
+              <div key={i} className="flex items-center justify-between p-2 animate-pulse">
+                <div className="h-4 bg-muted/30 rounded w-24" />
+                <div className="h-5 w-8 bg-muted/20 rounded-full" />
+              </div>
+            ))
+          ) : (
+            categories.map((cat) => (
+              <Link
+                key={cat.name}
+                href={cat.href}
+                className="flex items-center justify-between p-2 rounded-lg text-sm text-muted-foreground hover:bg-surface-alt hover:text-foreground transition-all"
+              >
+                <span>{cat.name}</span>
+                <span className="text-xs bg-surface-alt px-2 py-1 rounded-full text-muted-foreground font-medium">
+                  {cat.count}
+                </span>
+              </Link>
+            ))
+          )}
         </div>
       </div>
 
       {/* Recent Posts Widget */}
-      <div className="p-6 bg-surface border border-border rounded-2xl">
-        <h3 className="text-sm font-bold uppercase tracking-wider text-muted-foreground mb-6 pb-3 border-b border-border/50">
-          Recent Posts
+      <div className="p-6 bg-surface border border-border rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+        <h3 className="text-sm font-bold uppercase tracking-wider text-muted-foreground mb-6 pb-3 border-b border-border/50 flex items-center justify-between">
+          <span>Recent Posts</span>
         </h3>
         <div className="flex flex-col gap-6">
-          {recentPosts.map((post, i) => (
-            <Link key={i} href={post.href} className="group flex gap-4">
-              <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-primary-light/20 to-accent-light/20 border border-border/50 flex-shrink-0 group-hover:scale-105 transition-transform" />
-              <div>
-                <h4 className="text-sm font-semibold leading-tight group-hover:text-primary transition-colors line-clamp-2">
-                  {post.title}
-                </h4>
-                <time className="text-[10px] text-muted-foreground mt-1 block uppercase tracking-wider">
-                  {post.date}
-                </time>
+          {isPostsLoading ? (
+            Array.from({ length: 3 }).map((_, i) => (
+              <div key={i} className="flex gap-4 animate-pulse">
+                <div className="w-16 h-16 rounded-xl bg-muted/20 flex-shrink-0" />
+                <div className="flex-1 space-y-2 py-1">
+                  <div className="h-3.5 bg-muted/30 rounded w-full" />
+                  <div className="h-3.5 bg-muted/30 rounded w-2/3" />
+                  <div className="h-2.5 bg-muted/20 rounded w-16 mt-2" />
+                </div>
               </div>
-            </Link>
-          ))}
+            ))
+          ) : (
+            latestPosts.map((post, i) => (
+              <Link key={i} href={post.href} className="group flex gap-4">
+                <div
+                  className="w-16 h-16 rounded-xl bg-cover bg-center border border-border/50 flex-shrink-0 group-hover:scale-105 transition-transform"
+                  style={{ backgroundImage: `url(${post.image})` }}
+                />
+                <div className="flex-1">
+                  <h4 className="text-sm font-semibold leading-tight group-hover:text-primary transition-colors line-clamp-2">
+                    {post.title}
+                  </h4>
+                  <time className="text-[10px] text-muted-foreground mt-1 block uppercase tracking-wider font-medium">
+                    {post.date}
+                  </time>
+                </div>
+              </Link>
+            ))
+          )}
         </div>
       </div>
 
@@ -81,7 +132,7 @@ export function Sidebar() {
             className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-sm placeholder:text-white/50 focus:bg-white/20 outline-none transition-all"
             required
           />
-          <Button 
+          <Button
             className="w-full h-12 bg-white text-primary hover:bg-white/90 hover:scale-[1.02] active:scale-[0.98] shadow-none"
           >
             Subscribe Free

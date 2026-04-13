@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { ArrowRight, Play, Pause } from "lucide-react"
 import useEmblaCarousel from "embla-carousel-react"
 import Autoplay from "embla-carousel-autoplay"
-import { type Post } from "@/lib/data"
+import { type Post } from "@/lib/types"
 import { cn } from "@/lib/utils"
 import { Button, getButtonClasses } from "@/components/ui/button"
 
@@ -60,7 +60,7 @@ export function HeroCarousel({ posts }: HeroCarouselProps) {
       setIsPlaying(true)
     }
   }, [emblaApi])
-
+  console.log(posts)
   return (
     <section className="relative w-full h-[85vh] min-h-[600px] overflow-hidden py-10">
       <div className="embla h-full" ref={emblaRef}>
@@ -106,7 +106,6 @@ export function HeroCarousel({ posts }: HeroCarouselProps) {
                             className="object-cover"
                             priority={index === 0}
                             sizes="(max-width: 768px) 100vw, 90vw"
-                            // @ts-ignore
                             fetchPriority={index === 0 ? "high" : "auto"}
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
@@ -154,13 +153,13 @@ export function HeroCarousel({ posts }: HeroCarouselProps) {
                         animate={{ opacity: 1, transform: "scale(1)" }}
                         transition={{ duration: 0.8, delay: 0.6, ease: [0.32, 0.72, 0, 1] }}
                       >
-                          <Link
-                            href={`/blog/${post.slug}`}
-                            className={getButtonClasses({ variant: "primary", size: "lg", className: "bg-white text-black hover:bg-white/90 gap-2 h-auto py-4 px-8" })}
-                          >
-                            Explore Story
-                            <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
-                          </Link>
+                        <Link
+                          href={`/blog/${post.slug}`}
+                          className={getButtonClasses({ variant: "primary", size: "lg", className: "bg-white text-black hover:bg-white/90 gap-2 h-auto py-4 px-8" })}
+                        >
+                          Explore Story
+                          <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+                        </Link>
                       </motion.div>
                     </div>
                   )}

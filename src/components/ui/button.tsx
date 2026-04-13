@@ -28,11 +28,27 @@ const BASE_CLASS = "inline-flex items-center justify-center gap-2 whitespace-now
 export function getButtonClasses({ variant = "primary", size = "default", className }: { variant?: keyof typeof VARIANTS, size?: keyof typeof SIZES, className?: string } = {}) {
   return cn(BASE_CLASS, VARIANTS[variant], SIZES[size], className)
 }
+// Simple Slot implementation since @radix-ui/react-slot is not available
+const Slot = React.forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement> & { children?: React.ReactNode }>(
+  ({ children, ...props }, ref) => {
+    if (React.isValidElement(children)) {
+      return React.cloneElement(children, {
+        ...props,
+        ...(children.props as any),
+        ref: (children as any).ref || ref,
+      } as any)
+    }
+    return null
+  }
+)
+Slot.displayName = "Slot"
+
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant = "primary", size = "default", ...props }, ref) => {
+  ({ className, variant = "primary", size = "default", asChild = false, ...props }, ref) => {
+    const Comp = asChild ? Slot : "button"
     return (
-      <button
-        ref={ref}
+      <Comp
+        ref={ref as any}
         className={getButtonClasses({ variant, size, className })}
         {...props}
       />

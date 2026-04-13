@@ -1,8 +1,8 @@
-import * as React from "react"
-import { posts } from "@/lib/data"
+
 import { notFound } from "next/navigation"
 import PostClientContent from "@/components/blog/post-client-content"
 import { Metadata, ResolvingMetadata } from "next"
+import { getPostBySlug, getAllPosts } from "@/lib/api"
 
 type Props = {
   params: Promise<{ slug: string }>
@@ -16,21 +16,31 @@ const categoryColors: Record<string, string> = {
   "Creativity": "#EC4899",
 }
 
+export const revalidate = 60;
+
+export async function generateStaticParams() {
+  const posts = await getAllPosts();
+  return posts.map((post) => ({
+    slug: post.slug,
+  }));
+}
+
 export async function generateMetadata(
   { params }: Props,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   const { slug } = await params
-  const post = posts.find((p) => p.slug === slug)
-
-  if (!post) return {}
-
-  const themeColor = categoryColors[post.category] || "#000000"
+  const post = await getPostBySlug(slug)
+  console.log(post)
+  if (!post) return {
+    title: "Post Not Found | Insight",
+    description: "The requested blog post could not be found."
+  }
 
   return {
     title: `${post.title} | Insight`,
     description: post.excerpt,
-    themeColor: themeColor,
+    themeColor: post.categoryColor,
     openGraph: {
       title: post.title,
       description: post.excerpt,
@@ -47,7 +57,7 @@ export async function generateMetadata(
 
 export default async function PostDetailPage({ params }: Props) {
   const { slug } = await params
-  const post = posts.find((p) => p.slug === slug)
+  const post = await getPostBySlug(slug)
 
   if (!post) {
     notFound()

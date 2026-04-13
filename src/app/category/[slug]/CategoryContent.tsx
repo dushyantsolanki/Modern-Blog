@@ -1,29 +1,74 @@
 "use client"
 
 import * as React from "react"
-import { PostCard } from "@/components/post-card"
 import { Sidebar } from "@/components/sidebar"
 import { Newsletter } from "@/components/newsletter"
 import { BlogFilterBar } from "@/components/blog/blog-filter-bar"
 import { InfiniteScrollPosts } from "@/components/blog/infinite-scroll-posts"
-import { motion, AnimatePresence } from "framer-motion"
+import { PostCardSkeleton } from "@/components/post-card-skeleton"
+import { motion } from "framer-motion"
+import { getPosts } from "@/lib/api"
+import { Post } from "@/lib/types"
 import { cn } from "@/lib/utils"
 
 interface CategoryContentProps {
-  initialPosts: any[]
+  categorySlug: string
   categoryName: string
 }
 
-export function CategoryContent({ initialPosts, categoryName }: CategoryContentProps) {
+export function CategoryContent({ categorySlug, categoryName }: CategoryContentProps) {
+  const [posts, setPosts] = React.useState<Post[]>([])
+  const [isLoading, setIsLoading] = React.useState(true)
+  const [isFetchingMore, setIsFetchingMore] = React.useState(false)
   const [searchQuery, setSearchQuery] = React.useState("")
-  const [view, setView] = React.useState<'grid' | 'list'>('grid')
   const [sortBy, setSortBy] = React.useState('latest')
+  const [view, setView] = React.useState<'grid' | 'list'>('grid')
+  const [page, setPage] = React.useState(1)
+  const [hasMore, setHasMore] = React.useState(false)
 
-  const filteredPosts = initialPosts.filter(post => {
-    const matchesSearch = post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      post.excerpt.toLowerCase().includes(searchQuery.toLowerCase())
-    return matchesSearch
-  })
+  const fetchPosts = React.useCallback(async (pageNum: number, isNewSearch: boolean = false) => {
+    if (pageNum > 1) setIsFetchingMore(true)
+    else setIsLoading(true)
+
+    try {
+      const response = await getPosts({
+        page: pageNum,
+        limit: 10,
+        search: searchQuery,
+        sort: sortBy,
+        categorySlug: categorySlug
+      })
+
+      if (isNewSearch) {
+        setPosts(response.posts)
+      } else {
+        setPosts(prev => [...prev, ...response.posts])
+      }
+
+      setHasMore(response.pagination.hasMore)
+      setPage(pageNum)
+    } catch (error) {
+      console.error("Error loading posts:", error)
+    } finally {
+      setIsLoading(false)
+      setIsFetchingMore(false)
+    }
+  }, [searchQuery, sortBy, categorySlug])
+
+  // Initial load or search/sort change
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      fetchPosts(1, true)
+    }, searchQuery ? 500 : 0) // Debounce search
+
+    return () => clearTimeout(timer)
+  }, [searchQuery, sortBy, fetchPosts])
+
+  const handleLoadMore = () => {
+    if (!isFetchingMore && hasMore) {
+      fetchPosts(page + 1)
+    }
+  }
 
   return (
     <main className="flex-1 pb-24">
@@ -43,7 +88,7 @@ export function CategoryContent({ initialPosts, categoryName }: CategoryContentP
             transition={{ delay: 0.1 }}
             className="max-w-xl mx-auto text-lg text-muted-foreground/80 font-medium leading-relaxed"
           >
-            Curated perspectives on technology, design, and the future of work.
+            Curated perspectives on {categoryName.toLowerCase()}, and its impact on the modern world.
           </motion.p>
         </div>
       </section>
@@ -60,7 +105,24 @@ export function CategoryContent({ initialPosts, categoryName }: CategoryContentP
       <div className="container mx-auto px-6">
         <div className="flex flex-col lg:flex-row gap-16">
           <div className="lg:flex-1">
-            <InfiniteScrollPosts posts={filteredPosts} view={view} />
+            {isLoading && page === 1 ? (
+              <div className={cn(
+                "grid gap-8",
+                view === 'grid' ? "grid-cols-1 md:grid-cols-2" : "grid-cols-1"
+              )}>
+                {Array.from({ length: 4 }).map((_, i) => (
+                  <PostCardSkeleton key={i} />
+                ))}
+              </div>
+            ) : (
+              <InfiniteScrollPosts
+                posts={posts}
+                view={view}
+                onLoadMore={handleLoadMore}
+                hasMore={hasMore}
+                isLoading={isFetchingMore}
+              />
+            )}
           </div>
 
           <div className="lg:w-80">

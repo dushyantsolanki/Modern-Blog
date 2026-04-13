@@ -15,6 +15,7 @@ interface PostCardProps {
   title: string
   excerpt: string
   category: string
+  categoryColor: string
   date: string
   readTime: string
   author: {
@@ -38,6 +39,7 @@ export function PostCard({
   image,
   featured = false,
   priority = false,
+  categoryColor,
   className,
 }: PostCardProps) {
 
@@ -59,14 +61,15 @@ export function PostCard({
             className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             priority={priority}
+
           />
         </ViewTransition>
         <div className="absolute top-4 left-4">
 
           <span className={cn(
             "px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-full glass border border-white/20 text-white shadow-lg backdrop-blur-md",
-            featured ? "bg-accent/40" : "bg-primary/40"
-          )}>
+
+          )} style={{ backgroundColor: `${categoryColor}` }}>
             {category}
           </span>
         </div>

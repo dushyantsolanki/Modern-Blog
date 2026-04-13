@@ -9,10 +9,11 @@ import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 
 interface Category {
-  title: string
   count: number
   image: string
   color: string
+  slug?: string
+  title: string
 }
 
 interface CategoryCarouselProps {
@@ -82,7 +83,7 @@ export function CategoryCarousel({ categories }: CategoryCarouselProps) {
               key={index}
               className="flex-[0_0_85%] min-w-0 md:flex-[0_0_320px] lg:flex-[0_0_380px]"
             >
-              <Link href={`/category/${category.title.toLowerCase()}`}>
+              <Link href={`/category/${category.slug || category.title.toLowerCase()}`}>
                 <motion.div
                   whileHover={{ y: -8, scale: 1.02 }}
                   whileTap={{ scale: 0.97 }}

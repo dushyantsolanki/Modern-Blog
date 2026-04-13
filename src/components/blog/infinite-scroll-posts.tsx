@@ -4,44 +4,37 @@ import * as React from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { PostCard } from "@/components/post-card"
 import { PostCardSkeleton } from "@/components/post-card-skeleton"
-import { Post } from "@/lib/data"
+import { Post } from "@/lib/types"
 import { cn } from "@/lib/utils"
 
 interface InfiniteScrollPostsProps {
   posts: Post[]
   view: 'grid' | 'list'
+  onLoadMore: () => void
+  hasMore: boolean
+  isLoading: boolean
 }
 
-export function InfiniteScrollPosts({ posts, view }: InfiniteScrollPostsProps) {
-  const [visibleCount, setVisibleCount] = React.useState(2)
-  const [isLoading, setIsLoading] = React.useState(false)
+export function InfiniteScrollPosts({
+  posts,
+  view,
+  onLoadMore,
+  hasMore,
+  isLoading
+}: InfiniteScrollPostsProps) {
   const loaderRef = React.useRef<HTMLDivElement>(null)
-
-  const BATCH_SIZE = 2
-
-  const hasMore = visibleCount < posts.length
-
-  React.useEffect(() => {
-    // Reset visible count if posts change (e.g. search or filter)
-    setVisibleCount(2)
-  }, [posts])
 
   React.useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         const target = entries[0]
         if (target.isIntersecting && hasMore && !isLoading) {
-          setIsLoading(true)
-          // Simulate network delay for smooth UX
-          setTimeout(() => {
-            setVisibleCount((prev) => Math.min(prev + BATCH_SIZE, posts.length))
-            setIsLoading(false)
-          }, 800)
+          onLoadMore()
         }
       },
       {
         root: null,
-        rootMargin: "100px", // Trigger slightly before the user reaches the very bottom
+        rootMargin: "400px", // Increased margin for smoother loading
         threshold: 0,
       }
     )
@@ -56,14 +49,12 @@ export function InfiniteScrollPosts({ posts, view }: InfiniteScrollPostsProps) {
         observer.unobserve(currentLoaderNode)
       }
     }
-  }, [hasMore, isLoading, posts.length])
-
-  const visiblePosts = posts.slice(0, visibleCount)
+  }, [hasMore, isLoading, onLoadMore])
 
   return (
     <div className="flex flex-col w-full h-full">
       <AnimatePresence mode="popLayout">
-        {visiblePosts.length > 0 ? (
+        {posts.length > 0 ? (
           <motion.div
             layout
             className={cn(
@@ -71,13 +62,13 @@ export function InfiniteScrollPosts({ posts, view }: InfiniteScrollPostsProps) {
               view === 'grid' ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-2" : "grid-cols-1"
             )}
           >
-            {visiblePosts.map((post, i) => (
+            {posts.map((post, i) => (
               <motion.div
                 key={post.slug}
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.5, delay: (Math.min(i, BATCH_SIZE)) * 0.05, ease: [0.23, 1, 0.32, 1] }}
+                transition={{ duration: 0.5, delay: (Math.min(i % 10, 5)) * 0.05, ease: [0.23, 1, 0.32, 1] }}
               >
                 <PostCard
                   {...post}
@@ -87,9 +78,9 @@ export function InfiniteScrollPosts({ posts, view }: InfiniteScrollPostsProps) {
                 />
               </motion.div>
             ))}
-            
+
             <AnimatePresence>
-              {isLoading && Array.from({ length: Math.min(BATCH_SIZE, posts.length - visibleCount) }).map((_, i) => (
+              {isLoading && Array.from({ length: 2 }).map((_, i) => (
                 <motion.div
                   key={`skeleton-${i}`}
                   initial={{ opacity: 0 }}
@@ -118,31 +109,30 @@ export function InfiniteScrollPosts({ posts, view }: InfiniteScrollPostsProps) {
       </AnimatePresence>
 
       {/* Loading Indicator and Sentinel */}
-      {posts.length > 0 && (
-        <div 
-          ref={loaderRef} 
-          className="w-full flex justify-center items-center py-12 mt-8"
-        >
-          <AnimatePresence mode="wait">
-            {!hasMore && !isLoading && (
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-                className="text-center w-full"
-              >
-                <div className="inline-flex items-center justify-center gap-2">
-                  <div className="w-12 h-px bg-border/50" />
-                  <span className="text-sm font-medium text-muted-foreground uppercase tracking-widest px-4">
-                    End of stories
-                  </span>
-                  <div className="w-12 h-px bg-border/50" />
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-      )}
+      <div
+        ref={loaderRef}
+        className="w-full flex justify-center items-center py-12 mt-8"
+      >
+        <AnimatePresence mode="wait">
+          {!hasMore && posts.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="text-center w-full"
+            >
+              <div className="inline-flex items-center justify-center gap-2">
+                <div className="w-12 h-px bg-border/50" />
+                <span className="text-sm font-medium text-muted-foreground uppercase tracking-widest px-4">
+                  End of stories
+                </span>
+                <div className="w-12 h-px bg-border/50" />
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
     </div>
   )
 }
+

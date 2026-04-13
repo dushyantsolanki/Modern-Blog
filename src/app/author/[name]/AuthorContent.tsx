@@ -32,14 +32,24 @@ export function AuthorContent({ author, posts }: AuthorContentProps) {
               transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] } as const}
               className="relative shrink-0"
             >
-              <div className={cn(
-                "w-48 h-48 lg:w-64 lg:h-64 rounded-[3rem] p-1 bg-gradient-to-br shadow-2xl overflow-hidden shadow-primary/5",
-                author.gradient
-              )}>
+              <div
+                className="w-48 h-48 lg:w-64 lg:h-64 rounded-[3rem] p-1 shadow-2xl overflow-hidden shadow-primary/5"
+                style={{
+                  backgroundColor: author.gradient || "#000000",
+                }}
+              >
                 <div className="w-full h-full rounded-[2.8rem] bg-surface flex items-center justify-center border-4 border-surface overflow-hidden transition-transform duration-700 hover:scale-105">
-                  <span className="text-6xl font-black text-muted-foreground/20 leading-none">
-                    {author.name.split(' ').map((n: string) => n[0]).join('')}
-                  </span>
+                  {author.avatar ? (
+                    <img
+                      src={author.avatar}
+                      alt={author.name}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <span className="text-6xl font-black text-muted-foreground/20 leading-none">
+                      {author.name.split(' ').map((n: string) => n[0]).join('')}
+                    </span>
+                  )}
                 </div>
               </div>
               <div className="absolute -bottom-4 -right-4 p-4 rounded-3xl bg-primary text-white shadow-xl shadow-primary/20 border-4 border-background">
@@ -59,7 +69,7 @@ export function AuthorContent({ author, posts }: AuthorContentProps) {
                 <h1 className="text-6xl lg:text-8xl font-black tracking-tighter leading-none mb-6">
                   {author.name}.
                 </h1>
-                <p className="text-2xl font-bold text-muted-foreground/60 mb-8 italic">
+                <p className="text-2xl font-bold text-muted-foreground/60 mb-8 italic uppercase">
                   {author.role}
                 </p>
                 <p className="text-2xl font-medium leading-relaxed max-w-3xl mb-12">
@@ -74,20 +84,24 @@ export function AuthorContent({ author, posts }: AuthorContentProps) {
 
                 <div className="flex items-center gap-4">
                   {[
-                    { icon: X, href: author.social.twitter },
-                    { icon: Share2, href: author.social.linkedin },
-                    { icon: Globe, href: author.social.website },
-                  ].map((social, i) => (
-                    <motion.a
-                      key={i}
-                      whileHover={{ scale: 1.1, y: -2 }}
-                      whileTap={{ scale: 0.9 }}
-                      href={social.href}
-                      className="w-12 h-12 rounded-2xl bg-surface-alt border border-border/40 flex items-center justify-center hover:bg-primary hover:text-white hover:border-primary transition-all shadow-sm"
-                    >
-                      <social.icon className="w-5 h-5" strokeWidth={1.5} />
-                    </motion.a>
-                  ))}
+                    { icon: X, href: author.social?.twitter },
+                    { icon: Share2, href: author.social?.linkedin },
+                    { icon: Globe, href: author.social?.website },
+                  ]
+                    .filter((social) => social.href && social.href.trim() !== "")
+                    .map((social, i) => (
+                      <motion.a
+                        key={i}
+                        whileHover={{ scale: 1.1, y: -2 }}
+                        whileTap={{ scale: 0.9 }}
+                        href={social.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-12 h-12 rounded-2xl bg-surface-alt border border-border/40 flex items-center justify-center hover:bg-primary hover:text-white hover:border-primary transition-all shadow-sm"
+                      >
+                        <social.icon className="w-5 h-5" strokeWidth={1.5} />
+                      </motion.a>
+                    ))}
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
