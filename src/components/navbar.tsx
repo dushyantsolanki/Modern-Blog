@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation"
 import { Search, Menu, X } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { ThemeToggle } from "./theme-toggle"
+import { GoogleTranslate } from "./google-translate"
 import { motion, AnimatePresence } from "framer-motion"
 import { cn } from "@/lib/utils"
 import { getButtonClasses } from "@/components/ui/button"
@@ -85,7 +86,8 @@ export function Navbar() {
           </nav>
 
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
+            <GoogleTranslate />
             <ThemeToggle />
             <Link href="/#newsletter" className={getButtonClasses({ variant: "primary", size: "sm", className: "hidden md:flex" })}>
               Subscribe

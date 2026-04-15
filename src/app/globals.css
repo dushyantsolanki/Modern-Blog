@@ -343,6 +343,24 @@ html {
   animation: none;
 }
 
+/* ---- Google Translate: hide default chrome ---- */
+.goog-te-banner-frame {
+  display: none !important;
+}
+
+body {
+  top: 0px !important;
+}
+
+.goog-te-gadget {
+  font-size: 0 !important;
+  color: transparent !important;
+}
+
+.skiptranslate {
+  display: none !important;
+}
+
 /* Reduced Motion */
 @media (prefers-reduced-motion: reduce) {
 
