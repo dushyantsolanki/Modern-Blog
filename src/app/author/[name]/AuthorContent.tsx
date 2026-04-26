@@ -5,6 +5,7 @@ import { PostCard } from "@/components/post-card"
 import { motion, AnimatePresence } from "framer-motion"
 import { X, Share2, Globe, Mail, MapPin, Calendar, BookOpen } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { AuthorAvatar } from "@/components/author-avatar"
 
 interface AuthorContentProps {
   author: any
@@ -32,26 +33,12 @@ export function AuthorContent({ author, posts }: AuthorContentProps) {
               transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] } as const}
               className="relative shrink-0"
             >
-              <div
-                className="w-48 h-48 lg:w-64 lg:h-64 rounded-[3rem] p-1 shadow-2xl overflow-hidden shadow-primary/5"
-                style={{
-                  backgroundColor: author.gradient || "#000000",
-                }}
-              >
-                <div className="w-full h-full rounded-[2.8rem] bg-surface flex items-center justify-center border-4 border-surface overflow-hidden transition-transform duration-700 hover:scale-105">
-                  {author.avatar ? (
-                    <img
-                      src={author.avatar}
-                      alt={author.name}
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <span className="text-6xl font-black text-muted-foreground/20 leading-none">
-                      {author.name.split(' ').map((n: string) => n[0]).join('')}
-                    </span>
-                  )}
-                </div>
-              </div>
+              <AuthorAvatar 
+                name={author.name} 
+                avatar={author.avatar} 
+                size="hero" 
+                className="rounded-[3rem] p-1 shadow-2xl shadow-primary/5 border-4 border-surface transition-transform duration-700 hover:scale-105"
+              />
               <div className="absolute -bottom-4 -right-4 p-4 rounded-3xl bg-primary text-white shadow-xl shadow-primary/20 border-4 border-background">
                 <BookOpen className="w-6 h-6" strokeWidth={1.5} />
               </div>

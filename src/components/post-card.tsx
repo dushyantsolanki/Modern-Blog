@@ -6,6 +6,7 @@ import { ArrowRight } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { ViewTransition } from "react"
 import { getButtonClasses } from "@/components/ui/button"
+import { AuthorAvatar } from "@/components/author-avatar"
 
 
 
@@ -101,9 +102,7 @@ export function PostCard({
             href={`/author/${author.name.toLowerCase().replace(/ /g, "-")}`}
             className="flex items-center gap-3 hover:opacity-80 transition-opacity"
           >
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-accent overflow-hidden flex items-center justify-center text-[10px] font-bold text-white/50">
-              {author.name.split(' ').map(n => n[0]).join('')}
-            </div>
+            <AuthorAvatar name={author.name} avatar={author.avatar} size="sm" />
             <span className="text-sm font-medium text-foreground">{author.name}</span>
           </Link>
           <Link

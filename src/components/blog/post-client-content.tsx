@@ -19,6 +19,7 @@ import { ReadingProgress } from "@/components/blog/reading-progress"
 import { motion, AnimatePresence } from "framer-motion"
 import { ArticleSummarizer } from "@/components/article-summarizer"
 import { getPosts } from "@/lib/api"
+import { AuthorAvatar } from "@/components/author-avatar"
 
 
 // TOC items will be generated dynamically from the article content
@@ -122,17 +123,7 @@ export default function PostClientContent({ post, slug }: { post: Post, slug: st
 
                 <div className="flex flex-wrap items-center gap-8 py-8 border-y border-border mb-12">
                   <div className="flex items-center gap-3">
-                    {post.author.avatar ? (
-                      <Image
-                        src={post.author.avatar}
-                        alt={post.author.name}
-                        width={48}
-                        height={48}
-                        className="rounded-full h-10 w-10 object-cover"
-                      />
-                    ) : (
-                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-accent" />
-                    )}
+                    <AuthorAvatar name={post.author.name} avatar={post.author.avatar} size="md" />
                     <div>
                       <div className="font-bold text-foreground">{post.author.name}</div>
                       <div className="text-xs text-muted-foreground font-medium uppercase tracking-wider">{post.author.role || "Author"}</div>
@@ -217,17 +208,7 @@ export default function PostClientContent({ post, slug }: { post: Post, slug: st
                     </div>
 
                     <div className="p-6 lg:p-6 bg-surface border border-border rounded-3xl flex flex-col md:flex-row gap-8">
-                      {post.author.avatar ? (
-                        <Image
-                          src={post.author.avatar}
-                          alt={post.author.name}
-                          width={96}
-                          height={96}
-                          className="rounded-full !h-26 !w-26 object-cover flex-shrink-0"
-                        />
-                      ) : (
-                        <div className="w-24 h-24 rounded-full bg-gradient-to-br from-primary to-accent flex-shrink-0" />
-                      )}
+                      <AuthorAvatar name={post.author.name} avatar={post.author.avatar} size="xl" />
                       <div>
                         <h3 className="text-2xl font-bold mb-2">{post.author.name}</h3>
                         <div className="text-primary font-semibold text-sm uppercase tracking-wider mb-4">{post.author.role || "Author"}</div>

@@ -107,7 +107,7 @@ export async function getPosts(params: {
     const url = `${API_URL}/posts?${queryParams.toString()}`;
     console.log(`[API] Fetching posts: ${url}`);
 
-    const response = await fetch(url, { cache: 'force-cache' });
+    const response = await fetch(url, { next: { revalidate: 60 } });
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
@@ -143,7 +143,7 @@ export async function getAllPosts(status: string = "published", sort: string = "
     const url = `${API_URL}/posts/all?${params.toString()}`;
 
     console.log(`[API] Fetching all posts: ${url}`);
-    const response = await fetch(url, { cache: 'force-cache' });
+    const response = await fetch(url, { next: { revalidate: 60 } });
 
     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
@@ -163,7 +163,7 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
     const url = `${API_URL}/posts/slug/${slug}`;
     console.log(`[API] Fetching post by slug: ${slug}`);
 
-    const response = await fetch(url, { cache: 'force-cache' });
+    const response = await fetch(url, { next: { revalidate: 60 } });
 
     if (!response.ok) {
       if (response.status === 404) return null;
@@ -201,7 +201,7 @@ export async function getCategories(params: {
     });
 
     const url = `${API_URL}/categories?${queryParams.toString()}`;
-    const response = await fetch(url, { cache: 'force-cache' });
+    const response = await fetch(url, { next: { revalidate: 60 } });
 
     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
@@ -225,7 +225,7 @@ export async function getCategories(params: {
 export async function getAllCategories(): Promise<Category[]> {
   try {
     const url = `${API_URL}/categories/all`;
-    const response = await fetch(url, { cache: 'force-cache' });
+    const response = await fetch(url, { next: { revalidate: 60 } });
 
     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
@@ -273,7 +273,7 @@ export async function sendMessage(message: ContactMessage): Promise<{ success: b
 export async function getAuthors(): Promise<Author[]> {
   try {
     const url = `${API_URL}/authors`;
-    const response = await fetch(url, { cache: 'force-cache' });
+    const response = await fetch(url, { next: { revalidate: 60 } });
 
     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
@@ -295,7 +295,7 @@ export async function getAuthors(): Promise<Author[]> {
  */
 export async function getAuthorById(id: string): Promise<Author | null> {
   try {
-    const response = await fetch(`${API_URL}/authors/${id}`, { cache: 'force-cache' });
+    const response = await fetch(`${API_URL}/authors/${id}`, { next: { revalidate: 60 } });
 
     if (!response.ok) {
       if (response.status === 404) return null;
@@ -317,7 +317,7 @@ export async function getAuthorById(id: string): Promise<Author | null> {
 export async function getAuthorByName(name: string): Promise<Author | null> {
   try {
     const url = `${API_URL}/authors?name=${encodeURIComponent(name)}`;
-    const response = await fetch(url, { cache: 'force-cache' });
+    const response = await fetch(url, { next: { revalidate: 60 } });
 
     if (!response.ok) {
       if (response.status === 404) return null;
