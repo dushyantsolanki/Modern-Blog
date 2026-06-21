@@ -1,7 +1,7 @@
 
 import { notFound } from "next/navigation"
 import PostClientContent from "@/components/blog/post-client-content"
-import { Metadata, ResolvingMetadata } from "next"
+import { Metadata, ResolvingMetadata, Viewport } from "next"
 import { getPostBySlug, getAllPosts } from "@/lib/api"
 
 type Props = {
@@ -25,6 +25,17 @@ export async function generateStaticParams() {
   }));
 }
 
+export async function generateViewport(
+  { params }: Props
+): Promise<Viewport> {
+  const { slug } = await params
+  const post = await getPostBySlug(slug)
+  if (!post) return {}
+  return {
+    themeColor: post.categoryColor,
+  }
+}
+
 export async function generateMetadata(
   { params }: Props,
   parent: ResolvingMetadata
@@ -40,7 +51,6 @@ export async function generateMetadata(
   return {
     title: `${post.title} | Insight`,
     description: post.excerpt,
-    themeColor: post.categoryColor,
     openGraph: {
       title: post.title,
       description: post.excerpt,
