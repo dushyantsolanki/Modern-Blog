@@ -45,9 +45,7 @@ export function Sidebar() {
     fetchData();
   }, [])
 
-  const tags = [
-    "AI", "Design Systems", "Remote Work", "Startups", "UX", "JavaScript", "Figma", "Leadership", "Wellness"
-  ]
+
 
   const [email, setEmail] = React.useState("")
   const [status, setStatus] = React.useState<"idle" | "loading" | "success" | "error">("idle")
@@ -201,23 +199,7 @@ export function Sidebar() {
         )}
       </div>
 
-      {/* Tags Widget */}
-      <div className="p-6 bg-surface border border-border rounded-2xl">
-        <h3 className="text-sm font-bold uppercase tracking-wider text-muted-foreground mb-6 pb-3 border-b border-border/50">
-          Popular Tags
-        </h3>
-        <div className="flex flex-wrap gap-2">
-          {tags.map((tag) => (
-            <Link
-              key={tag}
-              href={`/tag/${tag.toLowerCase()}`}
-              className="px-3 py-1 bg-surface-alt text-xs font-medium rounded-full text-muted-foreground hover:bg-primary hover:text-white transition-all"
-            >
-              {tag}
-            </Link>
-          ))}
-        </div>
-      </div>
+
 
       {/* Google Ad Slot */}
       <GoogleAd slotId="1234567890" format="vertical" className="my-0" />
