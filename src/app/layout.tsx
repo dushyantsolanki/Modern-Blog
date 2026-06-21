@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import SplashController from "@/components/splash-controller";
 import { ThemeProvider } from "@/components/theme-provider";
+import { AnalyticsTracker } from "@/components/analytics-tracker";
 import Script from "next/script";
 
 const inter = Inter({
@@ -47,6 +48,7 @@ export default function RootLayout({
           <SplashController>
             {children}
           </SplashController>
+          <AnalyticsTracker />
         </ThemeProvider>
 
         {/* <Script
