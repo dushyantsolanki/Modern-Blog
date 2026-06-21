@@ -1,10 +1,11 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import SplashController from "@/components/splash-controller";
 import { ThemeProvider } from "@/components/theme-provider";
 import { AnalyticsTracker } from "@/components/analytics-tracker";
 import Script from "next/script";
+import { Suspense } from "react";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -12,14 +13,17 @@ const inter = Inter({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  title: "Insight — A Modern Blog for Curious Minds",
-  description: "Insight is a modern blog exploring ideas in technology, design, productivity and creativity. Join 12,000+ readers.",
-  manifest: "/manifest.json",
+export const viewport: Viewport = {
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#ffffff" },
     { media: "(prefers-color-scheme: dark)", color: "#000000" },
   ],
+};
+
+export const metadata: Metadata = {
+  title: "Insight — A Modern Blog for Curious Minds",
+  description: "Insight is a modern blog exploring ideas in technology, design, productivity and creativity. Join 12,000+ readers.",
+  manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
@@ -48,7 +52,9 @@ export default function RootLayout({
           <SplashController>
             {children}
           </SplashController>
-          <AnalyticsTracker />
+          <Suspense fallback={null}>
+            <AnalyticsTracker />
+          </Suspense>
         </ThemeProvider>
 
         {/* <Script

@@ -4,8 +4,7 @@ import { Post, Author } from "./types";
  * For client-side requests, use the relative /api path to leverage the Next.js rewrite/proxy.
  * For server-side requests, use the absolute URL to communicate directly with the admin-panel.
  */
-// const API_URL = typeof window !== 'undefined' ? '/api' : 'http://localhost:3000/api';
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api';
 
 export interface Category {
   name: string;
