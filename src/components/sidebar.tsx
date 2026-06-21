@@ -49,6 +49,51 @@ export function Sidebar() {
     "AI", "Design Systems", "Remote Work", "Startups", "UX", "JavaScript", "Figma", "Leadership", "Wellness"
   ]
 
+  const [email, setEmail] = React.useState("")
+  const [status, setStatus] = React.useState<"idle" | "loading" | "success" | "error">("idle")
+  const [message, setMessage] = React.useState("")
+  const [hasSubscribed, setHasSubscribed] = React.useState(false)
+
+  React.useEffect(() => {
+    if (typeof window !== "undefined") {
+      const subscribed = localStorage.getItem("insight_subscribed")
+      if (subscribed) {
+        setHasSubscribed(true)
+      }
+    }
+  }, [])
+
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!email) return
+
+    setStatus("loading")
+    setMessage("")
+
+    try {
+      const response = await fetch("/api/subscribers", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, source: "sidebar" }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || "Something went wrong.")
+      }
+
+      setStatus("success")
+      localStorage.setItem("insight_subscribed", "true")
+      setHasSubscribed(true)
+    } catch (err: any) {
+      setStatus("error")
+      setMessage(err.message || "Failed to subscribe. Please try again.")
+    }
+  }
+
   return (
     <aside className="flex flex-col gap-8">
       {/* Categories Widget */}
@@ -122,22 +167,38 @@ export function Sidebar() {
       {/* Newsletter Widget */}
       <div className="p-8 bg-gradient-to-br from-primary to-primary-dark rounded-2xl text-white shadow-lg shadow-primary/20">
         <h3 className="text-lg font-bold mb-4">Newsletter</h3>
-        <p className="text-sm text-white/80 mb-6 leading-relaxed">
-          Join 12,000+ readers. Get the best articles delivered weekly.
-        </p>
-        <form className="flex flex-col gap-2">
-          <input
-            type="email"
-            placeholder="Your email address"
-            className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-sm placeholder:text-white/50 focus:bg-white/20 outline-none transition-all"
-            required
-          />
-          <Button
-            className="w-full h-12 bg-white text-primary hover:bg-white/90 hover:scale-[1.02] active:scale-[0.98] shadow-none"
-          >
-            Subscribe Free
-          </Button>
-        </form>
+        {hasSubscribed ? (
+          <div className="py-4 text-center">
+            <p className="text-sm font-medium text-white/95">✓ You are currently subscribed! ✨</p>
+          </div>
+        ) : (
+          <>
+            <p className="text-sm text-white/80 mb-6 leading-relaxed">
+              Join 12,000+ readers. Get the best articles delivered weekly.
+            </p>
+            <form onSubmit={handleSubscribe} className="flex flex-col gap-2">
+              <input
+                type="email"
+                placeholder="Your email address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                disabled={status === "loading"}
+                className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-sm placeholder:text-white/50 focus:bg-white/20 outline-none transition-all text-white disabled:opacity-60"
+                required
+              />
+              <Button
+                type="submit"
+                disabled={status === "loading"}
+                className="w-full h-12 bg-white text-primary hover:bg-white/90 hover:scale-[1.02] active:scale-[0.98] shadow-none font-semibold"
+              >
+                {status === "loading" ? "Subscribing..." : "Subscribe Free"}
+              </Button>
+              {message && (
+                <p className="text-xs text-rose-300 font-medium mt-1">{message}</p>
+              )}
+            </form>
+          </>
+        )}
       </div>
 
       {/* Tags Widget */}

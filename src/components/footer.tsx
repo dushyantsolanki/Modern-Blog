@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react"
 import Link from "next/link"
 import { Globe, Share2, MessageSquare, Rss } from "lucide-react"
@@ -27,6 +29,51 @@ const footerLinks = {
 }
 
 export function Footer() {
+  const [email, setEmail] = React.useState("")
+  const [status, setStatus] = React.useState<"idle" | "loading" | "success" | "error">("idle")
+  const [message, setMessage] = React.useState("")
+  const [hasSubscribed, setHasSubscribed] = React.useState(false)
+
+  React.useEffect(() => {
+    if (typeof window !== "undefined") {
+      const subscribed = localStorage.getItem("insight_subscribed")
+      if (subscribed) {
+        setHasSubscribed(true)
+      }
+    }
+  }, [])
+
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!email) return
+
+    setStatus("loading")
+    setMessage("")
+
+    try {
+      const response = await fetch("/api/subscribers", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, source: "footer_input" }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || "Something went wrong.")
+      }
+
+      setStatus("success")
+      localStorage.setItem("insight_subscribed", "true")
+      setHasSubscribed(true)
+    } catch (err: any) {
+      setStatus("error")
+      setMessage(err.message || "Failed to subscribe.")
+    }
+  }
+
   return (
     <footer
       style={{ viewTransitionName: "site-footer" }}
@@ -104,24 +151,40 @@ export function Footer() {
             <h4 className="text-[#F8FAFC] text-sm font-semibold uppercase tracking-wider mb-6 font-sans">
               Newsletter
             </h4>
-            <p className="text-sm text-[#94A3B8] mb-4">
-              Get weekly insights delivered to your inbox.
-            </p>
-            <form className="flex flex-col gap-2">
-              <input
-                type="email"
-                placeholder="Your email"
-                className="flex-1 px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-[#F8FAFC] text-sm focus:border-primary-light transition-colors outline-none"
-                aria-label="Email for newsletter"
-              />
-              <Button
-                type="submit"
-                size="sm"
-                className="w-20 rounded-lg h-9"
-              >
-                Go
-              </Button>
-            </form>
+            {hasSubscribed ? (
+              <p className="text-sm text-emerald-400 font-medium">
+                ✓ Subscribed to newsletter!
+              </p>
+            ) : (
+              <>
+                <p className="text-sm text-[#94A3B8] mb-4">
+                  Get weekly insights delivered to your inbox.
+                </p>
+                <form onSubmit={handleSubscribe} className="flex flex-col gap-2">
+                  <input
+                    type="email"
+                    placeholder="Your email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    disabled={status === "loading"}
+                    className="flex-1 px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-[#F8FAFC] text-sm focus:border-primary-light transition-colors outline-none disabled:opacity-60"
+                    aria-label="Email for newsletter"
+                    required
+                  />
+                  <Button
+                    type="submit"
+                    size="sm"
+                    disabled={status === "loading"}
+                    className="w-20 rounded-lg h-9 font-semibold"
+                  >
+                    {status === "loading" ? "..." : "Go"}
+                  </Button>
+                  {message && (
+                    <p className="text-xs text-rose-400 mt-1">{message}</p>
+                  )}
+                </form>
+              </>
+            )}
           </div>
         </div>
 
