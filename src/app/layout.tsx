@@ -4,6 +4,7 @@ import "./globals.css";
 import SplashController from "@/components/splash-controller";
 import { ThemeProvider } from "@/components/theme-provider";
 import { AnalyticsTracker } from "@/components/analytics-tracker";
+import { CookieConsent } from "@/components/cookie-consent";
 import Script from "next/script";
 import { Suspense } from "react";
 
@@ -55,6 +56,7 @@ export default function RootLayout({
           <Suspense fallback={null}>
             <AnalyticsTracker />
           </Suspense>
+          <CookieConsent />
         </ThemeProvider>
 
         {/* <Script

@@ -8,7 +8,7 @@ import { Footer } from "@/components/footer"
 import { Newsletter } from "@/components/newsletter"
 import { TableOfContents } from "@/components/table-of-contents"
 import { GoogleAd } from "@/components/google-ad"
-import { Calendar, Clock, ChevronRight, X, Link2 } from "lucide-react"
+import { Calendar, Clock, ChevronRight, ChevronLeft, X, Link2, Eye, Timer } from "lucide-react"
 import { VideoPlayer } from "@/components/video-player"
 import { Post } from "@/lib/types"
 import { DirectionalTransition } from "@/components/view-transition/directional-transition"
@@ -18,8 +18,11 @@ import { BlogShare } from "@/components/blog-share"
 import { ReadingProgress } from "@/components/blog/reading-progress"
 import { motion, AnimatePresence } from "framer-motion"
 import { ArticleSummarizer } from "@/components/article-summarizer"
-import { getPosts } from "@/lib/api"
+import { getPosts, getSuggestedPosts } from "@/lib/api"
+import useEmblaCarousel from "embla-carousel-react"
 import { AuthorAvatar } from "@/components/author-avatar"
+import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
 
 
 // TOC items will be generated dynamically from the article content
@@ -33,6 +36,26 @@ export default function PostClientContent({ post, slug }: { post: Post, slug: st
   const [showFloatingShare, setShowFloatingShare] = React.useState(false)
   const [dynamicTocItems, setDynamicTocItems] = React.useState<TOCItem[]>([])
   const [relatedPosts, setRelatedPosts] = React.useState<Post[]>([])
+  const [emblaRef, emblaApi] = useEmblaCarousel({
+    align: "start",
+    slidesToScroll: 1,
+    containScroll: "trimSnaps",
+  })
+  const [canScrollPrev, setCanScrollPrev] = React.useState(false)
+  const [canScrollNext, setCanScrollNext] = React.useState(true)
+
+  const onSelect = React.useCallback((emblaApi: any) => {
+    setCanScrollPrev(emblaApi.canScrollPrev())
+    setCanScrollNext(emblaApi.canScrollNext())
+  }, [])
+
+  React.useEffect(() => {
+    if (!emblaApi) return
+
+    onSelect(emblaApi)
+    emblaApi.on("reInit", onSelect)
+    emblaApi.on("select", onSelect)
+  }, [emblaApi, onSelect])
 
   React.useEffect(() => {
     // Extract headings from the article
@@ -51,8 +74,12 @@ export default function PostClientContent({ post, slug }: { post: Post, slug: st
   React.useEffect(() => {
     async function fetchRelated() {
       if (post.category) {
-        const data = await getPosts({ limit: 3, categorySlug: post.category });
-        setRelatedPosts(data.posts.filter(p => p.slug !== slug).slice(0, 2));
+        const posts = await getSuggestedPosts({
+          category: post.category,
+          excludeSlug: slug,
+          limit: 6
+        });
+        setRelatedPosts(posts);
       }
     }
     fetchRelated();
@@ -152,7 +179,7 @@ export default function PostClientContent({ post, slug }: { post: Post, slug: st
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: 0.2 }}
-                  className="lg:flex-1"
+                  className="lg:flex-1 min-w-0"
                 >
                   <div className="relative aspect-video rounded-3xl overflow-hidden mb-12 shadow-2xl bg-transparent flex items-center justify-center">
                     <ViewTransition name={`post-image-${slug}`} share="morph">
@@ -182,17 +209,70 @@ export default function PostClientContent({ post, slug }: { post: Post, slug: st
                   {/* Related Posts Section */}
                   {relatedPosts.length > 0 && (
                     <div className="mt-24 pt-16 border-t border-border">
-                      <h3 className="text-2xl font-bold mb-8">Related Articles</h3>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        {relatedPosts.map((rp) => (
-                          <Link key={rp.slug} href={`/blog/${rp.slug}`} className="group">
-                            <div className="relative aspect-video rounded-2xl overflow-hidden mb-4">
-                              <Image src={rp.image} alt={rp.title} fill className="object-cover transition-transform duration-500 group-hover:scale-110" />
-                            </div>
-                            <h4 className="font-bold text-lg group-hover:text-primary transition-colors line-clamp-2">{rp.title}</h4>
-                            <p className="text-sm text-muted-foreground mt-2">{rp.date}</p>
-                          </Link>
-                        ))}
+                      <div className="relative group/carousel">
+                        <div className="flex items-center justify-between mb-8">
+                          <h3 className="text-2xl font-bold">Related Articles</h3>
+                          <div className="flex items-center gap-2">
+                            <Button
+                              variant="outline"
+                              size="icon"
+                              onClick={() => emblaApi?.scrollPrev()}
+                              disabled={!canScrollPrev}
+                              className={cn(
+                                "rounded-full transition-all active:scale-95 disabled:opacity-30 disabled:pointer-events-none hover:bg-surface-alt",
+                                !canScrollPrev && "opacity-0 invisible"
+                              )}
+                              aria-label="Previous posts"
+                            >
+                              <ChevronLeft className="w-5 h-5" />
+                            </Button>
+                            <Button
+                              variant="outline"
+                              size="icon"
+                              onClick={() => emblaApi?.scrollNext()}
+                              disabled={!canScrollNext}
+                              className={cn(
+                                "rounded-full transition-all active:scale-95 disabled:opacity-30 disabled:pointer-events-none hover:bg-surface-alt",
+                                !canScrollNext && "opacity-0 invisible"
+                              )}
+                              aria-label="Next posts"
+                            >
+                              <ChevronRight className="w-5 h-5" />
+                            </Button>
+                          </div>
+                        </div>
+
+                        <div className="overflow-hidden" ref={emblaRef}>
+                          <div className="flex gap-6">
+                            {relatedPosts.map((rp) => (
+                              <Link key={rp.slug} href={`/blog/${rp.slug}`} className="group flex-[0_0_85%] md:flex-[0_0_45%] lg:flex-[0_0_40%]">
+                                <div className="relative aspect-video rounded-2xl overflow-hidden mb-4">
+                                  <Image src={rp.image} alt={rp.title} fill className="object-cover transition-transform duration-500 group-hover:scale-110" />
+                                </div>
+                                <h4 className="font-bold text-lg group-hover:text-primary transition-colors line-clamp-2">{rp.title}</h4>
+
+                                <div className="flex items-center gap-4 text-xs text-muted-foreground mt-3 font-medium">
+                                  <div className="flex items-center gap-1.5">
+                                    <Calendar className="w-3.5 h-3.5" />
+                                    <span>{rp.date}</span>
+                                  </div>
+                                  {rp.views !== undefined && (
+                                    <div className="flex items-center gap-1.5 text-primary/80">
+                                      <Eye className="w-3.5 h-3.5" />
+                                      <span>{rp.views} views</span>
+                                    </div>
+                                  )}
+                                  {rp.avgTime !== undefined && rp.avgTime !== "0:00m" && (
+                                    <div className="flex items-center gap-1.5 text-emerald-500">
+                                      <Timer className="w-3.5 h-3.5" />
+                                      <span>{rp.avgTime}</span>
+                                    </div>
+                                  )}
+                                </div>
+                              </Link>
+                            ))}
+                          </div>
+                        </div>
                       </div>
                     </div>
                   )}
@@ -227,7 +307,7 @@ export default function PostClientContent({ post, slug }: { post: Post, slug: st
                 </motion.div>
 
                 {/* Sidebar Column */}
-                <div className="lg:w-80">
+                <div className="lg:w-80 shrink-0">
                   <div className="sticky top-28 flex flex-col gap-12 self-start">
                     <TableOfContents items={dynamicTocItems} />
                     <Sidebar />

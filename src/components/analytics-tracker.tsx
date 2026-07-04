@@ -128,10 +128,27 @@ export function AnalyticsTracker() {
   useEffect(() => {
     const handleScroll = () => {
       const scrolled = window.scrollY;
-      const maxScrollable = document.documentElement.scrollHeight - window.innerHeight;
-      const pct = maxScrollable > 0 ? Math.round((scrolled / maxScrollable) * 100) : 0;
-      if (pct > sessionRef.current.maxScroll) {
-        sessionRef.current.maxScroll = Math.min(100, pct);
+      const viewportBottom = scrolled + window.innerHeight;
+      const articleEl = document.querySelector("article");
+      
+      let pct = 0;
+      if (articleEl) {
+        const rect = articleEl.getBoundingClientRect();
+        const articleTop = rect.top + scrolled;
+        const articleHeight = rect.height;
+        
+        if (articleHeight > 0 && viewportBottom >= articleTop) {
+          const scrolledPixels = viewportBottom - articleTop;
+          pct = Math.round((scrolledPixels / articleHeight) * 100);
+        }
+      } else {
+        const maxScrollable = document.documentElement.scrollHeight - window.innerHeight;
+        pct = maxScrollable > 0 ? Math.round((scrolled / maxScrollable) * 100) : 0;
+      }
+      
+      const clampedPct = Math.min(100, Math.max(0, pct));
+      if (clampedPct > sessionRef.current.maxScroll) {
+        sessionRef.current.maxScroll = clampedPct;
       }
     };
 
@@ -172,6 +189,9 @@ export function AnalyticsTracker() {
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    // Initial check (useful for short articles or if page loaded pre-scrolled)
+    handleScroll();
 
     return () => {
       window.removeEventListener("scroll", handleScroll);

@@ -4,6 +4,7 @@ import * as React from "react"
 import Link from "next/link"
 import { Globe, Share2, MessageSquare, Rss } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { getCategories } from "@/lib/api"
 
 const footerLinks = {
   navigation: [
@@ -12,13 +13,6 @@ const footerLinks = {
     { name: "Categories", href: "/category" },
     { name: "About", href: "/about" },
     { name: "Contact", href: "/contact" },
-  ],
-  categories: [
-    { name: "Technology", href: "/category/technology" },
-    { name: "Design", href: "/category/design" },
-    { name: "Productivity", href: "/category/productivity" },
-    { name: "Creativity", href: "/category/creativity" },
-    { name: "Business", href: "/category/business" },
   ],
   social: [
     { name: "Website", icon: Globe, href: "#" },
@@ -33,6 +27,7 @@ export function Footer() {
   const [status, setStatus] = React.useState<"idle" | "loading" | "success" | "error">("idle")
   const [message, setMessage] = React.useState("")
   const [hasSubscribed, setHasSubscribed] = React.useState(false)
+  const [categories, setCategories] = React.useState<{ name: string; slug: string; totalPost?: number }[]>([])
 
   React.useEffect(() => {
     if (typeof window !== "undefined") {
@@ -41,6 +36,18 @@ export function Footer() {
         setHasSubscribed(true)
       }
     }
+  }, [])
+
+  React.useEffect(() => {
+    async function fetchCategories() {
+      try {
+        const res = await getCategories({ limit: 8, status: "active", sort: "popular" })
+        setCategories(res.categories || [])
+      } catch (e) {
+        console.error("Footer: failed to fetch categories", e)
+      }
+    }
+    fetchCategories()
   }, [])
 
   const handleSubscribe = async (e: React.FormEvent) => {
@@ -130,20 +137,27 @@ export function Footer() {
             <h4 className="text-[#F8FAFC] text-sm font-semibold uppercase tracking-wider mb-6 font-sans">
               Categories
             </h4>
-            <ul className="flex flex-col gap-3">
-              {footerLinks.categories.map((link) => (
-                <li key={link.name}>
-                  <Link
-                    href={link.href}
-                    // @ts-ignore
-                    transitionTypes={['nav-forward']}
-                    className="text-sm text-[#94A3B8] hover:text-[#F8FAFC] transition-colors"
-                  >
-                    {link.name}
-                  </Link>
+            <ul className="flex w-6 flex-col gap-3">
+              {categories.length > 0
+                ? categories.map((cat) => (
+                  <li key={cat.slug} className="flex items-center justify-between gap-2">
+                    <Link
+                      href={`/category/${cat.slug}`}
 
-                </li>
-              ))}
+                      transitionTypes={['nav-forward']}
+                      className="text-sm text-[#94A3B8] hover:text-[#F8FAFC] transition-colors"
+                    >
+                      {cat.name}
+                    </Link>
+                    {cat.totalPost !== undefined && (
+                      <span className="text-xs text-[#475569] font-medium tabular-nums">{cat.totalPost}</span>
+                    )}
+                  </li>
+                ))
+                : // Skeleton placeholders while loading
+                Array.from({ length: 5 }).map((_, i) => (
+                  <li key={i} className="h-4 w-24 bg-white/5 rounded animate-pulse" />
+                ))}
             </ul>
           </div>
 

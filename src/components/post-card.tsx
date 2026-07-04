@@ -2,7 +2,7 @@ import * as React from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { motion } from "framer-motion"
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, Eye, Timer } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { ViewTransition } from "react"
 import { getButtonClasses } from "@/components/ui/button"
@@ -27,6 +27,8 @@ interface PostCardProps {
   featured?: boolean
   priority?: boolean
   className?: string
+  views?: number
+  avgTime?: string
 }
 
 export function PostCard({
@@ -42,6 +44,8 @@ export function PostCard({
   priority = false,
   categoryColor,
   className,
+  views,
+  avgTime,
 }: PostCardProps) {
 
   return (
@@ -77,10 +81,26 @@ export function PostCard({
       </div>
 
       <div className={cn("flex flex-col p-6 lg:p-8", featured ? "md:w-1/2 justify-center" : "flex-1")}>
-        <div className="flex items-center gap-2 text-xs text-muted-foreground mb-4">
+        <div className="flex flex-wrap items-center gap-2 md:gap-3 text-xs text-muted-foreground mb-4 font-medium">
           <time dateTime={date}>{date}</time>
-          <span className="w-1 h-1 rounded-full bg-muted-foreground" />
-          <span>{readTime}</span>
+          {views !== undefined && (
+            <>
+              <span className="w-1 h-1 rounded-full bg-muted-foreground/50" />
+              <div className="flex items-center gap-1.5 text-primary/80">
+                <Eye className="w-3.5 h-3.5" />
+                <span>{views} views</span>
+              </div>
+            </>
+          )}
+          {avgTime !== undefined && avgTime !== "0:00m" && (
+            <>
+              <span className="w-1 h-1 rounded-full bg-muted-foreground/50" />
+              <div className="flex items-center gap-1.5 text-emerald-500">
+                <Timer className="w-3.5 h-3.5" />
+                <span>{avgTime}</span>
+              </div>
+            </>
+          )}
         </div>
 
         <ViewTransition name={`post-title-${slug}`} share="text-morph" default="none">

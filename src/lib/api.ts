@@ -64,9 +64,44 @@ function mapPost(post: any): Post {
     videoUrl: post.videoUrl,
     content: post.content,
     summaryPoints: post.summaryPoints || [],
+    views: post.views || 0,
+    avgTime: post.avgTime || "0:00m",
     isHero: post.isHero || false,
     isFeatured: post.isFeatured || false
   };
+}
+
+/**
+ * Fetches suggested posts by category, enriched with views and time-spent metrics
+ */
+export async function getSuggestedPosts(params: {
+  category: string;
+  excludeSlug: string;
+  limit?: number;
+}): Promise<Post[]> {
+  const { category, excludeSlug, limit = 3 } = params;
+  try {
+    const queryParams = new URLSearchParams({
+      category,
+      excludeSlug,
+      limit: limit.toString()
+    });
+
+    const url = `${API_URL}/posts/suggestions?${queryParams.toString()}`;
+    console.log(`[API] Fetching suggested posts: ${url}`);
+
+    const response = await fetch(url, { next: { revalidate: 60 } });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return (data.posts || []).map(mapPost);
+  } catch (error) {
+    console.error("[API] Error in getSuggestedPosts:", error);
+    return [];
+  }
 }
 
 /**

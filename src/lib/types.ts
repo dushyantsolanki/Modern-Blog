@@ -36,6 +36,8 @@ export interface Post {
   videoUrl?: string;
   content?: string;
   summaryPoints?: string[];
+  views?: number;
+  avgTime?: string;
   isHero: boolean;
   isFeatured: boolean;
 }
