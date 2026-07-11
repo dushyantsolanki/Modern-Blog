@@ -69,15 +69,15 @@ export function PostCard({
 
           />
         </ViewTransition>
-        <div className="absolute top-4 left-4">
-
-          <span className={cn(
-            "px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-full glass border border-white/20 text-white shadow-lg backdrop-blur-md",
-
-          )} style={{ backgroundColor: `${categoryColor}` }}>
-            {category}
-          </span>
-        </div>
+        {category && category !== "Uncategorized" && (
+          <div className="absolute top-4 left-4">
+            <span className={cn(
+              "px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-full glass border border-white/20 text-white shadow-lg backdrop-blur-md",
+            )} style={{ backgroundColor: categoryColor || undefined }}>
+              {category}
+            </span>
+          </div>
+        )}
       </div>
 
       <div className={cn("flex flex-col p-6 lg:p-8", featured ? "md:w-1/2 justify-center" : "flex-1")}>

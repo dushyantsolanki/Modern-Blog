@@ -68,7 +68,8 @@ function mapPost(post: any): Post {
     views: post.views || 0,
     avgTime: post.avgTime || "0:00m",
     isHero: post.isHero || false,
-    isFeatured: post.isFeatured || false
+    isFeatured: post.isFeatured || false,
+    seo: post.seo || undefined
   };
 }
 
@@ -409,5 +410,22 @@ export async function getHomeCategories(): Promise<Category[]> {
   } catch (error) {
     console.error("[API] Error in getHomeCategories:", error);
     return [];
+  }
+}
+
+/**
+ * Fetches data for the About page
+ */
+export async function getAboutPageData(): Promise<any> {
+  try {
+    const url = `${API_URL}/about`;
+    const response = await fetch(url, { next: { revalidate: 60 } });
+
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+    return await response.json();
+  } catch (error) {
+    console.error("[API] Error in getAboutPageData:", error);
+    return null;
   }
 }

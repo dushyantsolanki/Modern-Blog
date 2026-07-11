@@ -24,9 +24,9 @@ export default async function AuthorPage({ params }: { params: Promise<{ name: s
   }
 
   // 2. Fetch Author's Posts (using author's stored _id)
-  const { posts } = await getPosts({
+  const { posts, pagination } = await getPosts({
     authorId: author._id,
-    limit: 50
+    limit: 10
   });
 
   return (
@@ -35,6 +35,7 @@ export default async function AuthorPage({ params }: { params: Promise<{ name: s
       <AuthorContent
         author={author}
         posts={posts}
+        initialHasMore={pagination?.hasMore || false}
       />
       <Newsletter />
       <Footer />

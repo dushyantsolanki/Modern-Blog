@@ -41,4 +41,10 @@ export interface Post {
   avgTime?: string;
   isHero: boolean;
   isFeatured: boolean;
+  seo?: {
+    focusKeyword?: string;
+    metaTitle?: string;
+    metaDescription?: string;
+    keywords?: string;
+  };
 }

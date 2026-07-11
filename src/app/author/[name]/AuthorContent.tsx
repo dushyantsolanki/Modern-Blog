@@ -6,10 +6,14 @@ import { motion, AnimatePresence } from "framer-motion"
 import { X, Share2, Globe, Mail, MapPin, Calendar, BookOpen } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { AuthorAvatar } from "@/components/author-avatar"
+import { InfiniteScrollPosts } from "@/components/blog/infinite-scroll-posts"
+import { getPosts } from "@/lib/api"
+import { Post } from "@/lib/types"
 
 interface AuthorContentProps {
   author: any
-  posts: any[]
+  posts: Post[]
+  initialHasMore: boolean
 }
 
 const FADE_UP = {
@@ -19,7 +23,34 @@ const FADE_UP = {
   transition: { duration: 0.6, ease: [0.23, 1, 0.32, 1] }
 } as const
 
-export function AuthorContent({ author, posts }: AuthorContentProps) {
+export function AuthorContent({ author, posts: initialPosts, initialHasMore }: AuthorContentProps) {
+  const [posts, setPosts] = React.useState<Post[]>(initialPosts)
+  const [page, setPage] = React.useState(1)
+  const [hasMore, setHasMore] = React.useState(initialHasMore)
+  const [isFetchingMore, setIsFetchingMore] = React.useState(false)
+
+  const handleLoadMore = async () => {
+    if (isFetchingMore || !hasMore) return;
+    
+    setIsFetchingMore(true);
+    try {
+      const nextPage = page + 1;
+      const response = await getPosts({
+        authorId: author._id,
+        page: nextPage,
+        limit: 10
+      });
+      
+      setPosts(prev => [...prev, ...response.posts]);
+      setHasMore(response.pagination.hasMore);
+      setPage(nextPage);
+    } catch (error) {
+      console.error("Error fetching more author posts:", error);
+    } finally {
+      setIsFetchingMore(false);
+    }
+  };
+
   return (
     <main className="flex-1 pb-24">
       {/* Editorial Author Hero (Apple Style) */}
@@ -115,20 +146,13 @@ export function AuthorContent({ author, posts }: AuthorContentProps) {
 
           <AnimatePresence mode="popLayout">
             {posts.length > 0 ? (
-              <motion.div
-                layout
-                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12"
-              >
-                {posts.map((post, i) => (
-                  <motion.div
-                    key={post.slug}
-                    {...FADE_UP}
-                    transition={{ delay: i * 0.1, duration: 0.6 }}
-                  >
-                    <PostCard {...post} />
-                  </motion.div>
-                ))}
-              </motion.div>
+              <InfiniteScrollPosts
+                posts={posts}
+                view="grid"
+                onLoadMore={handleLoadMore}
+                hasMore={hasMore}
+                isLoading={isFetchingMore}
+              />
             ) : (
               <div className="text-center py-32 bg-surface-alt/50 rounded-[3rem] border border-dashed border-border/60">
                 <p className="text-3xl font-bold mb-4 opacity-30 tracking-tight">Silent for now.</p>
