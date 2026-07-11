@@ -34,6 +34,7 @@ export interface Post {
   image: string;
   heroImage?: string;
   videoUrl?: string;
+  audioUrl?: string;
   content?: string;
   summaryPoints?: string[];
   views?: number;

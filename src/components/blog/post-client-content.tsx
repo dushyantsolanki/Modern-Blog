@@ -8,12 +8,12 @@ import { Footer } from "@/components/footer"
 import { Newsletter } from "@/components/newsletter"
 import { TableOfContents } from "@/components/table-of-contents"
 import { GoogleAd } from "@/components/google-ad"
-import { Calendar, Clock, ChevronRight, ChevronLeft, X, Link2, Eye, Timer } from "lucide-react"
+import { Calendar, Clock, ChevronRight, ChevronLeft, X, Link2, Eye, Timer, Play } from "lucide-react"
 import { VideoPlayer } from "@/components/video-player"
+import { AudioPlayer } from "@/components/audio-player"
 import { Post } from "@/lib/types"
 import { DirectionalTransition } from "@/components/view-transition/directional-transition"
 import { ViewTransition } from "react"
-import { PostAudioPlayer } from "@/components/post-audio-player"
 import { BlogShare } from "@/components/blog-share"
 import { ReadingProgress } from "@/components/blog/reading-progress"
 import { motion, AnimatePresence } from "framer-motion"
@@ -43,6 +43,7 @@ export default function PostClientContent({ post, slug }: { post: Post, slug: st
   })
   const [canScrollPrev, setCanScrollPrev] = React.useState(false)
   const [canScrollNext, setCanScrollNext] = React.useState(true)
+  const [showAudioPlayer, setShowAudioPlayer] = React.useState(false)
 
   const onSelect = React.useCallback((emblaApi: any) => {
     setCanScrollPrev(emblaApi.canScrollPrev())
@@ -146,7 +147,20 @@ export default function PostClientContent({ post, slug }: { post: Post, slug: st
                   </h1>
                 </ViewTransition>
 
-                <PostAudioPlayer title={post.title} contentSelector="article" />
+                {post.audioUrl && post.audioUrl !== "undefined" && post.audioUrl !== "null" && !showAudioPlayer && (
+                  <button
+                    onClick={() => setShowAudioPlayer(true)}
+                    className="flex items-center gap-4 px-6 py-4 glass border border-primary/20 hover:border-primary/40 transition-all group my-8 w-fit rounded-2xl"
+                  >
+                    <div className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center text-white shadow-xl group-hover:scale-110 transition-transform">
+                      <Play className="w-6 h-6 fill-current ml-1" />
+                    </div>
+                    <div className="text-left">
+                      <div className="text-sm font-bold text-foreground">Listen with Insight</div>
+                      <div className="text-[11px] text-muted-foreground">Immersive high-quality AI audio experience</div>
+                    </div>
+                  </button>
+                )}
 
                 <div className="flex flex-wrap items-center gap-8 py-8 border-y border-border mb-12">
                   <div className="flex items-center gap-3">
@@ -321,6 +335,21 @@ export default function PostClientContent({ post, slug }: { post: Post, slug: st
           <Footer />
         </div>
       </DirectionalTransition >
+      {/* Sticky Audio Player Popup */}
+      {/* Sticky Audio Player Popup */}
+      <AnimatePresence>
+        {showAudioPlayer && post.audioUrl && (
+          <motion.div
+            initial={{ y: 150, opacity: 0, x: "-50%" }}
+            animate={{ y: 0, opacity: 1, x: "-50%" }}
+            exit={{ y: 150, opacity: 0, x: "-50%" }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            className="fixed bottom-6 left-1/2 z-50 w-[calc(100%-2rem)] max-w-lg"
+          >
+            <AudioPlayer src={post.audioUrl} onClose={() => setShowAudioPlayer(false)} />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   )
 }

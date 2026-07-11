@@ -62,6 +62,7 @@ function mapPost(post: any): Post {
     image: (post.image || "").trim() || "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop",
     heroImage: (post.image || "").trim(),
     videoUrl: post.videoUrl,
+    audioUrl: (post.audioContentType && post.audioContentType !== "null" && post.audioContentType !== "undefined" && post.audioContentType.trim() !== "") ? `${API_URL}/audio/${post._id}` : undefined,
     content: post.content,
     summaryPoints: post.summaryPoints || [],
     views: post.views || 0,
