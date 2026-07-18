@@ -22,13 +22,13 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "Insight — A Modern Blog for Curious Minds",
-  description: "Insight is a modern blog exploring ideas in technology, design, productivity and creativity. Join 12,000+ readers.",
+  title: "Pubpulse — A Modern Blog for Curious Minds",
+  description: "Pubpulse is a modern blog exploring ideas in technology, design, productivity and creativity. Join 12,000+ readers.",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "Insight",
+    title: "Pubpulse",
   },
 };
 

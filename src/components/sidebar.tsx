@@ -54,7 +54,7 @@ export function Sidebar() {
 
   React.useEffect(() => {
     if (typeof window !== "undefined") {
-      const subscribed = localStorage.getItem("insight_subscribed")
+      const subscribed = localStorage.getItem("pubpulse_subscribed")
       if (subscribed) {
         setHasSubscribed(true)
       }
@@ -84,7 +84,7 @@ export function Sidebar() {
       }
 
       setStatus("success")
-      localStorage.setItem("insight_subscribed", "true")
+      localStorage.setItem("pubpulse_subscribed", "true")
       setHasSubscribed(true)
     } catch (err: any) {
       setStatus("error")

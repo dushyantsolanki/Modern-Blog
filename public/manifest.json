@@ -1,7 +1,7 @@
 {
-  "name": "Insight Blog",
-  "short_name": "Insight",
-  "description": "Insight — A Modern Blog for Curious Minds.",
+  "name": "Pubpulse Blog",
+  "short_name": "Pubpulse",
+  "description": "Pubpulse — A Modern Blog for Curious Minds.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#000000",

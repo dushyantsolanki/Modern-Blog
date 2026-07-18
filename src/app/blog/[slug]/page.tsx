@@ -44,12 +44,12 @@ export async function generateMetadata(
   const post = await getPostBySlug(slug)
   console.log(post)
   if (!post) return {
-    title: "Post Not Found | Insight",
+    title: "Post Not Found | Pubpulse",
     description: "The requested blog post could not be found."
   }
 
   return {
-    title: `${post.title} | Insight`,
+    title: `${post.title} | Pubpulse`,
     description: post.excerpt,
     openGraph: {
       title: post.title,

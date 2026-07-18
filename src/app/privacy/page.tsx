@@ -106,7 +106,7 @@ export default function PrivacyPage() {
                   <div>
                     <h2 className="text-4xl lg:text-5xl font-black tracking-tight mb-8">Introduction.</h2>
                     <div className="space-y-6 text-muted-foreground font-medium leading-[1.8]">
-                      <p>Welcome to Insight ("we," "our," or "us"). We are committed to protecting your personal information and your right to privacy. If you have any questions or concerns about our policy or our practices with regards to your personal information, please contact us.</p>
+                      <p>Welcome to Pubpulse ("we," "our," or "us"). We are committed to protecting your personal information and your right to privacy. If you have any questions or concerns about our policy or our practices with regards to your personal information, please contact us.</p>
                       <p>When you visit our website and use our services, you trust us with your personal information. We take your privacy very seriously. In this privacy policy, we seeking to explain to you in the clearest way possible what information we collect, how we use it, and what rights you have in relation to it.</p>
                     </div>
                   </div>

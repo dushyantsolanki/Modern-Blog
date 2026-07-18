@@ -17,7 +17,7 @@ const faqs = [
   },
   {
     question: "Is there a newsletter?",
-    answer: "Yes! Our weekly digest, 'Insight Weekly,' summarizes the top stories and includes exclusive resources, curated links, and early access to our 12,000+ subscribers."
+    answer: "Yes! Our weekly digest, 'Pubpulse Weekly,' summarizes the top stories and includes exclusive resources, curated links, and early access to our 12,000+ subscribers."
   },
   {
     question: "Can I contribute an article?",
@@ -106,7 +106,7 @@ export function FAQ() {
                 <span className="text-primary italic">Questions.</span>
               </h2>
               <p className="text-lg text-muted-foreground leading-relaxed mb-8">
-                Everything you need to know about Insight. If you can't find the answer you're looking for, feel free to reach out.
+                Everything you need to know about Pubpulse. If you can't find the answer you're looking for, feel free to reach out.
               </p>
               <Button
                 variant="outline"

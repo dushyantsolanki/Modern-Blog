@@ -60,7 +60,7 @@ export default function SplashScreen() {
           className="flex flex-col items-center z-10"
         >
           <h1 className="text-6xl md:text-8xl font-black tracking-[-0.05em] text-foreground selection:bg-transparent flex items-baseline">
-            {"Insight".split("").map((char, i) => (
+            {"Pubpulse".split("").map((char, i) => (
               <motion.span
                 key={i}
                 variants={{

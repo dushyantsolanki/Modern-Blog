@@ -31,7 +31,7 @@ export function Footer() {
 
   React.useEffect(() => {
     if (typeof window !== "undefined") {
-      const subscribed = localStorage.getItem("insight_subscribed")
+      const subscribed = localStorage.getItem("pubpulse_subscribed")
       if (subscribed) {
         setHasSubscribed(true)
       }
@@ -73,7 +73,7 @@ export function Footer() {
       }
 
       setStatus("success")
-      localStorage.setItem("insight_subscribed", "true")
+      localStorage.setItem("pubpulse_subscribed", "true")
       setHasSubscribed(true)
     } catch (err: any) {
       setStatus("error")
@@ -90,7 +90,7 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-12 pb-16 border-b border-white/10">
           <div className="lg:col-span-2">
             <Link href="/" className="text-2xl font-extrabold text-[#F8FAFC]">
-              Insight<span className="text-primary-light">.</span>
+              Pubpulse<span className="text-primary-light">.</span>
             </Link>
             <p className="mt-4 text-[#94A3B8] text-sm leading-relaxed max-w-sm">
               A modern blog for curious minds. Exploring ideas at the intersection of technology, design, and human creativity.
@@ -203,7 +203,7 @@ export function Footer() {
         </div>
 
         <div className="flex flex-col sm:flex-row items-center justify-between py-8 text-xs text-[#64748B]">
-          <p>© 2026 Insight. All rights reserved.</p>
+          <p>© 2026 Pubpulse. All rights reserved.</p>
           <div className="flex gap-6 mt-4 sm:mt-0">
             <Link href="/privacy" className="hover:text-[#CBD5E1] transition-colors">
               Privacy Policy

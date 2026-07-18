@@ -47,7 +47,7 @@ export function AboutClient({ data }: { data: any }) {
                   Since 2025
                 </span>
                 <h1 className="text-6xl md:text-8xl lg:text-[10rem] font-black tracking-tighter leading-[0.85] mb-12">
-                  About Insight. <br />
+                  About Pubpulse. <br />
                   <span className="text-muted-foreground/30">The Craft.</span>
                 </h1>
               </motion.div>
@@ -71,7 +71,7 @@ export function AboutClient({ data }: { data: any }) {
                   className="grid grid-cols-1 md:grid-cols-2 gap-12 text-lg text-muted-foreground/80 font-medium leading-relaxed"
                 >
                   <p>
-                    Insight was built on a simple observation: the internet is full of
+                    Pubpulse was built on a simple observation: the internet is full of
                     SEO-optimized noise, but lacks true craft. We set out to change that
                     by treating every story like a design project.
                   </p>

@@ -156,7 +156,7 @@ export default function PostClientContent({ post, slug }: { post: Post, slug: st
                       <Play className="w-6 h-6 fill-current ml-1" />
                     </div>
                     <div className="text-left">
-                      <div className="text-sm font-bold text-foreground">Listen with Insight</div>
+                      <div className="text-sm font-bold text-foreground">Listen with Pubpulse</div>
                       <div className="text-[11px] text-muted-foreground">Immersive high-quality AI audio experience</div>
                     </div>
                   </button>
@@ -309,7 +309,7 @@ export default function PostClientContent({ post, slug }: { post: Post, slug: st
                         <h3 className="text-2xl font-bold mb-2">{post.author.name}</h3>
                         <div className="text-primary font-semibold text-sm uppercase tracking-wider mb-4">{post.author.role || "Author"}</div>
                         <p className="text-muted-foreground leading-relaxed mb-6">
-                          {post.author.bio || `Creative mind and contributor at Insight. Sharing perspectives on ${post.category} and the future of work.`}
+                          {post.author.bio || `Creative mind and contributor at Pubpulse. Sharing perspectives on ${post.category} and the future of work.`}
                         </p>
                         <div className="flex gap-4">
                           <a href="#" className="p-2 border border-border rounded-xl hover:bg-surface-alt transition-colors"><X className="w-4 h-4" /></a>
