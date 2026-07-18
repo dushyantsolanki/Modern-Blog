@@ -31,7 +31,7 @@ export function AuthorContent({ author, posts: initialPosts, initialHasMore }: A
 
   const handleLoadMore = async () => {
     if (isFetchingMore || !hasMore) return;
-    
+
     setIsFetchingMore(true);
     try {
       const nextPage = page + 1;
@@ -40,7 +40,7 @@ export function AuthorContent({ author, posts: initialPosts, initialHasMore }: A
         page: nextPage,
         limit: 10
       });
-      
+
       setPosts(prev => [...prev, ...response.posts]);
       setHasMore(response.pagination.hasMore);
       setPage(nextPage);
@@ -64,10 +64,10 @@ export function AuthorContent({ author, posts: initialPosts, initialHasMore }: A
               transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] } as const}
               className="relative shrink-0"
             >
-              <AuthorAvatar 
-                name={author.name} 
-                avatar={author.avatar} 
-                size="hero" 
+              <AuthorAvatar
+                name={author.name}
+                avatar={author.avatar}
+                size="hero"
                 className="rounded-[3rem] p-1 shadow-2xl shadow-primary/5 border-4 border-surface transition-transform duration-700 hover:scale-105"
               />
               <div className="absolute -bottom-4 -right-4 p-4 rounded-3xl bg-primary text-white shadow-xl shadow-primary/20 border-4 border-background">

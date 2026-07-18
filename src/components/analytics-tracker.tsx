@@ -21,7 +21,9 @@ export function AnalyticsTracker() {
     postSlug: "",
     activeTime: 0,
     lastActive: 0,
-    maxScroll: 0,
+    utmSource: undefined as string | undefined,
+    utmMedium: undefined as string | undefined,
+    utmCampaign: undefined as string | undefined,
   });
 
   const visitorIdRef = useRef<string>("");
@@ -57,7 +59,7 @@ export function AnalyticsTracker() {
         const text = articleEl.innerText || articleEl.textContent || "";
         const wordCount = text.split(/\s+/).filter(Boolean).length;
         const estimatedSeconds = Math.max(30, Math.round((wordCount / 200) * 60));
-        completedRead = prevSession.maxScroll >= 80 && finalActiveTime >= Math.min(30, estimatedSeconds * 0.5);
+        completedRead = finalActiveTime >= Math.min(30, estimatedSeconds * 0.5);
       }
 
       const payload = {
@@ -66,8 +68,10 @@ export function AnalyticsTracker() {
         path: prevSession.path,
         postSlug: prevSession.postSlug || undefined,
         timeOnPage: Math.round(finalActiveTime),
-        scrollDepth: prevSession.maxScroll,
         completedRead,
+        utmSource: prevSession.utmSource,
+        utmMedium: prevSession.utmMedium,
+        utmCampaign: prevSession.utmCampaign,
       };
 
       if (navigator.sendBeacon) {
@@ -93,6 +97,10 @@ export function AnalyticsTracker() {
       postSlug = postMatch[1];
     }
 
+    const utmSource = searchParams?.get("utm_source") || undefined;
+    const utmMedium = searchParams?.get("utm_medium") || undefined;
+    const utmCampaign = searchParams?.get("utm_campaign") || undefined;
+
     const newViewId = "view_" + generateId();
     sessionRef.current = {
       viewId: newViewId,
@@ -100,7 +108,9 @@ export function AnalyticsTracker() {
       postSlug,
       activeTime: 0,
       lastActive: performance.now(),
-      maxScroll: 0,
+      utmSource,
+      utmMedium,
+      utmCampaign,
     };
 
     // Send initial pageview event
@@ -114,8 +124,10 @@ export function AnalyticsTracker() {
         referrer: typeof document !== "undefined" ? document.referrer : "",
         language: typeof navigator !== "undefined" ? navigator.language : "en",
         timeOnPage: 0,
-        scrollDepth: 0,
         completedRead: false,
+        utmSource,
+        utmMedium,
+        utmCampaign,
       }),
       headers: {
         "Content-Type": "application/json",
@@ -124,34 +136,8 @@ export function AnalyticsTracker() {
 
   }, [pathname, searchParams]);
 
-  // Track active time and scroll depth
+  // Track active time
   useEffect(() => {
-    const handleScroll = () => {
-      const scrolled = window.scrollY;
-      const viewportBottom = scrolled + window.innerHeight;
-      const articleEl = document.querySelector("article");
-      
-      let pct = 0;
-      if (articleEl) {
-        const rect = articleEl.getBoundingClientRect();
-        const articleTop = rect.top + scrolled;
-        const articleHeight = rect.height;
-        
-        if (articleHeight > 0 && viewportBottom >= articleTop) {
-          const scrolledPixels = viewportBottom - articleTop;
-          pct = Math.round((scrolledPixels / articleHeight) * 100);
-        }
-      } else {
-        const maxScrollable = document.documentElement.scrollHeight - window.innerHeight;
-        pct = maxScrollable > 0 ? Math.round((scrolled / maxScrollable) * 100) : 0;
-      }
-      
-      const clampedPct = Math.min(100, Math.max(0, pct));
-      if (clampedPct > sessionRef.current.maxScroll) {
-        sessionRef.current.maxScroll = clampedPct;
-      }
-    };
-
     const handleVisibilityChange = () => {
       if (document.visibilityState === "hidden") {
         // Paused: Add elapsed time to accumulator
@@ -164,7 +150,7 @@ export function AnalyticsTracker() {
           const text = articleEl.innerText || articleEl.textContent || "";
           const wordCount = text.split(/\s+/).filter(Boolean).length;
           const estimatedSeconds = Math.max(30, Math.round((wordCount / 200) * 60));
-          completedRead = sessionRef.current.maxScroll >= 80 && sessionRef.current.activeTime >= Math.min(30, estimatedSeconds * 0.5);
+          completedRead = sessionRef.current.activeTime >= Math.min(30, estimatedSeconds * 0.5);
         }
 
         const payload = {
@@ -173,7 +159,6 @@ export function AnalyticsTracker() {
           path: sessionRef.current.path,
           postSlug: sessionRef.current.postSlug || undefined,
           timeOnPage: Math.round(sessionRef.current.activeTime),
-          scrollDepth: sessionRef.current.maxScroll,
           completedRead,
         };
 
@@ -187,14 +172,9 @@ export function AnalyticsTracker() {
       }
     };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
     document.addEventListener("visibilitychange", handleVisibilityChange);
 
-    // Initial check (useful for short articles or if page loaded pre-scrolled)
-    handleScroll();
-
     return () => {
-      window.removeEventListener("scroll", handleScroll);
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, []);
@@ -216,7 +196,7 @@ export function AnalyticsTracker() {
         const text = articleEl.innerText || articleEl.textContent || "";
         const wordCount = text.split(/\s+/).filter(Boolean).length;
         const estimatedSeconds = Math.max(30, Math.round((wordCount / 200) * 60));
-        completedRead = session.maxScroll >= 80 && finalActiveTime >= Math.min(30, estimatedSeconds * 0.5);
+        completedRead = finalActiveTime >= Math.min(30, estimatedSeconds * 0.5);
       }
 
       const payload = {
@@ -225,7 +205,6 @@ export function AnalyticsTracker() {
         path: session.path,
         postSlug: session.postSlug || undefined,
         timeOnPage: Math.round(finalActiveTime),
-        scrollDepth: session.maxScroll,
         completedRead,
       };
 

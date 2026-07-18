@@ -41,30 +41,43 @@ export const BlogShare = ({ url, title, className, variant = "horizontal" }: Blo
     setCanNativeShare(!!navigator.share)
   }, [])
 
+  const getUtmUrl = (source: string) => {
+    try {
+      const u = new URL(url)
+      u.searchParams.set("utm_source", source)
+      u.searchParams.set("utm_medium", "social")
+      u.searchParams.set("utm_campaign", "share_button")
+      return u.toString()
+    } catch {
+      const separator = url.includes("?") ? "&" : "?"
+      return `${url}${separator}utm_source=${source}&utm_medium=social&utm_campaign=share_button`
+    }
+  }
+
   const shareLinks = [
     {
       name: "X",
       icon: XIcon,
-      href: `https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}`,
+      href: `https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(getUtmUrl("twitter"))}`,
       color: "hover:text-foreground",
     },
     {
       name: "LinkedIn",
       icon: LinkedinIcon,
-      href: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`,
+      href: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(getUtmUrl("linkedin"))}`,
       color: "hover:text-[#0A66C2]",
     },
     {
       name: "Facebook",
       icon: FacebookIcon,
-      href: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
+      href: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(getUtmUrl("facebook"))}`,
       color: "hover:text-[#1877F2]",
     },
   ]
 
   const handleCopyLink = async () => {
     try {
-      await navigator.clipboard.writeText(url)
+      await navigator.clipboard.writeText(getUtmUrl("copy_link"))
       setIsCopied(true)
       setTimeout(() => setIsCopied(false), 2000)
     } catch (err) {
@@ -77,7 +90,7 @@ export const BlogShare = ({ url, title, className, variant = "horizontal" }: Blo
       try {
         await navigator.share({
           title,
-          url,
+          url: getUtmUrl("native_share"),
         })
       } catch (err) {
         if ((err as Error).name !== "AbortError") {
