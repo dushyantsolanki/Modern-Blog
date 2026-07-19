@@ -304,17 +304,19 @@ export default function PostClientContent({ post, slug }: { post: Post, slug: st
                     )}
 
                     <div className="p-6 lg:p-6 bg-surface border border-border rounded-3xl flex flex-col md:flex-row gap-8">
-                      <AuthorAvatar name={post.author.name} avatar={post.author.avatar} size="xl" />
-                      <div>
-                        <h3 className="text-2xl font-bold mb-2">{post.author.name}</h3>
-                        <div className="text-primary font-semibold text-sm uppercase tracking-wider mb-4">{post.author.role || "Author"}</div>
-                        <p className="text-muted-foreground leading-relaxed mb-6">
-                          {post.author.bio || `Creative mind and contributor at Xenon. Sharing perspectives on ${post.category} and the future of work.`}
-                        </p>
+                      <div className="flex flex-col gap-4 items-start md:items-center shrink-0">
+                        <AuthorAvatar name={post.author.name} avatar={post.author.avatar} size="xl" />
                         <div className="flex gap-4">
                           <a href="#" className="p-2 border border-border rounded-xl hover:bg-surface-alt transition-colors"><X className="w-4 h-4" /></a>
                           <a href="#" className="p-2 border border-border rounded-xl hover:bg-surface-alt transition-colors"><Link2 className="w-4 h-4" /></a>
                         </div>
+                      </div>
+                      <div>
+                        <h3 className="text-2xl font-bold mb-2">{post.author.name}</h3>
+                        <div className="text-primary font-semibold text-sm uppercase tracking-wider mb-4">{post.author.role || "Author"}</div>
+                        <p className="text-muted-foreground leading-relaxed mb-0">
+                          {post.author.bio || `Creative mind and contributor at Xenon. Sharing perspectives on ${post.category} and the future of work.`}
+                        </p>
                       </div>
                     </div>
 

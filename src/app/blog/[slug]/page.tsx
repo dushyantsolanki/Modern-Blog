@@ -51,6 +51,7 @@ export async function generateMetadata(
   return {
     title: `${post.title} | Xenon`,
     description: post.excerpt,
+    keywords: post.seo?.focusKeyword ? post.seo.focusKeyword.split(',').map((k: string) => k.trim()) : (post.category ? [post.category] : []),
     openGraph: {
       title: post.title,
       description: post.excerpt,
