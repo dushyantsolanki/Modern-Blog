@@ -14,7 +14,7 @@ export function Newsletter() {
   // Check if they already subscribed in this browser session
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const subscribed = localStorage.getItem("pubpulse_subscribed");
+      const subscribed = localStorage.getItem("xenon_subscribed");
       if (subscribed) {
         setHasSubscribed(true);
       }
@@ -45,7 +45,7 @@ export function Newsletter() {
 
       setStatus("success");
       setMessage("Thank you for subscribing! Check your inbox for updates.");
-      localStorage.setItem("pubpulse_subscribed", "true");
+      localStorage.setItem("xenon_subscribed", "true");
       setTimeout(() => {
         setHasSubscribed(true);
       }, 3000); // Collapse after 3 seconds showing success

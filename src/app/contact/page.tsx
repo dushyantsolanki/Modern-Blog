@@ -13,21 +13,21 @@ import { sendMessage } from "@/lib/api"
 const contactMethods = [
   {
     title: "General",
-    handle: "hello@pubpulse.blog",
+    handle: "hello@xenon.blog",
     description: "For general inquiries and story ideas.",
     icon: Mail,
     className: "md:col-span-2 bg-gradient-to-br from-blue-500/5 to-transparent",
   },
   {
     title: "Press",
-    handle: "press@pubpulse.blog",
+    handle: "press@xenon.blog",
     description: "Media and interview requests.",
     icon: Globe,
     className: "md:col-span-1 bg-surface-alt/50",
   },
   {
     title: "Partnerships",
-    handle: "partners@pubpulse.blog",
+    handle: "partners@xenon.blog",
     description: "Sponsorship and collaboration.",
     icon: MessageSquare,
     className: "md:col-span-1 bg-surface-alt/50",

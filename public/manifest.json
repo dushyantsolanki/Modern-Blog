@@ -1,7 +1,7 @@
 {
-  "name": "Pubpulse Blog",
-  "short_name": "Pubpulse",
-  "description": "Pubpulse — A Modern Blog for Curious Minds.",
+  "name": "Xenon Blog",
+  "short_name": "Xenon",
+  "description": "Xenon — A Modern Blog for Curious Minds.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#000000",

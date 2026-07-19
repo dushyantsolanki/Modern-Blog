@@ -63,7 +63,7 @@ export function Navbar() {
       <div className="h-14 flex items-center">
         <div className="container mx-auto px-6 flex items-center justify-between">
           <Link href="/" className="text-xl font-bold tracking-tight text-foreground transition-opacity hover:opacity-70">
-            Pubpulse
+            Xenon
           </Link>
 
 

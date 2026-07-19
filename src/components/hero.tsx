@@ -21,7 +21,7 @@ export function Hero() {
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/20 text-indigo-200 text-xs font-medium mb-8 backdrop-blur-md"
           >
             <Sparkles className="w-3.5 h-3.5" />
-            Welcome to Pubpulse Blog
+            Welcome to Xenon Blog
           </motion.div>
 
           <motion.h1

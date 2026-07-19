@@ -81,7 +81,7 @@ export function BlogFilterBar({
             </motion.div>
             <input
               type="text"
-              placeholder="Search Pubpulse..."
+              placeholder="Search Xenon..."
               onFocus={() => setIsSearchFocused(true)}
               onBlur={() => setIsSearchFocused(false)}
               onChange={handleSearchChange}

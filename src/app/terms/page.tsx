@@ -119,8 +119,8 @@ export default function TermsPage() {
                   <div>
                     <h2 className="text-4xl lg:text-5xl font-black tracking-tight mb-8">Intellectual Property.</h2>
                     <div className="space-y-6 text-muted-foreground font-medium leading-[1.8]">
-                      <p>Unless otherwise indicated, the website and its original content, features, and functionality are owned by Pubpulse and are protected by international copyright, trademark, and patents.</p>
-                      <p>Our trademarks and trade dress may not be used in connection with any product or service without the prior written consent of Pubpulse.</p>
+                      <p>Unless otherwise indicated, the website and its original content, features, and functionality are owned by Xenon and are protected by international copyright, trademark, and patents.</p>
+                      <p>Our trademarks and trade dress may not be used in connection with any product or service without the prior written consent of Xenon.</p>
                     </div>
                   </div>
                 </div>
