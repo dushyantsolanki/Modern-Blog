@@ -52,7 +52,7 @@ export function InfiniteScrollCategories({ initialCategories = [] }: InfiniteScr
     setIsLoading(true)
 
     try {
-      console.log(`[InfiniteScroll] Fetching page ${pageToFetch}...`)
+
       const result = await getCategories({ page: pageToFetch, limit: 12 })
 
       const newItems: CategoryItem[] = (result.categories || []).map((cat: any) => ({

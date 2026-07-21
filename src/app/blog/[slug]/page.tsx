@@ -42,7 +42,6 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const { slug } = await params
   const post = await getPostBySlug(slug)
-  console.log(post)
   if (!post) return {
     title: "Post Not Found | Xenon",
     description: "The requested blog post could not be found."

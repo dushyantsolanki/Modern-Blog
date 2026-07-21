@@ -27,7 +27,6 @@ export default function Home() {
   } | null>(null);
   const [categories, setCategories] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  console.log(homeData)
   useEffect(() => {
     const fetchHomeData = async () => {
       setIsLoading(true);

@@ -10,7 +10,6 @@ import { TableOfContents } from "@/components/table-of-contents"
 import { GoogleAd } from "@/components/google-ad"
 import { Calendar, Clock, ChevronRight, ChevronLeft, X, Link2, Eye, Timer, Play } from "lucide-react"
 import { VideoPlayer } from "@/components/video-player"
-import { AudioPlayer } from "@/components/audio-player"
 import { Post } from "@/lib/types"
 import { DirectionalTransition } from "@/components/view-transition/directional-transition"
 import { ViewTransition } from "react"
@@ -18,6 +17,7 @@ import { BlogShare } from "@/components/blog-share"
 import { ReadingProgress } from "@/components/blog/reading-progress"
 import { motion, AnimatePresence } from "framer-motion"
 import { ArticleSummarizer } from "@/components/article-summarizer"
+import { InstagramComments } from "@/components/comments/instagram-comments"
 import { getPosts, getSuggestedPosts } from "@/lib/api"
 import useEmblaCarousel from "embla-carousel-react"
 import { AuthorAvatar } from "@/components/author-avatar"
@@ -43,7 +43,6 @@ export default function PostClientContent({ post, slug }: { post: Post, slug: st
   })
   const [canScrollPrev, setCanScrollPrev] = React.useState(false)
   const [canScrollNext, setCanScrollNext] = React.useState(true)
-  const [showAudioPlayer, setShowAudioPlayer] = React.useState(false)
 
   const onSelect = React.useCallback((emblaApi: any) => {
     setCanScrollPrev(emblaApi.canScrollPrev())
@@ -88,8 +87,8 @@ export default function PostClientContent({ post, slug }: { post: Post, slug: st
 
   React.useEffect(() => {
     const handleScroll = () => {
-      // Show floating share after scrolling past the main header (roughly 600px)
-      setShowFloatingShare(window.scrollY > 600)
+      // Show floating sticky share bar after scrolling past 300px
+      setShowFloatingShare(window.scrollY > 300)
     }
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
@@ -108,24 +107,6 @@ export default function PostClientContent({ post, slug }: { post: Post, slug: st
           <Navbar />
 
           {/* Floating Lateral Share Bar - Apple Inspired */}
-          <AnimatePresence>
-            {showFloatingShare && (
-              <motion.div
-                initial={{ opacity: 0, x: 20, scale: 0.8 }}
-                animate={{ opacity: 1, x: 0, scale: 1 }}
-                exit={{ opacity: 0, x: 20, scale: 0.8 }}
-                transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                className="fixed right-3 md:right-6 top-1/2 -translate-y-1/2 z-[60] scale-90 md:scale-100"
-              >
-                <BlogShare
-                  variant="floating"
-                  url={typeof window !== 'undefined' ? window.location.href : ''}
-                  title={post.title}
-                />
-              </motion.div>
-            )}
-          </AnimatePresence >
-
           <main className="flex-1">
             {/* Article Header / Hero */}
             <div className="container mx-auto px-6 pt-12 pb-8">
@@ -146,21 +127,6 @@ export default function PostClientContent({ post, slug }: { post: Post, slug: st
                     {post.title}
                   </h1>
                 </ViewTransition>
-
-                {post.audioUrl && post.audioUrl !== "undefined" && post.audioUrl !== "null" && !showAudioPlayer && (
-                  <button
-                    onClick={() => setShowAudioPlayer(true)}
-                    className="flex items-center gap-4 px-6 py-4 glass border border-primary/20 hover:border-primary/40 transition-all group my-8 w-fit rounded-2xl"
-                  >
-                    <div className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center text-white shadow-xl group-hover:scale-110 transition-transform">
-                      <Play className="w-6 h-6 fill-current ml-1" />
-                    </div>
-                    <div className="text-left">
-                      <div className="text-sm font-bold text-foreground">Listen with Xenon</div>
-                      <div className="text-[11px] text-muted-foreground">Immersive high-quality AI audio experience</div>
-                    </div>
-                  </button>
-                )}
 
                 <div className="flex flex-wrap items-center gap-8 py-8 border-y border-border mb-12">
                   <div className="flex items-center gap-3">
@@ -339,21 +305,13 @@ export default function PostClientContent({ post, slug }: { post: Post, slug: st
           <Footer />
         </div>
       </DirectionalTransition >
-      {/* Sticky Audio Player Popup */}
-      {/* Sticky Audio Player Popup */}
-      <AnimatePresence>
-        {showAudioPlayer && post.audioUrl && (
-          <motion.div
-            initial={{ y: 150, opacity: 0, x: "-50%" }}
-            animate={{ y: 0, opacity: 1, x: "-50%" }}
-            exit={{ y: 150, opacity: 0, x: "-50%" }}
-            transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="fixed bottom-6 left-1/2 z-50 w-[calc(100%-2rem)] max-w-lg"
-          >
-            <AudioPlayer src={post.audioUrl} onClose={() => setShowAudioPlayer(false)} />
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Sticky Bottom Share Bar (Smooth Slide Up on Scroll) */}
+      <BlogShare
+        url={typeof window !== "undefined" ? window.location.href : ""}
+        title={post.title}
+        variant="sticky-bottom"
+        isVisible={showFloatingShare}
+      />
     </>
   )
 }

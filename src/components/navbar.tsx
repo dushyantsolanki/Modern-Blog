@@ -89,20 +89,16 @@ export function Navbar() {
           <div className="flex items-center gap-2">
             <GoogleTranslate />
             <ThemeToggle />
-            <Link href="/#newsletter" className={getButtonClasses({ variant: "primary", size: "sm", className: "hidden md:flex" })}>
-              Subscribe
-            </Link>
-
 
             {/* Mobile Menu Toggle */}
             <button
-              className={getButtonClasses({ 
-                variant: "ghost", 
-                size: "icon", 
+              className={getButtonClasses({
+                variant: "ghost",
+                size: "icon",
                 className: cn(
                   "md:hidden relative z-[110] transition-colors",
                   isMobileMenuOpen && "text-foreground"
-                ) 
+                )
               })}
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
@@ -146,20 +142,6 @@ export function Navbar() {
                   </Link>
                 </motion.div>
               ))}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: navLinks.length * 0.05 + 0.1, duration: 0.4 }}
-                className="w-full pt-8"
-              >
-                <Link
-                  href="/#newsletter"
-                  className={getButtonClasses({ variant: "primary", size: "lg", className: "w-full text-lg" })}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Subscribe
-                </Link>
-              </motion.div>
             </div>
           </motion.div>
         )}
