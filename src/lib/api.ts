@@ -41,6 +41,21 @@ export interface PaginatedCategories {
  * Maps API post data to Frontend Post interface
  */
 function mapPost(post: any): Post {
+  let resolvedAudioUrl: string | undefined = undefined;
+
+  if (post.audioUrl && typeof post.audioUrl === "string" && post.audioUrl.trim() !== "" && post.audioUrl !== "undefined" && post.audioUrl !== "null") {
+    resolvedAudioUrl = post.audioUrl.trim();
+  } else if (post.audioData && typeof post.audioData === "string" && post.audioData.trim() !== "" && post.audioData !== "undefined" && post.audioData !== "null") {
+    const rawAudio = post.audioData.trim();
+    if (rawAudio.startsWith("http://") || rawAudio.startsWith("https://") || rawAudio.startsWith("/")) {
+      resolvedAudioUrl = rawAudio;
+    } else {
+      resolvedAudioUrl = `${API_URL}/audio/${post._id}`;
+    }
+  } else if (post.audioContentType && post.audioContentType !== "null" && post.audioContentType !== "undefined" && post.audioContentType.trim() !== "") {
+    resolvedAudioUrl = `${API_URL}/audio/${post._id}`;
+  }
+
   return {
     slug: post.slug,
     title: post.title,
@@ -62,7 +77,7 @@ function mapPost(post: any): Post {
     image: (post.image || "").trim() || "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop",
     heroImage: (post.image || "").trim(),
     videoUrl: post.videoUrl,
-    audioUrl: (post.audioContentType && post.audioContentType !== "null" && post.audioContentType !== "undefined" && post.audioContentType.trim() !== "") ? `${API_URL}/audio/${post._id}` : undefined,
+    audioUrl: resolvedAudioUrl,
     content: post.content,
     summaryPoints: post.summaryPoints || [],
     views: post.views || 0,
