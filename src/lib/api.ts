@@ -77,6 +77,8 @@ function mapPost(post: any): Post {
     image: (post.image || "").trim() || "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop",
     heroImage: (post.image || "").trim(),
     videoUrl: post.videoUrl,
+    youtubeUrl: post.youtubeUrl,
+    showYoutubeVideo: post.showYoutubeVideo || false,
     audioUrl: resolvedAudioUrl,
     content: post.content,
     summaryPoints: post.summaryPoints || [],

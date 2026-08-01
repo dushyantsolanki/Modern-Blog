@@ -1,7 +1,7 @@
 {
-  "name": "Xenon Blog",
-  "short_name": "Xenon",
-  "description": "Xenon — A Modern Blog for Curious Minds.",
+  "name": "InFixe Blog",
+  "short_name": "InFixe",
+  "description": "InFixe — A Modern Blog for Curious Minds.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#000000",

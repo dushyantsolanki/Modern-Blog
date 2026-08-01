@@ -1,5 +1,5 @@
 /**
- * interactions.js — Xenon Blog
+ * interactions.js — InFixe Blog
  * Emil Kowalski design engineering principles applied via JS:
  *
  * 1. IntersectionObserver scroll reveals (GPU-only: opacity + transform)

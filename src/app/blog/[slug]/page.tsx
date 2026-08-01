@@ -43,12 +43,12 @@ export async function generateMetadata(
   const { slug } = await params
   const post = await getPostBySlug(slug)
   if (!post) return {
-    title: "Post Not Found | Xenon",
+    title: "Post Not Found | InFixe",
     description: "The requested blog post could not be found."
   }
 
   return {
-    title: `${post.title} | Xenon`,
+    title: `${post.title} | InFixe`,
     description: post.excerpt,
     keywords: post.seo?.focusKeyword ? post.seo.focusKeyword.split(',').map((k: string) => k.trim()) : (post.category ? [post.category] : []),
     openGraph: {

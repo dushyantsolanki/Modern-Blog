@@ -22,13 +22,13 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "Xenon — A Modern Blog for Curious Minds",
-  description: "Xenon is a modern blog exploring ideas in technology, design, productivity and creativity. Join 12,000+ readers.",
+  title: "InFixe — A Modern Blog for Curious Minds",
+  description: "InFixe is a modern blog exploring ideas in technology, design, productivity and creativity. Join 12,000+ readers.",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "Xenon",
+    title: "InFixe",
   },
 };
 

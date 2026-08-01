@@ -24,6 +24,12 @@ import { AuthorAvatar } from "@/components/author-avatar"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
+function extractYoutubeId(url: string) {
+  if (!url) return null;
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+  const match = url.match(regExp);
+  return (match && match[2].length === 11) ? match[2] : null;
+}
 
 // TOC items will be generated dynamically from the article content
 interface TOCItem {
@@ -156,7 +162,7 @@ export default function PostClientContent({ post, slug }: { post: Post, slug: st
                       <Play className="w-6 h-6 fill-current ml-1" />
                     </div>
                     <div className="text-left">
-                      <div className="text-sm font-bold text-foreground">Listen with Xenon</div>
+                      <div className="text-sm font-bold text-foreground">Listen with InFixe</div>
                       <div className="text-[11px] text-muted-foreground">Immersive high-quality AI audio experience</div>
                     </div>
                   </button>
@@ -197,7 +203,14 @@ export default function PostClientContent({ post, slug }: { post: Post, slug: st
                 >
                   <div className="relative aspect-video rounded-3xl overflow-hidden mb-12 shadow-2xl bg-transparent flex items-center justify-center">
                     <ViewTransition name={`post-image-${slug}`} share="morph">
-                      {post.videoUrl ? (
+                      {post.showYoutubeVideo && post.youtubeUrl && extractYoutubeId(post.youtubeUrl) ? (
+                        <iframe
+                          src={`https://www.youtube.com/embed/${extractYoutubeId(post.youtubeUrl)}`}
+                          className="w-full h-full object-cover"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                        />
+                      ) : post.videoUrl ? (
                         <VideoPlayer src={post.videoUrl} />
                       ) : (
                         <Image
@@ -315,7 +328,7 @@ export default function PostClientContent({ post, slug }: { post: Post, slug: st
                         <h3 className="text-2xl font-bold mb-2">{post.author.name}</h3>
                         <div className="text-primary font-semibold text-sm uppercase tracking-wider mb-4">{post.author.role || "Author"}</div>
                         <p className="text-muted-foreground leading-relaxed mb-0">
-                          {post.author.bio || `Creative mind and contributor at Xenon. Sharing perspectives on ${post.category} and the future of work.`}
+                          {post.author.bio || `Creative mind and contributor at InFixe. Sharing perspectives on ${post.category} and the future of work.`}
                         </p>
                       </div>
                     </div>

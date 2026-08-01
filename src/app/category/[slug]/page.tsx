@@ -19,10 +19,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const categoryName = category?.name || slug.charAt(0).toUpperCase() + slug.slice(1).replace(/-/g, ' ');
 
   return {
-    title: `${categoryName} | Xenon Blog`,
+    title: `${categoryName} | InFixe Blog`,
     description: category?.description || `Explore compiled insights and expert perspectives on ${categoryName}.`,
     openGraph: {
-      title: `${categoryName} | Xenon Blog`,
+      title: `${categoryName} | InFixe Blog`,
       description: category?.description || `Explore compiled insights and expert perspectives on ${categoryName}.`,
       images: category?.imageUrl ? [{ url: category.imageUrl }] : [],
     },
