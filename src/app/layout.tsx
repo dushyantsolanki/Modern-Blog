@@ -43,7 +43,7 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://images.unsplash.com" />
       </head>
-      <body className="antialiased min-h-screen bg-background text-foreground transition-colors duration-300">
+      <body className="antialiased min-h-screen bg-background text-foreground transition-colors duration-300 max-w-screen-2xl mx-auto overflow-x-hidden shadow-2xl shadow-black/5 dark:shadow-white/5">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
