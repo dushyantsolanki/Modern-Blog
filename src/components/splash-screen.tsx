@@ -59,10 +59,11 @@ export default function SplashScreen() {
           }}
           className="flex flex-col items-center z-10"
         >
-          <h1 className="text-6xl md:text-8xl font-black tracking-[-0.05em] text-foreground selection:bg-transparent flex items-baseline">
-            {"InFixe".split("").map((char, i) => (
+          <h1 className="text-6xl md:text-8xl font-black italic tracking-[-0.05em] text-foreground selection:bg-transparent flex items-baseline">
+            {"INFIXE".split("").map((char, i) => (
               <motion.span
                 key={i}
+                className={i === 5 ? "relative flex flex-col items-center" : ""}
                 variants={{
                   hidden: { opacity: 0, y: 15, filter: "blur(8px)", scale: 0.9 },
                   visible: {
@@ -94,10 +95,8 @@ export default function SplashScreen() {
                   },
                 },
               }}
-              className="text-primary ml-1"
-            >
-              .
-            </motion.span>
+              className="w-3 h-3 md:w-4 md:h-4 rounded-full bg-primary ml-1 md:ml-2 mt-auto mb-2 md:mb-4"
+            />
           </h1>
         </motion.div>
       </div>

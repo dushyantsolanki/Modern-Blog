@@ -89,8 +89,9 @@ export function Footer() {
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-12 pb-16 border-b border-white/10">
           <div className="lg:col-span-2">
-            <Link href="/" className="text-2xl font-extrabold text-[#F8FAFC]">
-              InFixe<span className="text-primary-light">.</span>
+            <Link href="/" className="text-2xl font-extrabold text-[#F8FAFC] flex items-center">
+              INFIXE
+              <span className="w-1.5 h-1.5 rounded-full bg-blue-500 ml-0.5 mt-2"></span>
             </Link>
             <p className="mt-4 text-[#94A3B8] text-sm leading-relaxed max-w-sm">
               A modern blog for curious minds. Exploring ideas at the intersection of technology, design, and human creativity.
