@@ -59,7 +59,7 @@ export default function SplashScreen() {
           }}
           className="flex flex-col items-center z-10"
         >
-          <h1 className="text-6xl md:text-8xl font-black italic tracking-[-0.05em] text-foreground selection:bg-transparent flex items-baseline">
+          <h1 className="text-6xl md:text-8xl font-black italic tracking-[-0.05em] bg-gradient-to-r from-[#FF9933] via-gray-300 dark:via-white to-[#138808] text-transparent bg-clip-text selection:bg-transparent flex items-baseline">
             {"INFIXE".split("").map((char, i) => (
               <motion.span
                 key={i}
@@ -95,7 +95,7 @@ export default function SplashScreen() {
                   },
                 },
               }}
-              className="w-3 h-3 md:w-4 md:h-4 rounded-full bg-primary ml-1 md:ml-2 mt-auto mb-2 md:mb-4"
+              className="w-3 h-3 md:w-4 md:h-4 rounded-full bg-[#000080] ml-1 md:ml-2 mt-auto mb-2 md:mb-4"
             />
           </h1>
         </motion.div>

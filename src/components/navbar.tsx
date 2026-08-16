@@ -62,9 +62,9 @@ export function Navbar() {
     >
       <div className="h-14 flex items-center">
         <div className="container mx-auto px-6 flex items-center justify-between">
-          <Link href="/" className="text-xl font-bold tracking-tight text-foreground transition-opacity hover:opacity-70 flex items-center">
-            INFIXE
-            <span className="w-1.5 h-1.5 rounded-full bg-blue-500 ml-0.5 mt-2"></span>
+          <Link href="/" className="text-xl font-bold tracking-tight transition-opacity hover:opacity-70 flex items-center">
+            <span className="bg-gradient-to-r from-[#FF9933] via-gray-300 dark:via-white to-[#138808] text-transparent bg-clip-text">INFIXE</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-[#000080] ml-0.5 mt-2"></span>
           </Link>
 
 
