@@ -63,8 +63,8 @@ export function Navbar() {
       <div className="h-14 flex items-center">
         <div className="container mx-auto px-6 flex items-center justify-between">
           <Link href="/" className="text-xl font-bold tracking-tight transition-opacity hover:opacity-70 flex items-center">
-            <span className="bg-gradient-to-r from-[#FF9933] via-gray-300 dark:via-white to-[#138808] text-transparent bg-clip-text">INFIXE</span>
-            <span className="w-1.5 h-1.5 rounded-full bg-[#000080] ml-0.5 mt-2"></span>
+            <span className="bg-gradient-to-r from-[#FF671F] via-[#FFFFFF] to-[#046A38] text-transparent bg-clip-text drop-shadow-sm dark:drop-shadow-none">INFIXE</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-[#06038D] ml-0.5 mt-2"></span>
           </Link>
 
 

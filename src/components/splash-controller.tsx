@@ -25,7 +25,7 @@ export default function SplashController({
 
       const timer = setTimeout(() => {
         setShowSplash(false);
-      }, 2000); // 2 seconds for a better premium reveal
+      }, 2600); // 2.6 seconds to let the cinematic reveal breathe
 
       return () => clearTimeout(timer);
     }
