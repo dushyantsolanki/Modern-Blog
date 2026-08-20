@@ -30,7 +30,7 @@ export const AudioPlayer = ({ src, onClose }: AudioPlayerProps) => {
 
   return (
     <div ref={containerRef}>
-      <Player.Provider>
+      {/* <Player.Provider>
         <AudioSkin>
           <Audio src={src} />
         </AudioSkin>
@@ -46,7 +46,7 @@ export const AudioPlayer = ({ src, onClose }: AudioPlayerProps) => {
           </button>,
           controlsTarget
         )}
-      </Player.Provider>
+      </Player.Provider> */}
     </div>
   );
 };
