@@ -4,137 +4,113 @@ import { motion } from "framer-motion";
 
 export default function SplashScreen() {
   return (
-    <div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-background overflow-hidden">
-      
-      {/* Dynamic Cinematic Ambient Background */}
-      <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.7 }}
-          animate={{ opacity: [0, 0.2, 0.08], scale: [0.7, 1.2, 1] }}
-          transition={{ duration: 2.5, ease: "easeOut" }}
-          className="absolute w-[60vw] h-[60vw] max-w-[800px] max-h-[800px] rounded-full bg-primary/20 blur-[120px]"
-        />
-        <motion.div
-          initial={{ opacity: 0, rotate: -30, scale: 0.8 }}
-          animate={{ opacity: [0, 0.15, 0], rotate: 30, scale: 1.1 }}
-          transition={{ duration: 3, ease: "easeInOut" }}
-          className="absolute w-[150vw] h-[10vh] bg-gradient-to-r from-transparent via-primary/30 to-transparent blur-[60px] transform-gpu"
-        />
-      </div>
-
-      {/* Main Logo Container */}
-      <motion.div
-        initial="hidden"
-        animate="visible"
-        className="relative z-10 flex flex-col items-center"
-      >
-        <div className="overflow-hidden pb-4 md:pb-6 px-4">
-          <motion.h1 
-            variants={{
-              hidden: { opacity: 0, filter: "blur(12px)", scale: 0.98 },
-              visible: { 
-                opacity: 1, 
-                filter: "blur(0px)",
-                scale: 1,
-                transition: { 
-                  duration: 1, 
-                  ease: [0.16, 1, 0.3, 1],
-                  staggerChildren: 0.07,
-                  delayChildren: 0.15
-                }
-              }
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-background">
+      <div className="relative flex items-center justify-center">
+        {/* Volumetric Spreading Light */}
+        <div className="absolute flex items-center justify-center">
+          {/* Intense Core Glow */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{
+              opacity: [0, 0.4, 0.3],
+              scale: [0.5, 1.2, 1.1],
             }}
-            className="text-6xl md:text-8xl lg:text-[10rem] leading-none font-black italic tracking-[-0.05em] bg-gradient-to-r from-[#FF671F] via-[#FFFFFF] to-[#046A38] text-transparent bg-clip-text selection:bg-transparent flex items-baseline drop-shadow-xl dark:drop-shadow-none"
-          >
+            transition={{ duration: 2, ease: "easeOut" }}
+            className="absolute w-[150px] h-[150px] md:w-[300px] md:h-[300px] rounded-full bg-primary/20 blur-[40px] pointer-events-none"
+          />
+
+          {/* Large Spreading Aura */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.3 }}
+            animate={{
+              opacity: [0, 0.1, 0.05],
+              scale: [0.3, 2, 1.8],
+            }}
+            transition={{ duration: 3, ease: "circOut", delay: 0.2 }}
+            className="absolute w-[300px] h-[300px] md:w-[600px] md:h-[600px] rounded-full bg-primary/10 blur-[80px] pointer-events-none"
+          />
+
+          {/* Rotating Conic Light Sweep */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{
+              opacity: [0, 0.08, 0.04],
+              rotate: 360,
+            }}
+            transition={{
+              opacity: { duration: 2 },
+              rotate: { duration: 10, repeat: Infinity, ease: "linear" },
+            }}
+            className="absolute w-[400px] h-[400px] md:w-[800px] md:h-[800px] rounded-full bg-[conic-gradient(from_0deg,transparent_0%,hsl(var(--primary))_50%,transparent_100%)] blur-[100px] opacity-10"
+          />
+        </div>
+
+        {/* Branding Text with Typewriter Effect */}
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          variants={{
+            visible: {
+              transition: {
+                staggerChildren: 0.06,
+                delayChildren: 0.3,
+              },
+            },
+          }}
+          className="flex flex-col items-center z-10"
+        >
+          <h1 className="text-6xl md:text-8xl font-black italic tracking-[-0.05em] text-foreground selection:bg-transparent flex items-baseline">
             {"INFIXE".split("").map((char, i) => (
               <motion.span
                 key={i}
+                className={i === 5 ? "relative flex flex-col items-center" : ""}
                 variants={{
-                  hidden: { 
-                    opacity: 0, 
-                    y: "100%", 
-                    rotateX: -40,
-                    filter: "blur(8px)"
-                  },
+                  hidden: { opacity: 0, y: 15, filter: "blur(8px)", scale: 0.9 },
                   visible: {
                     opacity: 1,
-                    y: "0%",
-                    rotateX: 0,
+                    y: 0,
                     filter: "blur(0px)",
+                    scale: 1,
                     transition: {
-                      duration: 0.8,
-                      ease: [0.16, 1, 0.3, 1],
+                      duration: 0.6,
+                      ease: [0.32, 0.72, 0, 1],
                     },
                   },
                 }}
-                className="inline-block transform-gpu"
               >
                 {char}
               </motion.span>
             ))}
-            
-            {/* The Dot */}
             <motion.span
               variants={{
-                hidden: { opacity: 0, scale: 0, y: 20 },
+                hidden: { opacity: 0, scale: 0 },
                 visible: {
                   opacity: 1,
                   scale: 1,
-                  y: 0,
                   transition: {
                     type: "spring",
-                    stiffness: 400,
-                    damping: 18,
-                    mass: 0.8,
+                    stiffness: 200,
+                    damping: 10,
                     delay: 0.8,
                   },
                 },
               }}
-              className="w-3 h-3 md:w-5 md:h-5 lg:w-6 lg:h-6 rounded-full bg-[#06038D] ml-2 md:ml-3 mt-auto mb-3 md:mb-5 lg:mb-7 shadow-[0_0_20px_rgba(6,3,141,0.6)]"
+              className="w-3 h-3 md:w-4 md:h-4 rounded-full bg-primary ml-1 md:ml-2 mt-auto mb-2 md:mb-4"
             />
-          </motion.h1>
-        </div>
-        
-        {/* Sleek Line Sweep underneath */}
-        <motion.div
-          variants={{
-            hidden: { scaleX: 0, opacity: 0 },
-            visible: { 
-              scaleX: 1, 
-              opacity: 1,
-              transition: { 
-                duration: 1.2, 
-                ease: [0.16, 1, 0.3, 1], 
-                delay: 0.7 
-              } 
-            }
-          }}
-          className="h-[1px] md:h-[2px] w-4/5 max-w-sm mt-4 bg-gradient-to-r from-transparent via-foreground/30 dark:via-foreground/50 to-transparent origin-center"
-        />
+          </h1>
+        </motion.div>
+      </div>
 
-        {/* Cinematic Subtitle */}
-        <motion.p
-          variants={{
-            hidden: { opacity: 0, y: 15, filter: "blur(8px)" },
-            visible: { 
-              opacity: 1, 
-              y: 0, 
-              filter: "blur(0px)",
-              transition: { 
-                duration: 0.9, 
-                ease: [0.16, 1, 0.3, 1], 
-                delay: 0.9 
-              } 
-            }
-          }}
-          className="mt-6 md:mt-8 text-xs md:text-sm font-semibold tracking-[0.3em] text-foreground/60 uppercase"
-        >
-          Curious Minds
-        </motion.p>
-      </motion.div>
+      {/* Background Ambient Glow */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.5 }}
+        animate={{ opacity: 0.05, scale: 1 }}
+        transition={{ duration: 2, ease: "easeOut" }}
+        className="absolute inset-0 bg-[radial-gradient(circle_at_center,hsl(var(--primary))_0%,transparent_70%)] pointer-events-none"
+      />
 
-      {/* Subtle Film Grain Overlay */}
-      <div className="absolute inset-0 opacity-[0.04] dark:opacity-[0.06] pointer-events-none mix-blend-overlay bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
+      {/* Subtle noise texture */}
+      <div className="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-overlay bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
     </div>
   );
 }
